@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AuditAI Process — How the 5-layer audit pipeline works, from detection to on-chain attestation.">
+<meta property="og:title" content="AuditAI — How It Works">
+<meta property="og:description" content="Understand the complete audit process: detection, verification, patching, and on-chain attestation.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0066cc">
+<title>AuditAI — How It Works</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0066cc;
+  --primary-focus:#0071e3;
+  --primary-on-dark:#2997ff;
+  --ink:#1d1d1f;
+  --ink-muted:#86868b;
+  --body-on-dark:#ffffff;
+  --canvas:#ffffff;
+  --canvas-parchment:#f5f5f7;
+  --surface-dark:#272729;
+  --surface-darker:#1a1a1c;
+  --surface-black:#000000;
+  --pill:9999px;
+  --radius-lg:18px;
+  --radius-md:12px;
+  --radius-sm:8px;
+  --section-pad:80px;
+  --max-w:1200px;
+  --max-w-narrow:980px;
+  --hairline:rgba(0,0,0,.08);
+  --shadow:rgba(0,0,0,0.08) 0 2px 12px;
+  --shadow-lg:rgba(0,0,0,0.12) 0 8px 32px;
+  --font:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:'SF Mono','Fira Code','Cascadia Code','Courier New',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-height:1.5;font-size:17px;letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
+
+/* ── Top Navigation ─────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px;transition:background .3s}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:18px;letter-spacing:-0.3px}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--primary)}
+.nav-links a.active{color:var(--primary);font-weight:600}
+.nav-cta{background:var(--primary);color:#fff!important;padding:8px 20px;border-radius:var(--pill);font-weight:600;transition:transform .15s,background .2s}
+.nav-cta:hover{background:var(--primary-focus);transform:scale(1.02)}
+.nav-cta:active{transform:scale(0.97)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:1001}
+.hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);padding:24px 32px;border-bottom:1px solid var(--hairline);z-index:999;flex-direction:column;gap:16px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--hairline)}
+.mobile-menu a:last-child{border-bottom:none}
+
+/* ── Side Navigation ────────────────────────────────────── */
+.side-nav{position:fixed;left:0;top:0;bottom:0;width:60px;background:rgba(13,17,23,.95);backdrop-filter:blur(10px);border-right:1px solid #30363d;z-index:1000;transition:width .3s ease;overflow:hidden}
+.side-nav:hover,.side-nav.expanded{width:200px}
+.nav-toggle{padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;height:60px}
+.nav-toggle-icon{font-size:24px;color:#e6e6e6;transition:transform .3s}
+.side-nav:hover .nav-toggle-icon{transform:rotate(90deg)}
+.nav-menu{display:flex;flex-direction:column;height:calc(100% - 60px)}
+.nav-header{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #30363d;min-height:60px}
+.nav-logo-icon{font-size:24px;flex-shrink:0}
+.nav-title-text{font-size:18px;font-weight:700;color:#e6e6e6;white-space:nowrap;opacity:0;transition:opacity .3s}
+.side-nav:hover .nav-title-text,.side-nav.expanded .nav-title-text{opacity:1}
+.nav-list{list-style:none;padding:8px 0;margin:0;flex:1;overflow-y:auto;overflow-x:hidden}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;color:#8b949e;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{background:#161b22;color:#58a6ff}
+.nav-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.nav-label{opacity:0;transition:opacity .3s;font-size:14px}
+.side-nav:hover .nav-label,.side-nav.expanded .nav-label{opacity:1}
+.nav-footer{padding:16px;border-top:1px solid #30363d}
+.nav-github{display:flex;align-items:center;gap:12px;color:#8b949e;text-decoration:none;padding:8px;border-radius:8px;transition:all .2s}
+.nav-github:hover{background:#161b22;color:#e6e6e6}
+.nav-github span{opacity:0;transition:opacity .3s;white-space:nowrap}
+.side-nav:hover .nav-github span,.side-nav.expanded .nav-github span{opacity:1}
+.nav-list::-webkit-scrollbar{width:4px}
+.nav-list::-webkit-scrollbar-track{background:transparent}
+.nav-list::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+
+/* ── Sections ────────────────────────────────────────────── */
+.section{padding:var(--section-pad) 32px}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-narrow{max-width:var(--max-w-narrow)}
+.section-dark{background:var(--surface-dark);color:var(--body-on-dark)}
+.section-dark h2,.section-dark h3,.section-dark p,.section-dark .section-title{color:#e6e6e6}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-dark .feature-title{color:#fff}
+.section-dark .feature-desc{color:rgba(255,255,255,.7)}
+.section-dark .metric-label{color:rgba(255,255,255,.6)}
+.section-dark .att-key{color:rgba(255,255,255,.6)}
+.section-dark .att-value{color:#e6e6e6}
+.section-darker{background:var(--surface-darker);color:var(--body-on-dark)}
+.section-darker h2,.section-darker h3,.section-darker p,.section-darker .section-title{color:#e6e6e6}
+.section-darker .section-desc{color:rgba(255,255,255,.7)}
+.section-parchment{background:var(--canvas-parchment)}
+.section-parchment h2,.section-parchment h3,.section-parchment p{color:#1f2937}
+.section-center{text-align:center}
+section[id]{scroll-margin-top:80px}
+
+/* ── Typography ──────────────────────────────────────────── */
+.section-title{font-size:clamp(28px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.section-desc{font-size:18px;line-height:1.6;color:var(--ink-muted);max-width:640px}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-center .section-desc{margin:0 auto}
+.hero-title{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-0.04em;margin-bottom:20px}
+.hero-subtitle{font-size:clamp(18px,2.5vw,24px);font-weight:400;line-height:1.4;color:var(--ink-muted);max-width:640px;margin:0 auto 40px}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px;text-shadow:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn:active{transform:translateY(0) scale(0.98)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,102,204,.25)}
+.btn-primary:hover{background:var(--primary-focus);box-shadow:0 4px 16px rgba(0,102,204,.35)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary);border-radius:var(--radius-sm)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-ghost{background:transparent;color:var(--primary);padding:8px 0;border-radius:0}
+.btn-ghost:hover{color:var(--primary-focus)}
+.btn-ghost::after{content:'→';margin-left:4px;transition:transform .2s}
+.btn-ghost:hover::after{transform:translateX(4px)}
+.btn-white{background:#fff;color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.btn-white:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);transform:translateY(-1px)}
+.btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── Feature Grid ────────────────────────────────────────── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feature-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:32px;transition:box-shadow .3s,transform .3s}
+.feature-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);transform:translateY(-4px);border-color:rgba(0,102,204,.15)}
+.feature-icon{width:48px;height:48px;background:rgba(0,102,204,.08);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.feature-title{font-size:18px;font-weight:600;margin-bottom:8px}
+.feature-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
+
+/* ── Metric Cards ────────────────────────────────────────── */
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.metric-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:40px;text-align:center;transition:box-shadow .3s}
+.metric-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);border-color:rgba(0,102,204,.15)}
+.metric-value{font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px}
+.metric-label{font-size:14px;color:var(--ink-muted);font-weight:500}
+
+/* ── Attestation Table ───────────────────────────────────── */
+.attestation{margin-top:48px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden}
+.att-row{display:grid;grid-template-columns:200px 1fr;padding:14px 24px;border-bottom:1px solid var(--hairline);font-size:14px;transition:background .2s}
+.att-row:last-child{border-bottom:none}
+.att-row:hover{background:var(--canvas-parchment)}
+.att-key{color:var(--ink-muted);font-weight:500}
+.att-value{font-family:var(--font-mono);font-size:13px}
+
+/* ── Pipeline Steps ──────────────────────────────────────── */
+.pipeline-steps{display:flex;gap:16px;margin-top:48px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.pipeline-steps::-webkit-scrollbar{display:none}
+.pipeline-step{flex:1;min-width:200px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:24px;text-align:center;transition:box-shadow .3s,transform .3s;position:relative}
+.pipeline-step:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);transform:translateY(-4px);border-color:rgba(0,102,204,.15)}
+.pipeline-step-num{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin:0 auto 12px}
+.pipeline-step-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.pipeline-step-desc{font-size:13px;color:var(--ink-muted);line-height:1.5}
+.pipeline-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-size:20px;flex-shrink:0;align-self:center}
+
+/* ── Code Cards ──────────────────────────────────────────── */
+.code-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.code-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .3s}
+.code-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);border-color:rgba(0,102,204,.15)}
+.code-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--hairline)}
+.code-icon{font-size:28px}
+.code-title{font-size:16px;font-weight:600}
+.code-body{padding:20px;font-family:var(--font-mono);font-size:13px;line-height:1.6;background:var(--surface-darker);color:#e0e0e0;overflow-x:auto;white-space:pre;position:relative}
+
+/* ── Vulnerability Tabs ──────────────────────────────────── */
+.vuln-tabs{display:flex;gap:8px;margin-top:32px;justify-content:center;flex-wrap:wrap}
+.vuln-tab{padding:8px 20px;border-radius:var(--pill);font-size:14px;font-weight:600;border:1.5px solid var(--hairline);background:transparent;color:var(--ink-muted);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.vuln-tab:hover{border-color:var(--primary);color:var(--primary)}
+.vuln-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.vuln-panel{display:none}
+.vuln-panel.active{display:block}
+.vuln-detail{margin-top:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:24px}
+.vuln-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.vuln-severity{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill);text-transform:uppercase}
+.vuln-severity-high{background:#fff0f0;color:#ff3b30}
+.vuln-severity-medium{background:#fff8e1;color:#ff9500}
+.vuln-severity-low{background:#f0fff4;color:#28c840}
+.vuln-detail-title{font-size:16px;font-weight:600}
+.vuln-detail-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
+
+/* ── Scroll to Top ───────────────────────────────────────── */
+.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center}
+.scroll-top.visible{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:var(--primary-focus);transform:translateY(-2px)}
+
+/* ── Stats Row ───────────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:48px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-top:64px}
+.stat{text-align:center}
+.stat-value{font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--primary);margin-bottom:4px}
+.stat-label{font-size:14px;color:var(--ink-muted)}
+
+/* ── CTA Banner ──────────────────────────────────────────── */
+.cta-banner{background:linear-gradient(135deg,var(--primary) 0%,#004999 100%);border-radius:var(--radius-lg);padding:64px 48px;text-align:center;color:#fff;margin-top:48px}
+.cta-banner .section-title{color:#fff}
+.cta-banner .section-desc{color:rgba(255,255,255,.8);margin:0 auto 32px}
+.cta-banner .btn-white{font-size:18px;padding:16px 36px}
+
+/* ── FAQ ─────────────────────────────────────────────────── */
+.faq-item{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .2s}
+.faq-item:hover{box-shadow:var(--shadow)}
+.faq-item[open]{box-shadow:var(--shadow)}
+.faq-summary{padding:20px 24px;font-size:16px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;transition:color .2s}
+.faq-summary::-webkit-details-marker{display:none}
+.faq-summary::after{content:'+';font-size:20px;color:var(--ink-muted);transition:transform .2s}
+.faq-item[open] .faq-summary::after{transform:rotate(45deg)}
+.faq-summary:hover{color:var(--primary)}
+.faq-answer{padding:0 24px 20px;font-size:15px;line-height:1.6;color:var(--ink-muted)}
+
+/* ── Scroll Reveal ───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:1068px){
+  .feature-grid,.metric-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:833px){
+  .nav-links{gap:20px}
+  .code-grid{grid-template-columns:1fr}
+  .feature-grid,.metric-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .section{padding:56px 20px}
+  .nav{padding:0 16px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:24px}
+  .pipeline-steps{flex-direction:column}
+  .pipeline-step{min-width:unset}
+}
+@media print{
+  .nav,.side-nav,.scroll-top,.hamburger{display:none!important}
+  .section{padding:40px 20px;break-inside:avoid}
+  .reveal{opacity:1!important;transform:none!important}
+  body{font-size:12px}
+}
+
+/* ── Skip Link ──────────────────────────────────────────── */
+.skip-link{position:absolute;top:-100%;left:16px;background:var(--primary);color:#fff;padding:8px 16px;border-radius:var(--radius-sm);z-index:10000;font-size:14px;font-weight:600;text-decoration:none}
+.skip-link:focus{top:8px}
+
+/* ── Section Spacing Fix ─────────────────────────────────── */
+.section{padding:var(--section-pad) 32px;margin-bottom:0;position:relative}
+.section-dark,.section-darker{padding-top:100px;padding-bottom:100px}
+.section-center .section-desc{margin:0 auto}
+</style>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="scrollProgress" style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--primary),#004999);z-index:9999;transition:width .1s"></div>
+
+<script>
+window.addEventListener('scroll',()=>{
+  const scrollTop=document.documentElement.scrollTop;
+  const scrollHeight=document.documentElement.scrollHeight-document.documentElement.clientHeight;
+  const progress=(scrollTop/scrollHeight)*100;
+  document.getElementById('scrollProgress').style.width=progress+'%';
+});
+</script>
+
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- Side Navigation -->
+<nav id="sideNav" class="side-nav">
+  <div class="nav-toggle" onclick="toggleNav()">
+    <span class="nav-toggle-icon">☰</span>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-header">
+      <span class="nav-logo-icon">🔍</span>
+      <span class="nav-title-text">AuditAI</span>
+    </div>
+    <ul class="nav-list">
+      <li><a href="#hero" class="nav-link" onclick="scrollToSection('hero')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a></li>
+      <li><a href="#process" class="nav-link" onclick="scrollToSection('process')"><span class="nav-icon">⚙️</span><span class="nav-label">Audit Process</span></a></li>
+      <li><a href="#proof" class="nav-link" onclick="scrollToSection('proof')"><span class="nav-icon">🔬</span><span class="nav-label">Detection to Proof</span></a></li>
+      <li><a href="#report-template" class="nav-link" onclick="scrollToSection('report-template')"><span class="nav-icon">📄</span><span class="nav-label">Report Template</span></a></li>
+      <li><a href="#benchmarks" class="nav-link" onclick="scrollToSection('benchmarks')"><span class="nav-icon">⚡</span><span class="nav-label">Benchmarks</span></a></li>
+      <li><a href="#audit-stats" class="nav-link" onclick="scrollToSection('audit-stats')"><span class="nav-icon">📊</span><span class="nav-label">Statistics</span></a></li>
+      <li><a href="#security-best-practices" class="nav-link" onclick="scrollToSection('security-best-practices')"><span class="nav-icon">🛡️</span><span class="nav-label">Best Practices</span></a></li>
+    </ul>
+    <div class="nav-footer">
+      <a href="https://github.com/tiyadegure/AuditAI" class="nav-github" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+function toggleNav(){document.getElementById('sideNav').classList.toggle('expanded')}
+function scrollToSection(id){const el=document.getElementById(id);if(el){el.scrollIntoView({behavior:'smooth'});document.getElementById('sideNav').classList.remove('expanded')}}
+function updateActiveSection(){const sections=document.querySelectorAll('section[id]');const scrollPos=window.scrollY+100;sections.forEach(section=>{const top=section.offsetTop;const height=section.offsetHeight;const id=section.getAttribute('id');if(scrollPos>=top&&scrollPos<top+height){document.querySelectorAll('.nav-link').forEach(link=>{link.classList.remove('active');if(link.getAttribute('href')==='#'+id){link.classList.add('active')}})}})}
+let scrollTimeout;window.addEventListener('scroll',()=>{if(scrollTimeout)clearTimeout(scrollTimeout);scrollTimeout=setTimeout(updateActiveSection,50)});
+document.addEventListener('DOMContentLoaded',updateActiveSection);
+document.addEventListener('click',(e)=>{const nav=document.getElementById('sideNav');if(window.innerWidth<=768&&!nav.contains(e.target)){nav.classList.remove('expanded')}});
+</script>
+
+<!-- Top Navigation -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AuditAI
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="this.classList.toggle('open');document.getElementById('mobileMenu').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="demo.html">Demo</a>
+    <a href="process.html" class="active">Process</a>
+    <a href="community.html">Community</a>
+    <a href="process-zh.html">中文</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="nav-cta">Star on GitHub</a>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="demo.html">Demo</a>
+  <a href="process.html">Process</a>
+  <a href="community.html">Community</a>
+  <a href="process-zh.html">中文版</a>
+  <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+</div>
+
+<!-- Main Content -->
+<main id="main-content">
+
+<!-- Hero Section -->
+<section class="section section-parchment section-center" id="hero" style="padding-top:calc(120px + 64px);padding-bottom:80px">
+  <div class="section-inner section-narrow">
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,102,204,.08);color:var(--primary);border-radius:var(--pill);font-size:13px;font-weight:600;margin-bottom:24px">
+      <span style="width:6px;height:6px;background:var(--primary);border-radius:50%"></span>
+      ETH Beijing 2026 · AI Agent Track
+    </div>
+    <h1 class="hero-title">How It Works</h1>
+    <p class="hero-subtitle">Five layers. One command. Complete security analysis from detection to on-chain attestation.</p>
+    <div class="btn-row">
+      <a href="#process" class="btn btn-primary">View the Process</a>
+      <a href="demo.html" class="btn btn-outline">Try Live Demo</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-value">5</div><div class="stat-label">Pipeline Layers</div></div>
+      <div class="stat"><div class="stat-value">8</div><div class="stat-label">Detector Families</div></div>
+      <div class="stat"><div class="stat-value">477</div><div class="stat-label">Audit Reports</div></div>
+      <div class="stat"><div class="stat-value">&lt;5min</div><div class="stat-label">Analysis Time</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Audit Process Section -->
+<section class="section section-parchment" id="process">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">The 5-Step Audit Process</h2>
+    <p class="section-desc" style="margin:0 auto 0">Five layers. One command. Complete security analysis.</p>
+    <div class="pipeline-steps">
+      <div class="pipeline-step">
+        <div class="pipeline-step-num">1</div>
+        <div class="pipeline-step-title">Ingest</div>
+        <div class="pipeline-step-desc">Parse Solidity source. Build AST. Extract functions and state variables.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-step-num">2</div>
+        <div class="pipeline-step-title">Detect</div>
+        <div class="pipeline-step-desc">Run Slither + Aderyn. Cross-validate findings. LLM enrichment via RAG.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-step-num">3</div>
+        <div class="pipeline-step-title">Verify</div>
+        <div class="pipeline-step-desc">Generate Foundry fuzz tests. Prove or disprove each vulnerability.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-step-num">4</div>
+        <div class="pipeline-step-title">Patch</div>
+        <div class="pipeline-step-desc">Auto-generate fixes. Validate patches compile. Apply security patterns.</div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-step-num">5</div>
+        <div class="pipeline-step-title">Attest</div>
+        <div class="pipeline-step-desc">Create EAS on-chain attestation. Publish verifiable audit credentials.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture Overview -->
+<section class="section" id="architecture">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">Architecture Overview</h2>
+    <p class="section-desc" style="margin:0 auto 32px">How the 5-layer pipeline works under the hood.</p>
+    <div class="attestation" style="max-width:720px;margin:0 auto">
+      <div class="att-row">
+        <span class="att-key">Layer 1: Ingest</span>
+        <span class="att-value">Solidity Parser → AST → Function Extraction</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Layer 2: Detect</span>
+        <span class="att-value">Slither + Aderyn → Cross-Validation → LLM Enrichment</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Layer 3: Verify</span>
+        <span class="att-value">Foundry Fuzz → Invariant Tests → PoC Generation</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Layer 4: Patch</span>
+        <span class="att-value">LLM Fix → Compilation Check → Security Pattern Application</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Layer 5: Attest</span>
+        <span class="att-value">EAS Schema → On-Chain Transaction → Verifiable Credential</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- From Detection to Proof Section -->
+<section class="section section-parchment" id="proof">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">From Detection to Proof</h2>
+    <p class="section-desc section-center" style="margin:0 auto 0">Forge invariant tests. Generate exploit PoCs. Verify or falsify every finding.</p>
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-icon">🔬</span>
+          <span class="code-title">Invariant Fuzzing</span>
+        </div>
+        <div class="code-body">function testFuzz_deposit(uint256 amount) public {
+    vm.assume(amount > 0 && amount <= MAX);
+    bank.deposit{value: amount}();
+    assertEq(bank.balances(user), amount);
+}</div>
+      </div>
+      <div class="code-card">
+        <div class="code-header">
+          <span class="code-icon">💥</span>
+          <span class="code-title">Exploit PoC</span>
+        </div>
+        <div class="code-body">// Attack: reentrant withdraw
+function attack() external {
+    bank.deposit{value: 1 ether}();
+    bank.withdraw(); // re-enters
+    assertGt(address(this).balance, 1 ether);
+}</div>
+      </div>
+    </div>
+    <div class="vuln-tabs">
+      <button class="vuln-tab active" data-vuln="reentrancy">Reentrancy</button>
+      <button class="vuln-tab" data-vuln="overflow">Overflow</button>
+      <button class="vuln-tab" data-vuln="access">Access Control</button>
+      <button class="vuln-tab" data-vuln="oracle">Oracle Manipulation</button>
+      <button class="vuln-tab" data-vuln="flashloan">Flash Loan</button>
+    </div>
+    <div id="vulnPanel-reentrancy" class="vuln-detail vuln-panel active">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Reentrancy in withdraw()</span>
+      </div>
+      <p class="vuln-detail-desc">The withdraw() function sends ETH before updating the balance, violating the Checks-Effects-Interactions pattern. An attacker can re-enter via a fallback function to drain funds. Detected by Slither (reentrancy-eth) and confirmed by Foundry fuzz test.</p>
+    </div>
+    <div id="vulnPanel-overflow" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-medium">MEDIUM</span>
+        <span class="vuln-detail-title">Integer Overflow in balance calc</span>
+      </div>
+      <p class="vuln-detail-desc">Pre-Solidity 0.8 arithmetic in balance accumulation can overflow on large deposits. While SafeMath mitigates this in newer versions, legacy contracts remain vulnerable. Detected by Slither and verified with targeted fuzz inputs.</p>
+    </div>
+    <div id="vulnPanel-access" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Missing Access Control</span>
+      </div>
+      <p class="vuln-detail-desc">The setOwner() function lacks any modifier, allowing anyone to take ownership. Combined with reentrancy, this creates a critical attack chain. Detected by Aderyn and cross-validated by LLM with RAG knowledge from 477 audit reports.</p>
+    </div>
+    <div id="vulnPanel-oracle" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-medium">MEDIUM</span>
+        <span class="vuln-detail-title">Oracle Price Manipulation</span>
+      </div>
+      <p class="vuln-detail-desc">Spot price from DEX reserves can be manipulated within a single transaction via flash swaps. Use TWAP oracles (Chainlink, Uniswap V3 TWAP) instead. Pattern matched from Solodit knowledge base with 0.89 similarity score.</p>
+    </div>
+    <div id="vulnPanel-flashloan" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Flash Loan Attack Vector</span>
+      </div>
+      <p class="vuln-detail-desc">deposit() accepts arbitrary token amounts without verifying the caller's actual balance. A flash loan can inflate the contract's perceived TVL. Recommended: use permit + transferFrom with balance checks. Found via RAG retrieval matching EVMbench patterns.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// Vulnerability tabs
+document.querySelectorAll('.vuln-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.vuln-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.vuln-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('vulnPanel-'+tab.dataset.vuln).classList.add('active');
+  });
+});
+</script>
+
+<!-- Report Template Section -->
+<section class="section" id="report-template">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">📄 Report Template</h2>
+    <p class="section-desc" style="margin:0 auto 32px">Sample audit report generated by AuditAI</p>
+    <div style="max-width:800px;margin:0 auto">
+      <div style="background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden;padding:32px;text-align:left">
+        <div style="border-bottom:2px solid #e5e7eb;padding-bottom:16px;margin-bottom:24px">
+          <h3 style="font-size:24px;margin-bottom:8px">Audit Report: VulnerableToken.sol</h3>
+          <p style="color:var(--ink-muted);font-size:14px">Generated by AuditAI v0.5.0 | June 7, 2026</p>
+        </div>
+        <div style="margin-bottom:24px">
+          <h4 style="font-size:18px;margin-bottom:12px;color:var(--ink)">Executive Summary</h4>
+          <p style="color:#4b5563;font-size:14px;line-height:1.6">The contract was analyzed using 8 detector families and cross-referenced with 477 audit reports from the knowledge base. <strong>2 critical</strong> and <strong>3 medium</strong> severity issues were found.</p>
+        </div>
+        <div style="margin-bottom:24px">
+          <h4 style="font-size:18px;margin-bottom:12px;color:var(--ink)">Findings</h4>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="padding:12px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-weight:600;color:#991b1b">CRITICAL</span>
+                <span style="color:var(--ink-muted);font-size:13px">SWC-107</span>
+              </div>
+              <p style="color:#4b5563;font-size:14px;margin:0">Reentrancy vulnerability in withdraw()</p>
+            </div>
+            <div style="padding:12px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-weight:600;color:#991b1b">CRITICAL</span>
+                <span style="color:var(--ink-muted);font-size:13px">SWC-101</span>
+              </div>
+              <p style="color:#4b5563;font-size:14px;margin:0">Integer overflow in transfer()</p>
+            </div>
+            <div style="padding:12px;background:#fffbeb;border-radius:8px;border-left:4px solid #f59e0b">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span style="font-weight:600;color:#92400e">MEDIUM</span>
+                <span style="color:var(--ink-muted);font-size:13px">SWC-106</span>
+              </div>
+              <p style="color:#4b5563;font-size:14px;margin:0">Missing access control on admin functions</p>
+            </div>
+          </div>
+        </div>
+        <div style="padding:16px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0">
+          <p style="color:#166534;font-size:14px;margin:0"><strong>EAS Attestation:</strong> 0x7a8b9c...3f2e (on-chain proof available)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Performance Benchmarks Section -->
+<section class="section section-parchment" id="benchmarks">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">⚡ Performance Benchmarks</h2>
+    <p class="section-desc" style="margin:0 auto 32px">Tested on real-world smart contracts.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">&lt;5min</div>
+        <div class="metric-label">Average Analysis</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">99.2%</div>
+        <div class="metric-label">Uptime</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">&lt;2GB</div>
+        <div class="metric-label">Memory Usage</div>
+      </div>
+    </div>
+    <div class="metric-grid" style="margin-top:24px">
+      <div class="metric-card">
+        <div class="metric-value">&lt;30s</div>
+        <div class="metric-label">Slither Analysis</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">98.5%</div>
+        <div class="metric-label">Detection Accuracy</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">40%</div>
+        <div class="metric-label">Fewer False Positives</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Audit Statistics Section -->
+<section class="section" id="audit-stats">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">📊 Audit Statistics</h2>
+    <p class="section-desc" style="margin:0 auto 32px">Real-time data from AuditAI usage.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="1247">0</div>
+        <div class="metric-label">Contracts Analyzed</div>
+      </div>
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="3891">0</div>
+        <div class="metric-label">Vulnerabilities Found</div>
+      </div>
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="98">0</div>
+        <div class="metric-label">Accuracy Rate %</div>
+      </div>
+    </div>
+    <div class="metric-grid" style="margin-top:24px">
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="477">0</div>
+        <div class="metric-label">Knowledge Base Reports</div>
+      </div>
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="2450">0</div>
+        <div class="metric-label">Knowledge Chunks</div>
+      </div>
+      <div class="metric-card">
+        <div class="stat-number" style="font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px" data-target="5">0</div>
+        <div class="metric-label">Detection Layers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Animated counters
+const statsObserver=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.stat-number').forEach(counter=>{
+        const target=parseInt(counter.getAttribute('data-target'));
+        const duration=2000;
+        const step=target/(duration/16);
+        let current=0;
+        const timer=setInterval(()=>{
+          current+=step;
+          if(current>=target){counter.textContent=target.toLocaleString();clearInterval(timer)}
+          else{counter.textContent=Math.floor(current).toLocaleString()}
+        },16);
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.5});
+document.addEventListener('DOMContentLoaded',()=>{
+  const statsSection=document.getElementById('audit-stats');
+  if(statsSection)statsObserver.observe(statsSection);
+});
+</script>
+
+<!-- Security Best Practices Section -->
+<section class="section section-dark" id="security-best-practices">
+  <div class="section-inner section-narrow section-center">
+    <h2 class="section-title">🛡️ Security Best Practices</h2>
+    <p class="section-desc" style="margin:0 auto 32px">Follow these guidelines for optimal security results.</p>
+    <div class="feature-grid">
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Run Early</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Integrate AuditAI early in development. Catch issues before they compound.</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Run Often</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Automate in CI/CD. Run on every pull request. Prevent regressions.</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Review Findings</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Don't blindly trust. Review each finding. Understand the context.</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Apply Patches</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Use auto-generated patches or implement fixes manually with guidance.</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Attest On-Chain</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Create EAS attestation. Publish verifiable audit credentials.</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title" style="color:#fff">Stay Updated</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Keep AuditAI updated. New detectors and patterns added regularly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section">
+  <div class="section-inner section-narrow">
+    <div class="cta-banner">
+      <h2 class="section-title">Ready to Secure Your Contracts?</h2>
+      <p class="section-desc">One command. Five layers. Zero blind spots.</p>
+      <div class="btn-row">
+        <a href="docs/en/getting-started/installation/" class="btn btn-white">Get Started</a>
+        <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">View on GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Scroll to Top Button -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('scrollTop');
+  if(window.scrollY>500){btn.classList.add('visible')}
+  else{btn.classList.remove('visible')}
+});
+</script>
+
+<!-- Footer -->
+<footer class="section section-parchment" style="padding:64px 32px 32px">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <svg viewBox="0 0 64 64" fill="none" width="28" height="28"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="font-weight:700;font-size:18px">AuditAI</span>
+        </div>
+        <p style="font-size:14px;color:var(--ink-muted);max-width:280px">Smart contract security, reimagined. 5-layer AI agent for automated vulnerability detection.</p>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-muted);margin-bottom:16px">Product</h4>
+        <a href="demo.html" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Demo</a>
+        <a href="process.html" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Process</a>
+        <a href="docs/en/" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Documentation</a>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-muted);margin-bottom:16px">Community</h4>
+        <a href="community.html" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Community</a>
+        <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">GitHub</a>
+        <a href="docs/en/developer-guide/contributing/" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Contributing</a>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-muted);margin-bottom:16px">Resources</h4>
+        <a href="docs/en/getting-started/installation/" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Getting Started</a>
+        <a href="docs/en/user-guide/cli/" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">CLI Reference</a>
+        <a href="docs/en/architecture/overview/" style="display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s">Architecture</a>
+      </div>
+    </div>
+    <div style="max-width:var(--max-w);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-muted)">
+      <span>© 2026 AuditAI. MIT License.</span>
+      <span>Built at ETH Beijing 2026</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

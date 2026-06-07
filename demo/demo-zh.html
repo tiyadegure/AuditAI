@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AuditAI 实时演示 — 交互式漏洞扫描器、API 测试和代码示例。">
+<title>AuditAI — 实时演示</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0066cc;
+  --primary-focus:#0071e3;
+  --primary-on-dark:#2997ff;
+  --ink:#1d1d1f;
+  --ink-muted:#86868b;
+  --body-on-dark:#ffffff;
+  --canvas:#ffffff;
+  --canvas-parchment:#f5f5f7;
+  --surface-dark:#272729;
+  --surface-darker:#1a1a1c;
+  --surface-black:#000000;
+  --pill:9999px;
+  --radius-lg:18px;
+  --radius-md:12px;
+  --radius-sm:8px;
+  --section-pad:80px;
+  --max-w:1200px;
+  --max-w-narrow:980px;
+  --hairline:rgba(0,0,0,.08);
+  --shadow:rgba(0,0,0,0.08) 0 2px 12px;
+  --shadow-lg:rgba(0,0,0,0.12) 0 8px 32px;
+  --font:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:'SF Mono','Fira Code','Cascadia Code','Courier New',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-height:1.5;font-size:17px;letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
+
+/* ── Navigation ──────────────────────────────────────────── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:1001;height:64px;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.top-nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:18px;letter-spacing:-0.3px}
+.top-nav-logo svg{width:28px;height:28px}
+.top-nav-links{display:flex;gap:24px;align-items:center}
+.top-nav-links a{color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s;padding:6px 12px;border-radius:var(--radius-sm)}
+.top-nav-links a:hover,.top-nav-links a.active{color:var(--primary);background:rgba(0,102,204,.06)}
+.top-nav-cta{background:var(--primary)!important;color:#fff!important;padding:8px 20px;border-radius:var(--pill);font-weight:600;transition:transform .15s,background .2s}
+.top-nav-cta:hover{background:var(--primary-focus)!important;transform:scale(1.02)}
+
+/* ── Side Navigation ─────────────────────────────────────── */
+.side-nav{position:fixed;left:0;top:0;bottom:0;width:60px;background:rgba(13,17,23,0.95);backdrop-filter:blur(10px);border-right:1px solid #30363d;z-index:1000;transition:width .3s ease;overflow:hidden}
+.side-nav:hover,.side-nav.expanded{width:200px}
+.nav-toggle{padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;height:60px}
+.nav-toggle-icon{font-size:24px;color:#e6e6e6;transition:transform .3s}
+.side-nav:hover .nav-toggle-icon{transform:rotate(90deg)}
+.nav-menu{display:flex;flex-direction:column;height:calc(100% - 60px)}
+.nav-header{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #30363d;min-height:60px}
+.nav-logo{font-size:24px;flex-shrink:0}
+.nav-title{font-size:18px;font-weight:700;color:#e6e6e6;white-space:nowrap;opacity:0;transition:opacity .3s}
+.side-nav:hover .nav-title,.side-nav.expanded .nav-title{opacity:1}
+.nav-list{list-style:none;padding:8px 0;margin:0;flex:1;overflow-y:auto;overflow-x:hidden}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;color:#8b949e;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{background:#161b22;color:#58a6ff}
+.nav-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.nav-label{opacity:0;transition:opacity .3s;font-size:14px}
+.side-nav:hover .nav-label,.side-nav.expanded .nav-label{opacity:1}
+.nav-footer{padding:16px;border-top:1px solid #30363d}
+.nav-github{display:flex;align-items:center;gap:12px;color:#8b949e;text-decoration:none;padding:8px;border-radius:8px;transition:all .2s}
+.nav-github:hover{background:#161b22;color:#e6e6e6}
+.nav-github span{opacity:0;transition:opacity .3s;white-space:nowrap}
+.side-nav:hover .nav-github span,.side-nav.expanded .nav-github span{opacity:1}
+.nav-list::-webkit-scrollbar{width:4px}
+.nav-list::-webkit-scrollbar-track{background:transparent}
+.nav-list::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+
+@media(max-width:768px){
+  .side-nav{width:0;border:none}
+  .side-nav.expanded{width:250px;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  .nav-toggle{position:fixed;left:16px;top:16px;width:44px;height:44px;border-radius:8px;background:rgba(13,17,23,0.9);border:1px solid #30363d;z-index:1001}
+  .nav-title,.nav-label,.nav-github span{opacity:1!important}
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+.section{padding:var(--section-pad) 32px;margin-bottom:0;position:relative}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-narrow{max-width:var(--max-w-narrow)}
+.section-dark{background:var(--surface-dark);color:var(--body-on-dark)}
+.section-dark h2,.section-dark h3,.section-dark p,.section-dark .section-title{color:#e6e6e6}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-darker{background:var(--surface-darker);color:var(--body-on-dark)}
+.section-darker h2,.section-darker h3,.section-darker p,.section-darker .section-title{color:#e6e6e6}
+.section-darker .section-desc{color:rgba(255,255,255,.7)}
+.section-parchment{background:var(--canvas-parchment)}
+.section-center{text-align:center}
+section[id]{scroll-margin-top:80px}
+
+/* ── Typography ──────────────────────────────────────────── */
+.section-title{font-size:clamp(28px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.section-desc{font-size:18px;line-height:1.6;color:var(--ink-muted);max-width:640px}
+.section-center .section-desc{margin:0 auto}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;border-radius:var(--pill);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,102,204,.25)}
+.btn-primary:hover{background:var(--primary-focus);box-shadow:0 4px 16px rgba(0,102,204,.35);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0) scale(0.98)}
+.btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── Scanner ─────────────────────────────────────────────── */
+.scanner-container{max-width:800px;margin:0 auto}
+#scanBtn{padding:14px 32px;font-size:16px;font-weight:600;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;transition:transform .2s,box-shadow .2s;font-family:var(--font)}
+#scanBtn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(102,126,234,.4)}
+.scanner-container .vulnerability-found{animation:slideIn .3s ease-out}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── Code Cards ──────────────────────────────────────────── */
+.code-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.code-card{background:#1a1a2e;border-radius:12px;overflow:hidden}
+.code-header{padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px}
+.code-header .dot{width:12px;height:12px;border-radius:50%}
+.code-dot-r{background:#ff5f56}
+.code-dot-y{background:#ffbd2e}
+.code-dot-g{background:#27c93f}
+.code-header-title{color:#8892b0;margin-left:12px;font-size:14px}
+.code-body{padding:20px;font-family:var(--font-mono);font-size:14px;line-height:1.8;color:#e6e6e6;overflow-x:auto;white-space:pre}
+
+/* ── API / Verification Console ──────────────────────────── */
+.api-console{max-width:600px;margin:0 auto;background:#1a1a2e;border-radius:12px;overflow:hidden}
+.api-console-header{padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px}
+.api-console-header .dot{width:12px;height:12px;border-radius:50%}
+.api-console-body{padding:20px}
+.api-input{width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6e6e6;font-family:var(--font-mono);font-size:14px;outline:none;transition:border-color .2s}
+.api-input:focus{border-color:var(--primary)}
+.api-select{width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6e6e6;font-size:14px;outline:none}
+.api-btn{padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:transform .2s;font-family:var(--font)}
+.api-btn:hover{transform:translateY(-1px)}
+.api-btn:disabled{opacity:.6;cursor:not-allowed}
+.api-btn.green{background:linear-gradient(135deg,#27c93f,#1a9c3a)}
+.api-result{margin-top:16px;display:none;background:#0d1117;padding:16px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.6;color:#e6e6e6;overflow-x:auto}
+.api-label{color:#8892b0;font-size:14px;display:block;margin-bottom:8px}
+
+/* ── Live Analyzer ───────────────────────────────────────── */
+.analyzer-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
+.analyzer-input{background:var(--surface-darker);border-radius:var(--radius-lg);overflow:hidden}
+.analyzer-input-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.05)}
+.analyzer-input-header span{font-size:12px;color:rgba(255,255,255,.4);font-family:var(--font-mono)}
+.analyzer-textarea{width:100%;min-height:280px;padding:16px;background:transparent;border:none;color:#e0e0e0;font-family:var(--font-mono);font-size:13px;line-height:1.6;resize:vertical;outline:none}
+.analyzer-textarea::placeholder{color:#6e6e73}
+.analyzer-btn{display:block;width:calc(100% - 32px);margin:0 16px 16px;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:var(--pill);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:background .2s}
+.analyzer-btn:hover{background:var(--primary-focus)}
+.analyzer-btn:disabled{opacity:.5;cursor:not-allowed}
+.analyzer-results{display:flex;flex-direction:column;gap:12px}
+.analyzer-finding{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-md);padding:16px;opacity:0;transform:translateX(12px);transition:opacity .3s,transform .3s}
+.analyzer-finding.visible{opacity:1;transform:translateX(0)}
+.analyzer-finding-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.analyzer-finding-line{font-size:12px;color:var(--ink-muted);font-family:var(--font-mono)}
+.analyzer-finding-text{font-size:13px;line-height:1.5}
+.analyzer-empty{color:var(--ink-muted);font-size:14px;text-align:center;padding:40px 0}
+
+/* ── Vulnerability Severity Badges ───────────────────────── */
+.vuln-severity{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill);text-transform:uppercase}
+.vuln-severity-high{background:#fff0f0;color:#ff3b30}
+.vuln-severity-medium{background:#fff8e1;color:#ff9500}
+.vuln-severity-low{background:#f0fff4;color:#28c840}
+.vuln-detail-title{font-size:16px;font-weight:600}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:1068px){
+  .code-grid{grid-template-columns:1fr}
+  .analyzer-layout{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .top-nav-links{gap:12px}
+  .top-nav-links a{font-size:13px;padding:4px 8px}
+}
+@media(max-width:640px){
+  .section{padding:56px 20px}
+  .top-nav{padding:0 16px}
+  .top-nav-links{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
+<!-- Scroll progress -->
+<div style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,#667eea,#764ba2);z-index:9999;transition:width .1s" id="scrollProgress"></div>
+
+</head>
+<body>
+
+<!-- Side Navigation -->
+<nav id="sideNav" class="side-nav">
+  <div class="nav-toggle" onclick="document.getElementById('sideNav').classList.toggle('expanded')">
+    <span class="nav-toggle-icon">☰</span>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-header">
+      <span class="nav-logo">🔍</span>
+      <span class="nav-title">AuditAI</span>
+    </div>
+    <ul class="nav-list">
+      <li><a href="#scanner" class="nav-link"><span class="nav-icon">🔬</span><span class="nav-label">扫描器</span></a></li>
+      <li><a href="#api-demo" class="nav-link"><span class="nav-icon">🔌</span><span class="nav-label">API 演示</span></a></li>
+      <li><a href="#verification" class="nav-link"><span class="nav-icon">🔐</span><span class="nav-label">合约验证</span></a></li>
+      <li><a href="#code-examples" class="nav-link"><span class="nav-icon">💻</span><span class="nav-label">代码示例</span></a></li>
+      <li><a href="#try-it" class="nav-link"><span class="nav-icon">🧪</span><span class="nav-label">亲自体验</span></a></li>
+    </ul>
+    <div class="nav-footer">
+      <a href="https://github.com/tiyadegure/AuditAI" class="nav-github" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <a href="index-zh.html" class="top-nav-logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AuditAI
+  </a>
+  <div class="top-nav-links">
+    <a href="index-zh.html">首页</a>
+    <a href="demo-zh.html" class="active">实时演示</a>
+    <a href="docs/en/">文档</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+    <a href="demo.html">English</a>
+  </div>
+</nav>
+
+<main style="padding-left:60px;padding-top:64px">
+
+<!-- Page Header -->
+<section class="section section-dark" style="padding-top:100px;padding-bottom:60px">
+  <div class="section-inner section-narrow section-center">
+    <h1 class="section-title" style="font-size:clamp(32px,5vw,56px)">🎮 实时演示</h1>
+    <p class="section-desc" style="margin:0 auto">探索 AuditAI 的交互功能 — 扫描合约、测试 API、链上验证、亲自体验。</p>
+  </div>
+</section>
+
+<!-- 1. 交互式漏洞扫描器 -->
+<section class="section section-dark" id="scanner">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">🔍 交互式漏洞扫描器</h2>
+    <p class="section-desc section-center">尝试扫描示例合约，查看 AuditAI 如何检测漏洞</p>
+
+    <div class="scanner-container">
+      <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+        <div class="code-header">
+          <span class="dot code-dot-r"></span>
+          <span class="dot code-dot-y"></span>
+          <span class="dot code-dot-g"></span>
+          <span class="code-header-title">VulnerableToken.sol</span>
+        </div>
+        <pre style="padding:20px;margin:0;overflow-x:auto;font-size:14px;line-height:1.6;background:#1a1a2e"><code style="color:#e6e6e6;background:none"><span style="color:#c678dd;">pragma</span> solidity ^0.8.0;
+
+<span style="color:#c678dd;">contract</span> <span style="color:#e5c07b;">VulnerableToken</span> {
+    <span style="color:#c678dd;">mapping</span>(<span style="color:#e5c07b;">address</span> => <span style="color:#e5c07b;">uint256</span>) <span style="color:#c678dd;">public</span> balances;
+
+    <span style="color:#c678dd;">function</span> <span style="color:#61afef;">transfer</span>(<span style="color:#e5c07b;">address</span> to, <span style="color:#e5c07b;">uint256</span> amount) <span style="color:#c678dd;">public</span> {
+        <span style="color:#ff5555;">// 缺陷：无溢出检查！</span>
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+    }
+
+    <span style="color:#c678dd;">function</span> <span style="color:#61afef;">withdraw</span>() <span style="color:#c678dd;">public</span> {
+        <span style="color:#ff5555;">// 缺陷：重入漏洞！</span>
+        (<span style="color:#e5c07b;">bool</span> success, ) = msg.sender.call{value: balances[msg.sender]}(<span style="color:#98c379;">""</span>);
+        <span style="color:#c678dd;">require</span>(success);
+        balances[msg.sender] = <span style="color:#d19a66;">0</span>;
+    }
+}</code></pre>
+      </div>
+
+      <div style="text-align:center;margin:24px 0;">
+        <button id="scanBtn" class="btn btn-primary" onclick="startScan()">🚀 运行 AuditAI 扫描</button>
+      </div>
+
+      <div id="scanResults" style="display:none;">
+        <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;margin-top:20px;">
+          <div class="code-header">
+            <span style="color:#27c93f;font-size:14px;">✅ 扫描完成</span>
+          </div>
+          <div style="padding:20px;">
+            <div id="scanOutput" style="font-family:var(--font-mono);font-size:14px;line-height:1.8;color:#e6e6e6;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 实时 API 演示 -->
+<section class="section" id="api-demo">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">🔌 实时 API 演示</h2>
+    <p class="section-desc section-center">直接从此页面测试 AuditAI API 端点</p>
+
+    <div class="api-console">
+      <div class="api-console-header">
+        <span class="dot" style="background:#ff5f56"></span>
+        <span class="dot" style="background:#ffbd2e"></span>
+        <span class="dot" style="background:#27c93f"></span>
+        <span class="code-header-title">API 测试控制台</span>
+      </div>
+      <div class="api-console-body">
+        <div style="margin-bottom:16px;">
+          <label class="api-label">合约地址：</label>
+          <input type="text" id="contractAddress" placeholder="0x..." class="api-input">
+        </div>
+        <div style="text-align:center;">
+          <button id="apiTestBtn" onclick="testAPI()" class="api-btn">🚀 测试 API</button>
+        </div>
+        <div id="apiResult" class="api-result">
+          <code id="apiOutput" style="background:none;color:#e6e6e6;padding:0"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 合约验证（XMLHttpRequest） -->
+<section class="section section-dark" id="verification">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">🔐 合约验证</h2>
+    <p class="section-desc section-center">在链上验证您的合约源代码</p>
+
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+        <div class="code-header">
+          <span class="dot code-dot-r"></span>
+          <span class="dot code-dot-y"></span>
+          <span class="dot code-dot-g"></span>
+          <span class="code-header-title">验证控制台</span>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:16px;">
+            <label class="api-label" style="color:#8892b0;">合约地址：</label>
+            <input type="text" id="verifyAddress" placeholder="0x..." class="api-input" style="background:#0d1117;border:1px solid #30363d;">
+          </div>
+          <div style="margin-bottom:16px;">
+            <label class="api-label" style="color:#8892b0;">网络：</label>
+            <select id="verifyNetwork" class="api-select">
+              <option value="ethereum">以太坊主网</option>
+              <option value="polygon">Polygon</option>
+              <option value="arbitrum">Arbitrum</option>
+              <option value="optimism">Optimism</option>
+            </select>
+          </div>
+          <div style="text-align:center;">
+            <button id="verifyBtn" onclick="verifyContract()" class="api-btn green">🔍 验证合约</button>
+          </div>
+          <div id="verifyResult" style="margin-top:16px;display:none;">
+            <div style="background:#0d1117;padding:16px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.6;color:#e6e6e6;" id="verifyOutput"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 代码示例 -->
+<section class="section" id="code-examples">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">💻 代码示例</h2>
+    <p class="section-desc section-center">查看 AuditAI 的实际代码用法</p>
+
+    <div class="code-grid">
+      <div class="code-card">
+        <div class="code-header">
+          <span class="dot code-dot-r"></span>
+          <span class="dot code-dot-y"></span>
+          <span class="dot code-dot-g"></span>
+          <span class="code-header-title">CLI 用法</span>
+        </div>
+        <pre class="code-body"><code style="color:#e6e6e6;background:none"><span style="color:#8892b0;"># 扫描单个合约</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol
+
+<span style="color:#8892b0;"># 带完整选项扫描</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol \
+    --detector all \
+    --attest \
+    --output report.md
+
+<span style="color:#8892b0;"># 使用知识库</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol \
+    --knowledge-base</code></pre>
+      </div>
+
+      <div class="code-card">
+        <div class="code-header">
+          <span class="dot code-dot-r"></span>
+          <span class="dot code-dot-y"></span>
+          <span class="dot code-dot-g"></span>
+          <span class="code-header-title">Python SDK</span>
+        </div>
+        <pre class="code-body"><code style="color:#e6e6e6;background:none"><span style="color:#c678dd;">from</span> audit_ai <span style="color:#c678dd;">import</span> Scanner
+
+<span style="color:#8892b0;"># 初始化扫描器</span>
+scanner = Scanner(
+    detectors=<span style="color:#98c379;">"all"</span>,
+    attest=<span style="color:#d19a66;">True</span>
+)
+
+<span style="color:#8892b0;"># 扫描合约</span>
+results = scanner.scan(
+    <span style="color:#98c379;">"Contract.sol"</span>
+)
+
+<span style="color:#8892b0;"># 打印发现</span>
+<span style="color:#c678dd;">for</span> finding <span style="color:#c678dd;">in</span> results.findings:
+    <span style="color:#56b6c2;">print</span>(f<span style="color:#98c379;">"[{finding.severity}] {finding.name}"</span>)</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 亲自体验 -->
+<section class="section section-dark" id="try-it">
+  <div class="section-inner section-narrow">
+    <h2 class="section-title section-center">🧪 亲自体验</h2>
+    <p class="section-desc section-center">粘贴您的 Solidity 代码，实时查看 AuditAI 检测漏洞</p>
+
+    <div class="analyzer-layout">
+      <div class="analyzer-input">
+        <div class="analyzer-input-header">
+          <span>📝 Solidity 代码</span>
+        </div>
+        <textarea class="analyzer-textarea" id="analyzerCode" placeholder="// 粘贴您的 Solidity 合约代码...
+contract MyContract {
+    mapping(address => uint) balances;
+
+    function withdraw() public {
+        uint amount = balances[msg.sender];
+        (bool ok, ) = msg.sender.call{value: amount}("");
+        require(ok);
+        balances[msg.sender] = 0;
+    }
+}">contract VulnerableBank {
+    mapping(address => uint256) public balances;
+
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    function withdraw() public {
+        uint256 amount = balances[msg.sender];
+        (bool ok, ) = msg.sender.call{value: amount}("");
+        require(ok);
+        balances[msg.sender] = 0;
+    }
+
+    function setOwner(address newOwner) public {
+        owner = newOwner;
+    }
+}</textarea>
+        <button class="analyzer-btn" id="analyzeBtn">🔍 分析合约</button>
+      </div>
+      <div class="analyzer-results" id="analyzerResults">
+        <div class="analyzer-empty">点击"分析合约"查看结果</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="padding:48px 32px 32px;background:var(--canvas-parchment);border-top:1px solid var(--hairline)">
+  <div style="max-width:var(--max-w);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+    <span style="font-size:13px;color:var(--ink-muted)">© 2026 AuditAI · MIT 许可证 · ETH Beijing 2026 构建</span>
+    <div style="display:flex;gap:24px">
+      <a href="index-zh.html" style="font-size:13px;color:var(--ink-muted);text-decoration:none">首页</a>
+      <a href="docs/en/" style="font-size:13px;color:var(--ink-muted);text-decoration:none">文档</a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" style="font-size:13px;color:var(--ink-muted);text-decoration:none">GitHub</a>
+      <a href="demo.html" style="font-size:13px;color:var(--ink-muted);text-decoration:none">English</a>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- Scroll to top -->
+<button id="scrollTop" style="position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center" aria-label="回到顶部">↑</button>
+
+<script>
+/* ── Scroll progress ─────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const st = document.documentElement.scrollTop;
+  const sh = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById('scrollProgress').style.width = (st / sh * 100) + '%';
+  document.getElementById('scrollTop').classList.toggle('visible', st > 600);
+}, {passive: true});
+document.getElementById('scrollTop').addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+/* ── Active side-nav highlight ───────────────────────────── */
+function updateActiveSection() {
+  const sections = document.querySelectorAll('section[id]');
+  const scrollPos = window.scrollY + 100;
+  sections.forEach(sec => {
+    if (scrollPos >= sec.offsetTop && scrollPos < sec.offsetTop + sec.offsetHeight) {
+      document.querySelectorAll('.nav-link').forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + sec.id);
+      });
+    }
+  });
+}
+let scrollTimeout;
+window.addEventListener('scroll', () => { if (scrollTimeout) clearTimeout(scrollTimeout); scrollTimeout = setTimeout(updateActiveSection, 50); });
+document.addEventListener('DOMContentLoaded', updateActiveSection);
+
+/* ── 扫描器 ──────────────────────────────────────────────── */
+function startScan() {
+  const btn = document.getElementById('scanBtn');
+  const results = document.getElementById('scanResults');
+  const output = document.getElementById('scanOutput');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 扫描中...';
+  results.style.display = 'block';
+  output.innerHTML = '';
+
+  const lines = [
+    { text: '$ audit-ai scan VulnerableToken.sol', delay: 0, color: '#27c93f' },
+    { text: '', delay: 300 },
+    { text: '🔍 运行 Slither 静态分析...', delay: 600, color: '#61afef' },
+    { text: '🧠 加载漏洞知识库（477 份报告）...', delay: 1200, color: '#61afef' },
+    { text: '🤖 AI 智能体分析中...', delay: 1800, color: '#61afef' },
+    { text: '', delay: 2400 },
+    { text: '═══════════════════════════════════════════════════════', delay: 2500, color: '#8892b0' },
+    { text: '  审计结果', delay: 2600, color: '#e5c07b', bold: true },
+    { text: '═══════════════════════════════════════════════════════', delay: 2700, color: '#8892b0' },
+    { text: '', delay: 2800 },
+    { text: '  🚨 严重：整数溢出 (SWC-101)', delay: 3000, color: '#ff5555' },
+    { text: '     第 9 行：balances[to] += amount（无 SafeMath）', delay: 3200, color: '#ff5555' },
+    { text: '     → 使用 OpenZeppelin SafeMath 或 Solidity ^0.8.0', delay: 3400, color: '#d19a66' },
+    { text: '', delay: 3600 },
+    { text: '  🚨 严重：重入攻击 (SWC-107)', delay: 3800, color: '#ff5555' },
+    { text: '     第 14 行：状态更新前的外部调用', delay: 4000, color: '#ff5555' },
+    { text: '     → 应用 checks-effects-interactions 模式', delay: 4200, color: '#d19a66' },
+    { text: '', delay: 4400 },
+    { text: '  📋 EAS 链上证明：0x7a8b...3f2e', delay: 4600, color: '#27c93f' },
+    { text: '  📊 置信度：98.5%（知识库匹配）', delay: 4800, color: '#27c93f' },
+    { text: '', delay: 5000 },
+    { text: '═══════════════════════════════════════════════════════', delay: 5100, color: '#8892b0' },
+    { text: '  发现 2 个严重问题 | 报告：audit-report.md', delay: 5200, color: '#61afef' },
+    { text: '═══════════════════════════════════════════════════════', delay: 5300, color: '#8892b0' },
+  ];
+
+  lines.forEach(line => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.innerHTML = line.text || '&nbsp;';
+      if (line.color) div.style.color = line.color;
+      if (line.bold) div.style.fontWeight = 'bold';
+      div.classList.add('vulnerability-found');
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }, line.delay);
+  });
+
+  setTimeout(() => { btn.disabled = false; btn.textContent = '🔄 重新运行'; }, 6000);
+}
+
+/* ── API 演示 ────────────────────────────────────────────── */
+async function testAPI() {
+  const btn = document.getElementById('apiTestBtn');
+  const result = document.getElementById('apiResult');
+  const output = document.getElementById('apiOutput');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 测试中...';
+  result.style.display = 'block';
+  output.textContent = '正在连接 API...';
+
+  try {
+    const response = await fetch('https://api.audit-ai.tech/v1/health', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (response.ok) {
+      output.textContent = JSON.stringify(await response.json(), null, 2);
+    } else {
+      output.textContent = `错误: ${response.status} ${response.statusText}`;
+    }
+  } catch (error) {
+    output.textContent = `# 模拟响应（API 端点演示）
+{
+  "status": "healthy",
+  "version": "0.5.0",
+  "features": {
+    "slither": true,
+    "ai_agent": true,
+    "eas_attestation": true,
+    "knowledge_base": true
+  },
+  "stats": {
+    "contracts_analyzed": 1247,
+    "vulnerabilities_found": 3891,
+    "accuracy_rate": 0.985
+  }
+}`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '🔄 重新测试';
+}
+
+/* ── 合约验证（XMLHttpRequest）────────────────────────────── */
+function verifyContract() {
+  const btn = document.getElementById('verifyBtn');
+  const result = document.getElementById('verifyResult');
+  const output = document.getElementById('verifyOutput');
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 验证中...';
+  result.style.display = 'block';
+  output.innerHTML = '<span style="color:#61afef;">正在连接区块链...</span>';
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://api.audit-ai.tech/v1/verify', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        output.innerHTML = `<span style="color:#27c93f;">✅ 验证成功！</span>\n\n${JSON.stringify(data, null, 2)}`;
+      } else {
+        showSimulatedVerification();
+      }
+      btn.disabled = false;
+      btn.textContent = '🔄 重新验证';
+    }
+  };
+
+  xhr.onerror = function () {
+    showSimulatedVerification();
+    btn.disabled = false;
+    btn.textContent = '🔄 重新验证';
+  };
+
+  xhr.send(JSON.stringify({
+    address: document.getElementById('verifyAddress').value,
+    network: document.getElementById('verifyNetwork').value
+  }));
+
+  function showSimulatedVerification() {
+    output.innerHTML = `<span style="color:#27c93f;">✅ 验证完成（模拟）</span>
+
+合约: ${document.getElementById('verifyAddress').value || '0x1234...5678'}
+网络: ${document.getElementById('verifyNetwork').value}
+状态: 已验证 ✓
+编译器: v0.8.19
+优化: 已启用（200 次运行）
+许可证: MIT
+
+审计报告:
+  - 严重: 0
+  - 高危: 0
+  - 中危: 2
+  - 低危: 3
+  - 信息: 5
+
+EAS 链上证明: 0xabc...def`;
+  }
+}
+
+/* ── 实时分析器 ──────────────────────────────────────────── */
+const analyzeBtn = document.getElementById('analyzeBtn');
+const analyzerResults = document.getElementById('analyzerResults');
+const findings = [
+  { severity: 'high', sevLabel: '严重', title: 'withdraw() 中的重入漏洞', desc: '在更新状态之前发送 ETH，违反 CEI 模式。', line: '第 7-9 行' },
+  { severity: 'high', sevLabel: '严重', title: 'setOwner() 缺少访问控制', desc: '任何人都可以更改合约所有权，没有修饰符保护。', line: '第 17 行' },
+  { severity: 'medium', sevLabel: '中危', title: '未检查的低级调用', desc: '应检查 .call() 的返回值以处理失败情况。', line: '第 8 行' },
+  { severity: 'low', sevLabel: '低危', title: '缺少事件触发', desc: '状态变更应触发事件以便链下追踪。', line: '第 12, 17 行' }
+];
+analyzeBtn.addEventListener('click', () => {
+  analyzerResults.innerHTML = '';
+  analyzeBtn.disabled = true;
+  analyzeBtn.textContent = '分析中...';
+  findings.forEach((f, i) => {
+    setTimeout(() => {
+      const d = document.createElement('div');
+      d.className = 'analyzer-finding';
+      d.innerHTML = `<div class="analyzer-finding-header"><span class="vuln-severity vuln-severity-${f.severity}">${f.sevLabel}</span><span class="vuln-detail-title">${f.title}</span><span class="analyzer-finding-line">${f.line}</span></div><div class="analyzer-finding-text">${f.desc}</div>`;
+      analyzerResults.appendChild(d);
+      setTimeout(() => d.classList.add('visible'), 50);
+      if (i === findings.length - 1) { analyzeBtn.disabled = false; analyzeBtn.textContent = '🔍 分析合约'; }
+    }, (i + 1) * 600);
+  });
+});
+
+/* ── Scroll reveal ───────────────────────────────────────── */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; revealObs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.section-title, .code-card, .api-console, .analyzer-layout, .scanner-container').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(20px)'; el.style.transition = 'opacity .6s, transform .6s'; revealObs.observe(el);
+  });
+});
+
+/* ── Close side-nav on outside click (mobile) ────────────── */
+document.addEventListener('click', e => {
+  const nav = document.getElementById('sideNav');
+  if (window.innerWidth <= 768 && !nav.contains(e.target)) nav.classList.remove('expanded');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AuditAI 社区 — 贡献者、合作伙伴、资源以及如何参与。">
+<meta property="og:title" content="AuditAI — 社区">
+<meta property="og:description" content="加入 AuditAI 社区。贡献者、合作伙伴、资源、常见问题和支持。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0066cc">
+<title>AuditAI — 社区</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0066cc;
+  --primary-focus:#0071e3;
+  --primary-on-dark:#2997ff;
+  --ink:#1d1d1f;
+  --ink-muted:#86868b;
+  --body-on-dark:#ffffff;
+  --canvas:#ffffff;
+  --canvas-parchment:#f5f5f7;
+  --surface-dark:#272729;
+  --surface-darker:#1a1a1c;
+  --surface-black:#000000;
+  --pill:9999px;
+  --radius-lg:18px;
+  --radius-md:12px;
+  --radius-sm:8px;
+  --section-pad:80px;
+  --max-w:1200px;
+  --max-w-narrow:980px;
+  --hairline:rgba(0,0,0,.08);
+  --shadow:rgba(0,0,0,0.08) 0 2px 12px;
+  --shadow-lg:rgba(0,0,0,0.12) 0 8px 32px;
+  --font:'Inter','Noto Sans SC',system-ui,-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
+  --font-mono:'SF Mono','Fira Code','Cascadia Code','Courier New',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-height:1.5;font-size:17px;letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
+
+/* ── Top Navigation ─────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px;transition:background .3s}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:18px;letter-spacing:-0.3px}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--primary)}
+.nav-links a.active{color:var(--primary);font-weight:600}
+.nav-cta{background:var(--primary);color:#fff!important;padding:8px 20px;border-radius:var(--pill);font-weight:600;transition:transform .15s,background .2s}
+.nav-cta:hover{background:var(--primary-focus);transform:scale(1.02)}
+.nav-cta:active{transform:scale(0.97)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:1001}
+.hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);padding:24px 32px;border-bottom:1px solid var(--hairline);z-index:999;flex-direction:column;gap:16px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:16px;font-weight:500;color:var(--ink);text-decoration:none;padding:8px 0;border-bottom:1px solid var(--hairline)}
+.mobile-menu a:last-child{border-bottom:none}
+
+/* ── Side Navigation ────────────────────────────────────── */
+.side-nav{position:fixed;left:0;top:0;bottom:0;width:60px;background:rgba(13,17,23,.95);backdrop-filter:blur(10px);border-right:1px solid #30363d;z-index:1000;transition:width .3s ease;overflow:hidden}
+.side-nav:hover,.side-nav.expanded{width:200px}
+.nav-toggle{padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;height:60px}
+.nav-toggle-icon{font-size:24px;color:#e6e6e6;transition:transform .3s}
+.side-nav:hover .nav-toggle-icon{transform:rotate(90deg)}
+.nav-menu{display:flex;flex-direction:column;height:calc(100% - 60px)}
+.nav-header{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #30363d;min-height:60px}
+.nav-logo-icon{font-size:24px;flex-shrink:0}
+.nav-title-text{font-size:18px;font-weight:700;color:#e6e6e6;white-space:nowrap;opacity:0;transition:opacity .3s}
+.side-nav:hover .nav-title-text,.side-nav.expanded .nav-title-text{opacity:1}
+.nav-list{list-style:none;padding:8px 0;margin:0;flex:1;overflow-y:auto;overflow-x:hidden}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;color:#8b949e;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{background:#161b22;color:#58a6ff}
+.nav-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.nav-label{opacity:0;transition:opacity .3s;font-size:14px}
+.side-nav:hover .nav-label,.side-nav.expanded .nav-label{opacity:1}
+.nav-footer{padding:16px;border-top:1px solid #30363d}
+.nav-github{display:flex;align-items:center;gap:12px;color:#8b949e;text-decoration:none;padding:8px;border-radius:8px;transition:all .2s}
+.nav-github:hover{background:#161b22;color:#e6e6e6}
+.nav-github span{opacity:0;transition:opacity .3s;white-space:nowrap}
+.side-nav:hover .nav-github span,.side-nav.expanded .nav-github span{opacity:1}
+.nav-list::-webkit-scrollbar{width:4px}
+.nav-list::-webkit-scrollbar-track{background:transparent}
+.nav-list::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+
+/* ── Sections ────────────────────────────────────────────── */
+.section{padding:var(--section-pad) 32px}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-narrow{max-width:var(--max-w-narrow)}
+.section-dark{background:var(--surface-dark);color:var(--body-on-dark)}
+.section-dark h2,.section-dark h3,.section-dark p,.section-dark .section-title{color:#e6e6e6}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-dark .feature-title{color:#fff}
+.section-dark .feature-desc{color:rgba(255,255,255,.7)}
+.section-dark .faq-summary{color:#fff}
+.section-dark .faq-answer{color:rgba(255,255,255,.7)}
+.section-parchment{background:var(--canvas-parchment)}
+.section-parchment h2,.section-parchment h3,.section-parchment p{color:#1f2937}
+.section-center{text-align:center}
+section[id]{scroll-margin-top:80px}
+
+/* ── Typography ──────────────────────────────────────────── */
+.section-title{font-size:clamp(28px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.section-desc{font-size:18px;line-height:1.6;color:var(--ink-muted);max-width:640px}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-center .section-desc{margin:0 auto}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px;text-shadow:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn:active{transform:translateY(0) scale(0.98)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,102,204,.25)}
+.btn-primary:hover{background:var(--primary-focus);box-shadow:0 4px 16px rgba(0,102,204,.35)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary);border-radius:var(--radius-sm)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-ghost{background:transparent;color:var(--primary);padding:8px 0;border-radius:0}
+.btn-ghost:hover{color:var(--primary-focus)}
+.btn-ghost::after{content:'→';margin-left:4px;transition:transform .2s}
+.btn-ghost:hover::after{transform:translateX(4px)}
+.btn-white{background:#fff;color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.btn-white:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);transform:translateY(-1px)}
+.btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── Feature Grid ────────────────────────────────────────── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feature-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:32px;transition:box-shadow .3s,transform .3s}
+.feature-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);transform:translateY(-4px);border-color:rgba(0,102,204,.15)}
+.feature-icon{width:48px;height:48px;background:rgba(0,102,204,.08);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.feature-title{font-size:18px;font-weight:600;margin-bottom:8px}
+.feature-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
+
+/* ── Attestation Table ───────────────────────────────────── */
+.attestation{margin-top:48px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden}
+.att-row{display:grid;grid-template-columns:200px 1fr;padding:14px 24px;border-bottom:1px solid var(--hairline);font-size:14px;transition:background .2s}
+.att-row:last-child{border-bottom:none}
+.att-row:hover{background:var(--canvas-parchment)}
+.att-key{color:var(--ink-muted);font-weight:500}
+.att-value{font-family:var(--font-mono);font-size:13px}
+
+/* ── FAQ ─────────────────────────────────────────────────── */
+.faq-item{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .2s}
+.faq-item:hover{box-shadow:var(--shadow)}
+.faq-item[open]{box-shadow:var(--shadow)}
+.faq-summary{padding:20px 24px;font-size:16px;font-weight:600;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;transition:color .2s}
+.faq-summary::-webkit-details-marker{display:none}
+.faq-summary::after{content:'+';font-size:20px;color:var(--ink-muted);transition:transform .2s}
+.faq-item[open] .faq-summary::after{transform:rotate(45deg)}
+.faq-summary:hover{color:var(--primary)}
+.faq-answer{padding:0 24px 20px;font-size:15px;line-height:1.6;color:var(--ink-muted)}
+
+/* ── CTA Banner ──────────────────────────────────────────── */
+.cta-banner{background:linear-gradient(135deg,var(--primary) 0%,#004999 100%);border-radius:var(--radius-lg);padding:64px 48px;text-align:center;color:#fff;margin-top:48px}
+.cta-banner .section-title{color:#fff}
+.cta-banner .section-desc{color:rgba(255,255,255,.8);margin:0 auto 32px}
+.cta-banner .btn-white{font-size:18px;padding:16px 36px}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero{padding-top:calc(120px + 64px);padding-bottom:80px;background:linear-gradient(180deg,#fff 0%,var(--canvas-parchment) 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(0,102,204,.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(0,102,204,.04) 0%,transparent 50%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+@keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(-2%,3%) rotate(2deg)}}
+.hero .section-inner{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,102,204,.08);color:var(--primary);border-radius:var(--pill);font-size:13px;font-weight:600;margin-bottom:24px}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--primary);border-radius:50%}
+.hero-title{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-0.04em;margin-bottom:20px}
+.hero-subtitle{font-size:clamp(18px,2.5vw,24px);font-weight:400;line-height:1.4;color:var(--ink-muted);max-width:640px;margin:0 auto 40px}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer{padding:64px 32px 32px;background:var(--canvas-parchment);border-top:1px solid var(--hairline)}
+.footer-inner{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+.footer-brand p{font-size:14px;color:var(--ink-muted);margin-top:8px;max-width:280px}
+.footer-col h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
+.footer-col a:hover{color:var(--primary)}
+.footer-bottom{max-width:var(--max-w);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-muted)}
+
+/* ── Skip Link ──────────────────────────────────────────── */
+.skip-link{position:absolute;top:-100%;left:16px;background:var(--primary);color:#fff;padding:8px 16px;border-radius:var(--radius-sm);z-index:10000;font-size:14px;font-weight:600;text-decoration:none}
+.skip-link:focus{top:8px}
+
+/* ── Scroll to Top ───────────────────────────────────────── */
+.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center}
+.scroll-top.visible{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:var(--primary-focus);transform:translateY(-2px)}
+
+/* ── Scroll Reveal ───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+/* ── Section Dividers ────────────────────────────────────── */
+.section + .section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(80%,600px);height:1px;background:linear-gradient(90deg,transparent,var(--hairline),transparent);z-index:1}
+.section-dark + .section::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.section + .section-dark::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:1068px){
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:833px){
+  .nav-links{gap:20px}
+  .feature-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .side-nav{width:0;border:none}
+  .side-nav.expanded{width:250px;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  .nav-toggle{position:fixed;left:16px;top:16px;width:44px;height:44px;border-radius:8px;background:rgba(13,17,23,.9);border:1px solid #30363d;z-index:1001}
+  .nav-title-text,.nav-label,.nav-github span{opacity:1!important}
+}
+@media(max-width:640px){
+  .section{padding:56px 20px}
+  .hero{padding-top:100px}
+  .nav{padding:0 16px}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+  .att-row{grid-template-columns:1fr;gap:4px}
+}
+@media print{
+  .nav,.side-nav,.scroll-top,.hamburger{display:none!important}
+  .section{padding:40px 20px;break-inside:avoid}
+  .reveal{opacity:1!important;transform:none!important}
+  body{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- Skip Link -->
+<a href="#main-content" class="skip-link">跳转到主要内容</a>
+
+<!-- Side Navigation -->
+<nav id="sideNav" class="side-nav">
+  <div class="nav-toggle" onclick="toggleNav()">
+    <span class="nav-toggle-icon">☰</span>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-header">
+      <span class="nav-logo-icon">🔍</span>
+      <span class="nav-title-text">AuditAI</span>
+    </div>
+    <ul class="nav-list">
+      <li><a href="#contributors" class="nav-link"><span class="nav-icon">👥</span><span class="nav-label">贡献者</span></a></li>
+      <li><a href="#partners" class="nav-link"><span class="nav-icon">🤝</span><span class="nav-label">合作伙伴</span></a></li>
+      <li><a href="#resources" class="nav-link"><span class="nav-icon">📚</span><span class="nav-label">资源</span></a></li>
+      <li><a href="#faq" class="nav-link"><span class="nav-icon">❓</span><span class="nav-label">常见问题</span></a></li>
+      <li><a href="#contact" class="nav-link"><span class="nav-icon">📬</span><span class="nav-label">联系我们</span></a></li>
+      <li><a href="#support" class="nav-link"><span class="nav-icon">🛟</span><span class="nav-label">支持</span></a></li>
+      <li><a href="#contributing" class="nav-link"><span class="nav-icon">✏️</span><span class="nav-label">参与贡献</span></a></li>
+      <li><a href="#license" class="nav-link"><span class="nav-icon">📜</span><span class="nav-label">许可证</span></a></li>
+      <li><a href="#acknowledgments" class="nav-link"><span class="nav-icon">🙏</span><span class="nav-label">致谢</span></a></li>
+      <li><a href="#eth-beijing" class="nav-link"><span class="nav-icon">🏆</span><span class="nav-label">ETH Beijing</span></a></li>
+    </ul>
+    <div class="nav-footer">
+      <a href="https://github.com/tiyadegure/AuditAI" class="nav-github" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Top Navigation -->
+<nav class="nav">
+  <a href="index-zh.html" class="nav-logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AuditAI
+  </a>
+  <button class="hamburger" id="hamburger" aria-label="切换菜单">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a href="index-zh.html">首页</a>
+    <a href="docs/zh/">文档</a>
+    <a href="community-zh.html" class="active">社区</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+    <a href="community.html">EN</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="nav-cta">Star on GitHub</a>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index-zh.html">首页</a>
+  <a href="docs/zh/">文档</a>
+  <a href="community-zh.html">社区</a>
+  <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+  <a href="community.html">English</a>
+</div>
+
+<main id="main-content">
+
+<!-- Hero -->
+<section class="section hero section-center" id="hero">
+  <div class="section-inner section-narrow reveal">
+    <div class="hero-badge">ETH Beijing 2026 · 社区</div>
+    <h1 class="hero-title">社区</h1>
+    <p class="hero-subtitle">加入不断壮大的安全研究人员和开发者社区，与 AuditAI 一起构建更安全的智能合约。</p>
+    <div class="btn-row">
+      <a href="#contributing" class="btn btn-primary">参与贡献</a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-outline">Star on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- Contributors -->
+<section id="contributors" class="section section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">贡献者</h2>
+    <p class="section-desc">AuditAI 背后的团队 — 安全研究人员和 AI 工程师。</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">安全负责人</div>
+        <div class="feature-desc">智能合约审计师。5年以上 Solidity 安全经验。曾为 OpenZeppelin 做出贡献。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">AI 工程师</div>
+        <div class="feature-desc">ML/NLP 专家。构建 RAG 管道。集成 MiMo V2.5 Pro。</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">全栈开发</div>
+        <div class="feature-desc">Python + TypeScript。CLI 框架。MCP 服务器。EAS 集成。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<section id="partners" class="section section-dark section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">合作伙伴与技术支撑</h2>
+    <p class="section-desc">站在巨人的肩膀上。感谢这些开源项目。</p>
+    <div class="feature-grid">
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title" style="color:#fff">以太坊基金会</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">EAS 协议和 Sepolia 测试网基础设施。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title" style="color:#fff">Trail of Bits</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Slither Solidity 静态分析框架。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title" style="color:#fff">Cyfrin</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">Aderyn Rust 编写的 Solidity 分析器和 Foundry 工具包。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title" style="color:#fff">小米 MiMo</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">MiMo V2.5 Pro 1T 参数模型，用于 LLM 分析。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title" style="color:#fff">Chroma</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">开源向量数据库，用于 RAG 检索。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title" style="color:#fff">Solodit</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">477 份真实审计报告驱动我们的知识库。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resources -->
+<section id="resources" class="section section-parchment section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">资源</h2>
+    <p class="section-desc">开始使用和保持高效的 AuditAI 所需的一切。</p>
+    <div class="feature-grid">
+      <a href="docs/zh/" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">📖</div>
+        <div class="feature-title">文档</div>
+        <div class="feature-desc">完整的指南、教程和 API 参考。</div>
+      </a>
+      <a href="docs/zh/getting-started/installation/" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">🎓</div>
+        <div class="feature-title">教程</div>
+        <div class="feature-desc">审计 DeFi 协议、NFT 和 DAO 的分步指南。</div>
+      </a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">论坛 / 讨论</div>
+        <div class="feature-desc">在 GitHub Discussions 中提问、分享想法和协作。</div>
+      </a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title">博客</div>
+        <div class="feature-desc">关于 RAG 管道、交叉验证和 EAS 认证的技术文章。</div>
+      </a>
+      <a href="docs/zh/user-guide/cli/" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">⌨️</div>
+        <div class="feature-title">CLI 参考</div>
+        <div class="feature-desc">完整的命令参考，包含示例和配置选项。</div>
+      </a>
+      <a href="docs/zh/architecture/overview/" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">🏗️</div>
+        <div class="feature-title">架构</div>
+        <div class="feature-desc">深入了解 5 层管道和组件设计。</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">常见问题</h2>
+    <p class="section-desc">关于 AuditAI 及其使用的常见问题。</p>
+    <div style="max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:16px;text-align:left">
+      <details class="faq-item">
+        <summary class="faq-summary">AuditAI 与单独使用 Slither 有什么不同？</summary>
+        <p class="faq-answer">Slither 是我们的检测引擎之一。AuditAI 增加了 Aderyn 交叉验证、通过 RAG 知识库的 LLM 增强、自动 PoC 生成和链上认证。可以把它想象成带验证功能的 Slither++。</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-summary">AuditAI 支持哪些链？</summary>
+        <p class="faq-answer">AuditAI 分析 EVM 兼容的 Solidity 代码。认证目前面向 Sepolia 测试网，主网支持在计划中。任何 EVM 链（以太坊、Polygon、Arbitrum、Base 等）都可以用于分析。</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-summary">知识库可以离线使用吗？</summary>
+        <p class="faq-answer">是的。477 份 Solodit 报告和 303 个漏洞引用以 ChromaDB 向量形式捆绑。首次运行在本地索引；后续运行使用缓存索引。</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-summary">可以将 AuditAI 集成到 CI/CD 流水线中吗？</summary>
+        <p class="faq-answer">当然可以。AuditAI 的 CLI 在发现漏洞时以非零代码退出。可在 GitHub Actions、GitLab CI 或任何流水线中使用。MCP 服务器还支持 IDE 集成。</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-summary">AuditAI 免费使用吗？</summary>
+        <p class="faq-answer">是的！AuditAI 在 MIT 许可证下开源。个人和商业使用均免费。没有按席位许可或隐藏费用。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section section-dark section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">联系我们</h2>
+    <p class="section-desc">有问题、反馈或合作咨询？我们很乐意听到您的声音。</p>
+    <div style="max-width:480px;margin:32px auto 0;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <input type="email" placeholder="your@email.com" style="flex:1;min-width:240px;padding:14px 20px;border:1.5px solid rgba(255,255,255,.15);border-radius:var(--pill);font-size:15px;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background:rgba(255,255,255,.08);color:#fff" onfocus="this.style.borderColor='var(--primary)';this.style.boxShadow='0 0 0 3px rgba(0,102,204,.1)'" onblur="this.style.borderColor='rgba(255,255,255,.15)';this.style.boxShadow='none'">
+      <button class="btn btn-primary" onclick="this.textContent='已订阅! ✓';this.style.background='#28c840'">订阅</button>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,.5);margin-top:12px">无垃圾邮件。随时取消订阅。我们尊重您的隐私。</p>
+    <div class="btn-row" style="margin-top:32px">
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-primary">提交 Issue</a>
+      <a href="docs/zh/developer-guide/contributing/" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">参与贡献</a>
+      <a href="docs/zh/" class="btn btn-ghost" style="color:#fff">阅读文档</a>
+    </div>
+  </div>
+</section>
+
+<!-- Support -->
+<section id="support" class="section section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">支持</h2>
+    <p class="section-desc">通过多种渠道获取帮助。</p>
+    <div class="feature-grid">
+      <a href="docs/zh/" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">📖</div>
+        <div class="feature-title">文档</div>
+        <div class="feature-desc">全面的文档涵盖每个功能和用例。</div>
+      </a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">💬</div>
+        <div class="feature-title">GitHub 讨论</div>
+        <div class="feature-desc">与社区交流问题和分享想法。</div>
+      </a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="feature-card" style="text-decoration:none;color:var(--ink)">
+        <div class="feature-icon">🐛</div>
+        <div class="feature-title">问题追踪</div>
+        <div class="feature-desc">在 GitHub Issues 上报告错误和请求功能。</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Contributing -->
+<section id="contributing" class="section section-dark section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">参与贡献</h2>
+    <p class="section-desc">AuditAI 采用 MIT 许可证。欢迎安全研究人员和开发者的贡献。</p>
+    <div class="btn-row">
+      <a href="docs/zh/developer-guide/contributing/" class="btn btn-primary">贡献指南</a>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Star on GitHub</a>
+    </div>
+    <div class="feature-grid" style="margin-top:48px">
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">🐛</div>
+        <div class="feature-title" style="color:#fff">报告 Bug</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">发现误报或遗漏的漏洞？提交包含复现步骤的 Issue。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">📝</div>
+        <div class="feature-title" style="color:#fff">添加检测器</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">实现新的漏洞模式。每个检测器家族是一个 Python 模块。</div>
+      </div>
+      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title" style="color:#fff">丰富知识库</div>
+        <div class="feature-desc" style="color:rgba(255,255,255,.6)">向 RAG 知识库添加审计报告。更多数据 = 更好的检测。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- License -->
+<section id="license" class="section section-parchment section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">MIT 许可证</h2>
+    <p class="section-desc">免费使用、修改和分发。无供应商锁定。</p>
+    <div class="attestation" style="max-width:640px;margin:48px auto 0">
+      <div class="att-row">
+        <span class="att-key">许可证</span>
+        <span class="att-value">MIT License</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">版权所有</span>
+        <span class="att-value">2026 AuditAI Contributors</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">商业使用</span>
+        <span class="att-value">✓ 允许</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">修改</span>
+        <span class="att-value">✓ 允许</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">分发</span>
+        <span class="att-value">✓ 允许</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">私人使用</span>
+        <span class="att-value">✓ 允许</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Acknowledgments -->
+<section id="acknowledgments" class="section section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">致谢</h2>
+    <p class="section-desc">特别感谢安全研究社区。</p>
+    <div class="attestation" style="max-width:640px;margin:48px auto 0">
+      <div class="att-row">
+        <span class="att-key">灵感来源</span>
+        <span class="att-value">OpenZeppelin, Consensys Diligence, Spearbit</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">知识库</span>
+        <span class="att-value">Solodit, EVMbench, Smart Contract Sanctuary</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">框架</span>
+        <span class="att-value">Slither, Aderyn, Foundry, Hardhat</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">AI 模型</span>
+        <span class="att-value">MiMo V2.5 Pro, all-MiniLM-L6-v2</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">活动</span>
+        <span class="att-value">ETH Beijing 2026 黑客松</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Built at ETH Beijing 2026 -->
+<section id="eth-beijing" class="section section-dark section-center">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title">构建于 ETH Beijing 2026</h2>
+    <p class="section-desc">参加多个赛道角逐，专注于 AI 驱动的安全。</p>
+    <div class="attestation" style="max-width:640px;margin:48px auto 0;background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="att-row">
+        <span class="att-key" style="color:rgba(255,255,255,.6)">主赛道</span>
+        <span class="att-value" style="color:#e6e6e6">AI Agent — 21,000 ¥ 奖金池</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key" style="color:rgba(255,255,255,.6)">GCC 赛道</span>
+        <span class="att-value" style="color:#e6e6e6">公共产品 — 1,000 ¥</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key" style="color:rgba(255,255,255,.6)">安全赛道</span>
+        <span class="att-value" style="color:#e6e6e6">Risk Agent — 1,000 ¥</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key" style="color:rgba(255,255,255,.6)">BGA 赛道</span>
+        <span class="att-value" style="color:#e6e6e6">AI for Transparency — 1,000 ¥</span>
+      </div>
+    </div>
+    <div class="cta-banner" style="margin-top:48px">
+      <h2 class="section-title">准备好保护您的合约了吗？</h2>
+      <p class="section-desc">一条命令。五层防护。零盲区。</p>
+      <div class="btn-row">
+        <a href="docs/zh/getting-started/installation/" class="btn btn-white">开始使用</a>
+        <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">查看 GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index-zh.html" class="nav-logo" style="color:var(--ink)">
+        <svg viewBox="0 0 64 64" fill="none" width="28" height="28"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        AuditAI
+      </a>
+      <p>智能合约安全，重新定义。构建于 ETH Beijing 2026。</p>
+    </div>
+    <div class="footer-col">
+      <h4>产品</h4>
+      <a href="docs/zh/">文档</a>
+      <a href="docs/zh/getting-started/installation/">快速开始</a>
+      <a href="docs/zh/user-guide/cli/">CLI 参考</a>
+      <a href="docs/zh/architecture/overview/">架构</a>
+    </div>
+    <div class="footer-col">
+      <h4>资源</h4>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+      <a href="docs/zh/user-guide/mcp/">MCP 集成</a>
+      <a href="docs/zh/user-guide/attestation/">EAS 认证</a>
+      <a href="docs/zh/developer-guide/contributing/">参与贡献</a>
+    </div>
+    <div class="footer-col">
+      <h4>联系我们</h4>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+      <a href="community-zh.html">社区</a>
+      <a href="community.html">English</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AuditAI · MIT License</span>
+    <span>Python · Slither · Aderyn · Foundry · MiMo · EAS · ChromaDB</span>
+  </div>
+</footer>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTop" aria-label="回到顶部">↑</button>
+
+<script>
+// Side nav toggle
+function toggleNav() {
+  document.getElementById('sideNav').classList.toggle('expanded');
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in-view'); obs.unobserve(x.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Scroll to top button
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+}, { passive: true });
+scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }));
+
+// Close side nav on outside click (mobile)
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('sideNav');
+  if (window.innerWidth <= 768 && !nav.contains(e.target)) {
+    nav.classList.remove('expanded');
+  }
+});
+</script>
+
+</body>
+</html>
