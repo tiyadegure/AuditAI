@@ -1,0 +1,101 @@
+# AI Smart Contract Security Audit Agent Configuration
+
+# Model configuration
+model:
+  default: "mimo"
+  audit: "mimo"
+  code_generation: "mimo"
+  verification: "mimo"
+  
+  # MiMo API configuration (Direct)
+  mimo:
+    api_base: "https://api.xiaomimimo.com/v1"
+    api_key: "${MIMO_API_KEY}"  # Get at: https://platform.xiaomimimo.com/console/plan-manage
+    model: "mimo-v2.5-pro"
+    temperature: 0.7
+    max_tokens: 4096
+
+# Agent configuration
+agents:
+  auditor:
+    role: "Smart Contract Security Auditor"
+    goal: "Analyze smart contracts for security vulnerabilities"
+    backstory: "Expert in Solidity security with 10+ years of experience"
+    
+  architect:
+    role: "Security Architecture Strategist"
+    goal: "Design repair strategies for identified vulnerabilities"
+    backstory: "Specialist in secure smart contract design patterns"
+    
+  code_generator:
+    role: "Secure Code Generator"
+    goal: "Generate secure code patches for vulnerabilities"
+    backstory: "Expert Solidity developer focused on security"
+    
+  refiner:
+    role: "Code Refinement Specialist"
+    goal: "Iteratively improve code patches for quality and security"
+    backstory: "Perfectionist who ensures code meets highest standards"
+    
+  validator:
+    role: "Security Validator"
+    goal: "Verify that patches fix vulnerabilities without introducing new issues"
+    backstory: "Rigorous tester with extensive security audit experience"
+
+# Tools configuration
+tools:
+  slither:
+    enabled: true
+    detectors: "all"
+    exclude: []
+    
+  source_fetcher:
+    enabled: true
+    etherscan_api: "${ETHERSCAN_API_KEY}"
+    
+  state_reader:
+    enabled: true
+    rpc_url: "${ETH_RPC_URL}"
+    
+  code_sanitizer:
+    enabled: true
+    remove_comments: true
+    remove_unused: true
+    
+  concrete_execution:
+    enabled: true
+    framework: "foundry"
+    
+  revenue_normalizer:
+    enabled: true
+    coingecko_api: "${COINGECKO_API_KEY}"
+
+# Knowledge base configuration
+knowledge:
+  vector_store: "chromadb"
+  embedding_model: "all-MiniLM-L6-v2"
+  collection_name: "smart_contract_security"
+  chunk_size: 1000
+  chunk_overlap: 200
+
+# Evaluation configuration
+evaluation:
+  modes:
+    - detect
+    - patch
+    - exploit
+  test_cases: "data/vulnerabilities/"
+  timeout: 300
+
+# Chain configuration
+chain:
+  network: "ethereum"
+  rpc_url: "${ETH_RPC_URL}"
+  chain_id: 1
+  gas_limit: 3000000
+
+# MCP configuration
+mcp:
+  server_name: "smart-contract-auditor"
+  version: "1.0.0"
+  port: 8080
