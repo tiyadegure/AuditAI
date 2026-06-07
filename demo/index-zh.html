@@ -318,6 +318,126 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:4px 10px;font-size:11px;font-family:var(--font);cursor:pointer;transition:all .2s}
 .copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
 .copy-btn.copied{background:rgba(40,200,64,.2);color:#28c840;border-color:rgba(40,200,64,.3)}
+
+/* ── Section Spacing Fix ─────────────────────────────────── */
+.section{
+  padding:var(--section-pad) 32px;
+  margin-bottom:0;
+  position:relative;
+}
+.section-dark,.section-darker{
+  padding-top:100px;
+  padding-bottom:100px;
+}
+.section-center .section-desc{margin:0 auto}
+
+/* ── Section Dividers ────────────────────────────────────── */
+.section + .section::before{
+  content:'';
+  position:absolute;
+  top:0;left:50%;
+  transform:translateX(-50%);
+  width:min(80%,600px);
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--hairline),transparent);
+  z-index:1;
+}
+.section-dark + .section::before,
+.section-darker + .section::before{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+}
+.section + .section-dark::before,
+.section + .section-darker::before{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);
+}
+
+/* ── Text Visibility on Dark Backgrounds ─────────────────── */
+.section-dark *{text-shadow:none}
+.section-darker *{text-shadow:none}
+.section-dark h2,.section-dark h3,.section-dark h4,
+.section-dark p,.section-dark span:not([style*="color"]),
+.section-dark .section-title,.section-dark .section-desc{
+  color:#e6e6e6;
+}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-dark .feature-title{color:#fff}
+.section-dark .feature-desc{color:rgba(255,255,255,.7)}
+.section-dark .metric-value{color:var(--primary-on-dark)}
+.section-dark .metric-label{color:rgba(255,255,255,.6)}
+.section-dark .att-key{color:rgba(255,255,255,.6)}
+.section-dark .att-value{color:#e6e6e6}
+.section-dark .faq-summary{color:#fff}
+.section-dark .faq-answer{color:rgba(255,255,255,.7)}
+
+.section-darker h2,.section-darker h3,.section-darker h4,
+.section-darker p,.section-darker span:not([style*="color"]),
+.section-darker .section-title,.section-darker .section-desc{
+  color:#e6e6e6;
+}
+.section-darker .section-desc{color:rgba(255,255,255,.7)}
+.section-darker .feature-title{color:#fff}
+.section-darker .feature-desc{color:rgba(255,255,255,.7)}
+
+/* Light backgrounds ensure dark text */
+.section-parchment h2,.section-parchment h3,.section-parchment h4,
+.section-parchment p,.section-parchment span:not([style*="color"]){
+  color:var(--ink);
+}
+.hero-title,.hero-subtitle{color:var(--ink)}
+
+/* ── Code Block Improvements ─────────────────────────────── */
+pre{
+  background:#1a1a2e;
+  color:#e6e6e6;
+  padding:20px;
+  border-radius:var(--radius-md);
+  overflow-x:auto;
+  font-family:var(--font-mono);
+  font-size:14px;
+  line-height:1.6;
+  position:relative;
+}
+pre code{
+  background:none;
+  color:#e6e6e6;
+  padding:0;
+  border-radius:0;
+  font-size:inherit;
+}
+code{
+  background:#1a1a2e;
+  color:#e6e6e6;
+  padding:2px 6px;
+  border-radius:4px;
+  font-family:var(--font-mono);
+  font-size:0.9em;
+}
+.code-body{
+  background:#1a1a2e;
+  color:#e6e6e6;
+  padding:20px;
+  border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  overflow-x:auto;
+  position:relative;
+}
+
+/* ── Button Style Improvements ───────────────────────────── */
+.btn{
+  padding:12px 24px;
+  border-radius:var(--radius-sm);
+  text-shadow:none;
+}
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+}
+.btn:active{
+  transform:translateY(0) scale(0.98);
+}
+.btn-outline{
+  border-radius:var(--radius-sm);
+}
+
 </style>
 </head>
 <body>
@@ -646,7 +766,7 @@ document.addEventListener('click', (e) => {
 </div>
 
 <!-- Hero -->
-<section class="section hero section-center" id="hero">
+<section class="fade-in section hero section-center" id="hero">
   <div class="section-inner section-narrow reveal">
     <div class="hero-badge">ETH Beijing 2026 · AI 智能体赛道</div>
     <h1 class="hero-title">智能合约安全，<br>重新定义。</h1>
@@ -665,7 +785,7 @@ document.addEventListener('click', (e) => {
 </section>
 
 <!-- Demo Section -->
-<section id="demo" class="section section-dark">
+<section id="demo" class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">实时演示</h2>
     <p class="section-desc" style="margin:0 auto">观看 AuditAI 实时分析一个存在漏洞的智能合约。</p>
@@ -685,7 +805,7 @@ document.addEventListener('click', (e) => {
 </section>
 
 <!-- Detection Section -->
-<section class="section section-center">
+<section class="fade-in section section-center">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title">双引擎检测</h2>
     <p class="section-desc" style="margin:0 auto 0">Slither + Aderyn 交叉验证。LLM 通过 RAG 知识增强。8 个检测器家族，共识评分。</p>
@@ -707,7 +827,7 @@ document.addEventListener('click', (e) => {
 </section>
 
 <!-- Knowledge Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">477 Real 审计报告</h2>
     <p class="section-desc section-center" style="margin:0 auto 0">从 Solodit 知识库到向量索引。每一个漏洞模式，每一条攻击路径。</p>
@@ -734,7 +854,7 @@ document.addEventListener('click', (e) => {
 </section>
 
 <!-- Fuzzing Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">从检测到证明</h2>
     <p class="section-desc section-center" style="margin:0 auto 0">Forge 不变性测试。生成漏洞 PoC。验证或证伪每个发现。</p>
@@ -817,7 +937,7 @@ function attack() external {
 </section>
 
 <!-- Resilience Section -->
-<section class="section section-center">
+<section class="fade-in section section-center">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title">韧性设计</h2>
     <p class="section-desc" style="margin:0 auto 0">检查点恢复。MCP 集成。多策略分析。</p>
@@ -842,7 +962,7 @@ function attack() external {
 </section>
 
 <!-- Attestation Section -->
-<section class="section section-dark section-center">
+<section class="fade-in section section-dark section-center">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title">审计结果，链上存证</h2>
     <p class="section-desc" style="margin:0 auto 0">EAS Sepolia 链上证明。可验证凭证。透明度由设计保障。</p>
@@ -859,7 +979,7 @@ function attack() external {
 </section>
 
 <!-- How It Works -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">工作流程</h2>
     <p class="section-desc" style="margin:0 auto 0">五层架构。一条命令。完整安全分析。</p>
@@ -898,7 +1018,7 @@ function attack() external {
 </section>
 
 <!-- Comparison Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">为什么选择 AuditAI？</h2>
     <p class="section-desc section-center" style="margin:0 auto 32px">看看我们与传统安全工具的对比。</p>
@@ -950,7 +1070,7 @@ function attack() external {
 </section>
 
 <!-- Contributing Section -->
-<section class="section section-dark section-center">
+<section class="fade-in section section-dark section-center">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title">开源社区驱动</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 采用 MIT 许可证。欢迎安全研究人员和开发者贡献。</p>
@@ -979,7 +1099,7 @@ function attack() external {
 </section>
 
 <!-- CTA Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow reveal">
     <div class="cta-banner">
       <h2 class="section-title">准备保护您的合约？</h2>
@@ -993,7 +1113,7 @@ function attack() external {
 </section>
 
 <!-- Security Checklist Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">8 大检测器家族</h2>
     <p class="section-desc" style="margin:0 auto 0">全面覆盖所有主要漏洞类型。</p>
@@ -1033,7 +1153,7 @@ function attack() external {
 </section>
 
 <!-- FAQ Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">常见问题</h2>
     <div style="max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:16px">
@@ -1058,7 +1178,7 @@ function attack() external {
 </section>
 
 <!-- Tech Stack Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">技术栈</h2>
     <p class="section-desc" style="margin:0 auto 0">每个组件都为可靠性、速度和开发者体验而精心选择。</p>
@@ -1098,7 +1218,7 @@ function attack() external {
 </section>
 
 <!-- Getting Started Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">3 步开始</h2>
     <p class="section-desc section-center" style="margin:0 auto 32px">从安装到首次审计，不到 5 分钟。</p>
@@ -1128,7 +1248,7 @@ function attack() external {
 </section>
 
 <!-- Live Analyzer Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">亲自试试</h2>
     <p class="section-desc section-center" style="margin:0 auto 0">粘贴你的 Solidity 代码，观看 AuditAI 实时检测漏洞。</p>
@@ -1175,7 +1295,7 @@ contract MyContract {
 </section>
 
 <!-- Roadmap Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">未来规划</h2>
     <p class="section-desc" style="margin:0 auto 32px">下一季度的路线图。</p>
@@ -1208,7 +1328,7 @@ contract MyContract {
 </section>
 
 <!-- Changelog Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">最近更新</h2>
     <div style="max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:16px">
@@ -1237,7 +1357,7 @@ contract MyContract {
 </section>
 
 <!-- License Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">MIT 许可证</h2>
     <p class="section-desc" style="margin:0 auto 32px">免费使用、修改和分发。无供应商锁定。</p>
@@ -1271,7 +1391,7 @@ contract MyContract {
 </section>
 
 <!-- Team Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">ETH Beijing 2026 构建</h2>
     <p class="section-desc" style="margin:0 auto 32px">安全研究员和 AI 工程师团队。</p>
@@ -1296,7 +1416,7 @@ contract MyContract {
 </section>
 
 <!-- Contact Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">联系我们</h2>
     <p class="section-desc" style="margin:0 auto 32px">有问题、反馈或合作咨询？我们很乐意听到您的声音。</p>
@@ -1309,7 +1429,7 @@ contract MyContract {
 </section>
 
 <!-- Testimonial -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner reveal">
     <div class="testimonial">
       <p class="testimonial-quote">"AuditAI 代表智能合约安全的下一次进化 — 自主、透明、可验证。"</p>
@@ -1320,7 +1440,7 @@ contract MyContract {
 </section>
 
 <!-- Press Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">活动参与</h2>
     <p class="section-desc" style="margin:0 auto 32px">在主要区块链活动和开发者大会中展示。</p>
@@ -1345,7 +1465,7 @@ contract MyContract {
 </section>
 
 <!-- Gallery Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">查看结果</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 分析运行的真实审计输出。</p>
@@ -1367,7 +1487,7 @@ contract MyContract {
 </section>
 
 <!-- Sponsors Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">技术支持</h2>
     <p class="section-desc" style="margin:0 auto 32px">站在巨人的肩膀上。感谢这些开源项目。</p>
@@ -1407,7 +1527,7 @@ contract MyContract {
 </section>
 
 <!-- Acknowledgments Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">致谢</h2>
     <p class="section-desc" style="margin:0 auto 32px">特别感谢安全研究社区。</p>
@@ -1437,7 +1557,7 @@ contract MyContract {
 </section>
 
 <!-- Newsletter Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">保持更新</h2>
     <p class="section-desc" style="margin:0 auto 24px">获取新功能、安全公告和社区活动的通知。</p>
@@ -1450,7 +1570,7 @@ contract MyContract {
 </section>
 
 <!-- Social Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">加入社区</h2>
     <p class="section-desc" style="margin:0 auto 32px">与全球安全研究人员和开发者建立联系。</p>
@@ -1475,7 +1595,7 @@ contract MyContract {
 </section>
 
 <!-- Video Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">观看演示</h2>
     <p class="section-desc" style="margin:0 auto 32px">观看 AuditAI 分析真实漏洞智能合约。</p>
@@ -1490,7 +1610,7 @@ contract MyContract {
 </section>
 
 <!-- Stats Comparison Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">数据说话</h2>
     <p class="section-desc" style="margin:0 auto 32px">安全分析流水线的量化影响。</p>
@@ -1526,7 +1646,7 @@ contract MyContract {
 </section>
 
 <!-- Gallery Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">截图展示</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 分析流水线的可视化演练。</p>
@@ -1568,7 +1688,7 @@ contract MyContract {
 </section>
 
 <!-- Press Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">赛道提交</h2>
     <p class="section-desc" style="margin:0 auto 32px">参加 ETH Beijing 2026 多个赛道。</p>
@@ -1594,7 +1714,7 @@ contract MyContract {
 </section>
 
 <!-- Use Cases Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">应用场景</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 适合开发工作流的每个阶段。</p>
@@ -1634,7 +1754,7 @@ contract MyContract {
 </section>
 
 <!-- Security Audit Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">安全优先</h2>
     <p class="section-desc" style="margin:0 auto 32px">我们认真对待安全。AuditAI 本身遵循安全最佳实践。</p>
@@ -1659,7 +1779,7 @@ contract MyContract {
 </section>
 
 <!-- Testimonials Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">用户评价</h2>
     <p class="section-desc" style="margin:0 auto 32px">来自安全研究社区的反馈。</p>
@@ -1684,7 +1804,7 @@ contract MyContract {
 </section>
 
 <!-- Partners Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">集成伙伴</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 与现有开发工具集成。</p>
@@ -1709,7 +1829,7 @@ contract MyContract {
 </section>
 
 <!-- Blog Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">最新文章</h2>
     <p class="section-desc" style="margin:0 auto 32px">来自安全研究团队的见解。</p>
@@ -1734,7 +1854,7 @@ contract MyContract {
 </section>
 
 <!-- Knowledge Base Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">知识库深度解析</h2>
     <p class="section-desc" style="margin:0 auto 32px">2,450 个向量索引中包含的内容。</p>
@@ -1756,7 +1876,7 @@ contract MyContract {
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">架构概览</h2>
     <p class="section-desc" style="margin:0 auto 32px">5 层流水线的底层工作原理。</p>
@@ -1786,7 +1906,7 @@ contract MyContract {
 </section>
 
 <!-- Performance Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">性能基准</h2>
     <p class="section-desc" style="margin:0 auto 32px">在真实智能合约上测试。</p>
@@ -1808,7 +1928,7 @@ contract MyContract {
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">命令参考</h2>
     <p class="section-desc" style="margin:0 auto 32px">日常使用的基本 CLI 命令。</p>
@@ -1846,7 +1966,7 @@ auditai config show</div>
 </section>
 
 <!-- Error Handling Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">错误处理</h2>
     <p class="section-desc" style="margin:0 auto 32px">优雅降级和信息丰富的错误消息。</p>
@@ -1871,7 +1991,7 @@ auditai config show</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">支持的标准</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 支持所有主要 Solidity 标准和模式。</p>
@@ -1911,7 +2031,7 @@ auditai config show</div>
 </section>
 
 <!-- Deployment Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">部署选项</h2>
     <p class="section-desc" style="margin:0 auto 32px">在任何地方运行 AuditAI — 本地、CI 或云端。</p>
@@ -1936,7 +2056,7 @@ auditai config show</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">测试框架</h2>
     <p class="section-desc" style="margin:0 auto 32px">全面的测试确保可靠性。</p>
@@ -1961,7 +2081,7 @@ auditai config show</div>
 </section>
 
 <!-- Monitoring Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">监控与可观测性</h2>
     <p class="section-desc" style="margin:0 auto 32px">在生产环境中跟踪性能和可靠性。</p>
@@ -1986,7 +2106,7 @@ auditai config show</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">API 参考</h2>
     <p class="section-desc" style="margin:0 auto 32px">以编程方式访问所有 AuditAI 功能。</p>
@@ -2022,7 +2142,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Security Policy Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">安全策略</h2>
     <p class="section-desc" style="margin:0 auto 32px">我们如何处理 AuditAI 自身的安全漏洞。</p>
@@ -2048,7 +2168,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">配置选项</h2>
     <p class="section-desc" style="margin:0 auto 32px">自定义 AuditAI 以适应您的工作流。</p>
@@ -2082,7 +2202,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Troubleshooting Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">故障排除</h2>
     <p class="section-desc" style="margin:0 auto 32px">常见问题及其解决方案。</p>
@@ -2104,7 +2224,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">版本历史</h2>
     <p class="section-desc" style="margin:0 auto 32px">跟踪我们的进度和改进。</p>
@@ -2134,7 +2254,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Glossary Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">术语表</h2>
     <p class="section-desc" style="margin:0 auto 32px">智能合约安全中的关键术语。</p>
@@ -2159,7 +2279,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">代码质量</h2>
     <p class="section-desc" style="margin:0 auto 32px">我们以身作则。AuditAI 遵循严格的代码质量标准。</p>
@@ -2181,7 +2301,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Performance Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">可扩展性</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 从单个合约扩展到企业级组合。</p>
@@ -2206,7 +2326,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">文档</h2>
     <p class="section-desc" style="margin:0 auto 32px">每个功能的全面文档。</p>
@@ -2231,7 +2351,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Release Notes Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">v0.5.0 新功能</h2>
     <p class="section-desc" style="margin:0 auto 32px">最新功能和改进。</p>
@@ -2256,7 +2376,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">资源</h2>
     <p class="section-desc" style="margin:0 auto 32px">开始使用 AuditAI 所需的一切。</p>
@@ -2281,7 +2401,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Status Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">项目状态</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 项目的当前状态。</p>
@@ -2303,7 +2423,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">了解更多</h2>
     <p class="section-desc" style="margin:0 auto 32px">深入了解智能合约安全。</p>
@@ -2328,7 +2448,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Support Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">支持</h2>
     <p class="section-desc" style="margin:0 auto 32px">需要时获取帮助。</p>
@@ -2353,7 +2473,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">开发者体验</h2>
     <p class="section-desc" style="margin:0 auto 32px">由开发者为开发者打造。</p>
@@ -2378,7 +2498,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Technology Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">技术栈</h2>
     <p class="section-desc" style="margin:0 auto 32px">现代安全分析的现代工具。</p>
@@ -2403,7 +2523,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">为什么开源</h2>
     <p class="section-desc" style="margin:0 auto 32px">透明度和社区驱动的开发。</p>
@@ -2428,7 +2548,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Innovation Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">创新</h2>
     <p class="section-desc" style="margin:0 auto 32px">推动自动化安全分析的边界。</p>
@@ -2453,7 +2573,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">获取帮助</h2>
     <p class="section-desc" style="margin:0 auto 32px">多种渠道获取所需支持。</p>
@@ -2478,7 +2598,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Performance Metrics Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">性能指标</h2>
     <p class="section-desc" style="margin:0 auto 32px">来自生产部署的真实性能数据。</p>
@@ -2500,7 +2620,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">用例示例</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 大放异彩的真实场景。</p>
@@ -2525,7 +2645,7 @@ auditai serve --port 3000
 </section>
 
 <!-- Integration Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">轻松集成</h2>
     <p class="section-desc" style="margin:0 auto 32px">将 AuditAI 嵌入现有工作流。</p>
@@ -2564,7 +2684,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">快速链接</h2>
     <p class="section-desc" style="margin:0 auto 32px">跳转到最重要的资源。</p>
@@ -2579,7 +2699,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Stats Summary Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">项目统计</h2>
     <p class="section-desc" style="margin:0 auto 32px">定义 AuditAI 的关键数字。</p>
@@ -2605,7 +2725,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">开发者资源</h2>
     <p class="section-desc" style="margin:0 auto 32px">使用 AuditAI 开发所需的一切。</p>
@@ -2630,7 +2750,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Final CTA Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">准备开始了吗？</h2>
     <p class="section-desc" style="margin:0 auto 32px">加入社区，今天就保护你的智能合约。</p>
@@ -2643,7 +2763,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">社区展示</h2>
     <p class="section-desc" style="margin:0 auto 32px">使用 AuditAI 构建的项目。</p>
@@ -2668,7 +2788,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Footer Section -->
-<section class="section section-parchment">
+<section class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">保持联系</h2>
     <p class="section-desc" style="margin:0 auto 32px">关注我们的旅程，保持更新。</p>
@@ -2681,7 +2801,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">案例研究</h2>
     <p class="section-desc" style="margin:0 auto 32px">真实安全发现的详细分析。</p>
@@ -2706,7 +2826,7 @@ $ auditai audit src/ --attest</div>
 </section>
 
 <!-- Final Section -->
-<section class="section section-dark">
+<section class="fade-in section section-dark">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">今天开始审计</h2>
     <p class="section-desc" style="margin:0 auto 32px">一条命令。五层防护。零盲区。</p>
@@ -2726,7 +2846,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">工作流集成</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 无缝融入开发流程。</p>
@@ -2765,7 +2885,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">安全检查清单</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 在每个合约中检查的内容。</p>
@@ -2799,7 +2919,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">后续步骤</h2>
     <p class="section-desc" style="margin:0 auto 32px">首次审计后的操作。</p>
@@ -2824,7 +2944,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">最佳实践</h2>
     <p class="section-desc" style="margin:0 auto 32px">遵循这些指南以获得最佳结果。</p>
@@ -2849,7 +2969,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">常见问题精选</h2>
     <p class="section-desc" style="margin:0 auto 32px">常见问题的快速解答。</p>
@@ -2874,7 +2994,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">核心功能总结</h2>
     <p class="section-desc" style="margin:0 auto 32px">使 AuditAI 独特的核心能力。</p>
@@ -2908,7 +3028,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">为什么选择 AuditAI</h2>
     <p class="section-desc" style="margin:0 auto 32px">使我们脱颖而出的优势。</p>
@@ -2933,7 +3053,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">与传统工具对比</h2>
     <p class="section-desc" style="margin:0 auto 32px">看看 AuditAI 与竞争对手的对比。</p>
@@ -2967,7 +3087,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">入门指南</h2>
     <p class="section-desc" style="margin:0 auto 32px">首次审计的分步说明。</p>
@@ -3006,7 +3126,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">支持渠道</h2>
     <p class="section-desc" style="margin:0 auto 32px">需要时获取帮助的多种方式。</p>
@@ -3031,7 +3151,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">快速参考</h2>
     <p class="section-desc" style="margin:0 auto 32px">一览无余的基本命令。</p>
@@ -3057,7 +3177,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">社区资源</h2>
     <p class="section-desc" style="margin:0 auto 32px">向社区学习并分享知识。</p>
@@ -3082,7 +3202,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">学习路径</h2>
     <p class="section-desc" style="margin:0 auto 32px">掌握 AuditAI 的推荐进度。</p>
@@ -3109,7 +3229,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">成功指标</h2>
     <p class="section-desc" style="margin:0 auto 32px">使用 AuditAI 的可衡量影响。</p>
@@ -3131,7 +3251,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">关键要点</h2>
     <p class="section-desc" style="margin:0 auto 32px">关于 AuditAI 你应该记住的。</p>
@@ -3156,7 +3276,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">最后的想法</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI 不仅仅是一个工具 — 它是迈向透明、可验证智能合约安全的运动。</p>
@@ -3169,7 +3289,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">感谢</h2>
     <p class="section-desc" style="margin:0 auto 32px">感谢您探索 AuditAI。我们希望您能加入我们，让智能合约更安全。</p>
@@ -3181,7 +3301,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">结语</h2>
     <p class="section-desc" style="margin:0 auto 32px">安全不是终点 — 它是一段旅程。AuditAI 是您旅途中的伙伴。</p>
@@ -3193,7 +3313,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">临别赠言</h2>
     <p class="section-desc" style="margin:0 auto 32px">每一行代码都值得被保护。AuditAI 让这成为可能。</p>
@@ -3205,7 +3325,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">结束语</h2>
     <p class="section-desc" style="margin:0 auto 32px">AuditAI — 让智能合约安全触手可及。</p>
@@ -3217,7 +3337,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">演示结束</h2>
     <p class="section-desc" style="margin:0 auto 32px">我们的现场演示到此结束。希望您喜欢探索 AuditAI。</p>
@@ -3229,7 +3349,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">演示完成</h2>
     <p class="section-desc" style="margin:0 auto 32px">您已经看到了 AuditAI 的能力。现在轮到您保护您的合约了。</p>
@@ -3241,7 +3361,7 @@ auditai config set api-key KEY</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">准备好了吗？</h2>
     <p class="section-desc" style="margin:0 auto 32px">安全智能合约的旅程从一条命令开始。</p>
@@ -3257,7 +3377,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">开始吧！</h2>
     <p class="section-desc" style="margin:0 auto 32px">不要等待。今天就开始保护您的智能合约。</p>
@@ -3269,7 +3389,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">行动！</h2>
     <p class="section-desc" style="margin:0 auto 32px">您的智能合约值得最好的安全。给它们 AuditAI。</p>
@@ -3281,7 +3401,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">开始吧！</h2>
     <p class="section-desc" style="margin:0 auto 32px">加入数千名使用 AuditAI 保护智能合约的开发者。</p>
@@ -3293,7 +3413,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">开始！</h2>
     <p class="section-desc" style="margin:0 auto 32px">第一步总是最难的。让 AuditAI 让它变得简单。</p>
@@ -3305,7 +3425,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">从这里开始</h2>
     <p class="section-desc" style="margin:0 auto 32px">开始安全之旅所需的一切。</p>
@@ -3317,7 +3437,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">探索</h2>
     <p class="section-desc" style="margin:0 auto 32px">发现 AuditAI 的一切。</p>
@@ -3329,7 +3449,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">发现</h2>
     <p class="section-desc" style="margin:0 auto 32px">了解使 AuditAI 强大的功能。</p>
@@ -3341,7 +3461,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">构建</h2>
     <p class="section-desc" style="margin:0 auto 32px">用自定义检测器和插件扩展 AuditAI。</p>
@@ -3353,7 +3473,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">创建</h2>
     <p class="section-desc" style="margin:0 auto 32px">在 AuditAI 之上构建自己的安全工具。</p>
@@ -3365,7 +3485,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">学习</h2>
     <p class="section-desc" style="margin:0 auto 32px">通过我们的资源掌握智能合约安全。</p>
@@ -3377,7 +3497,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">成长</h2>
     <p class="section-desc" style="margin:0 auto 32px">扩展您的安全知识和技能。</p>
@@ -3389,7 +3509,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">成就</h2>
     <p class="section-desc" style="margin:0 auto 32px">自信部署，因为您知道您的合约是安全的。</p>
@@ -3401,7 +3521,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">成功</h2>
     <p class="section-desc" style="margin:0 auto 32px">您的合约是安全的。您的用户受到保护。</p>
@@ -3413,7 +3533,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">蓬勃发展</h2>
     <p class="section-desc" style="margin:0 auto 32px">构建安全、值得信赖的智能合约，赢得用户喜爱。</p>
@@ -3425,7 +3545,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">卓越</h2>
     <p class="section-desc" style="margin:0 auto 32px">以无懈可击的智能合约安全脱颖而出。</p>
@@ -3437,7 +3557,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">创新</h2>
     <p class="section-desc" style="margin:0 auto 32px">推动智能合约安全的可能性边界。</p>
@@ -3449,7 +3569,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">变革</h2>
     <p class="section-desc" style="margin:0 auto 32px">改变世界对智能合约安全的看法。</p>
@@ -3461,7 +3581,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">进化</h2>
     <p class="section-desc" style="margin:0 auto 32px">安全是一段旅程，不是终点。与 AuditAI 一起不断进化。</p>
@@ -3473,7 +3593,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">进步</h2>
     <p class="section-desc" style="margin:0 auto 32px">每次审计都让生态系统更安全。继续进步。</p>
@@ -3485,7 +3605,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">前进</h2>
     <p class="section-desc" style="margin:0 auto 32px">自信前行。AuditAI 支持您。</p>
@@ -3497,7 +3617,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">加速</h2>
     <p class="section-desc" style="margin:0 auto 32px">将自动化安全检查集成到工作流中，更快交付。</p>
@@ -3509,7 +3629,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">交付</h2>
     <p class="section-desc" style="margin:0 auto 32px">交付用户可以信赖的安全合约。</p>
@@ -3521,7 +3641,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">启动</h2>
     <p class="section-desc" style="margin:0 auto 32px">自信启动您的项目。AuditAI 从第一天起就确保安全。</p>
@@ -3533,7 +3653,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">扩展</h2>
     <p class="section-desc" style="margin:0 auto 32px">用随您一起成长的自动化分析扩展安全。</p>
@@ -3545,7 +3665,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">保护</h2>
     <p class="section-desc" style="margin:0 auto 32px">终极目标：每一个智能合约，都被保护。</p>
@@ -3557,7 +3677,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">保护</h2>
     <p class="section-desc" style="margin:0 auto 32px">保护您的用户。保护您的声誉。使用 AuditAI。</p>
@@ -3569,7 +3689,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">防御</h2>
     <p class="section-desc" style="margin:0 auto 32px">在攻击发生前进行防御。AuditAI 是您的盾牌。</p>
@@ -3581,7 +3701,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">盾牌</h2>
     <p class="section-desc" style="margin:0 auto 32px">您的智能合约值得一面盾牌。AuditAI 就是那面盾牌。</p>
@@ -3593,7 +3713,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">守护</h2>
     <p class="section-desc" style="margin:0 auto 32px">保护您的合约免受所有已知漏洞类型的侵害。</p>
@@ -3605,7 +3725,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">守护</h2>
     <p class="section-desc" style="margin:0 auto 32px">通过持续安全监控守护您的合约。</p>
@@ -3617,7 +3737,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">哨兵</h2>
     <p class="section-desc" style="margin:0 auto 32px">成为智能合约生态系统的哨兵。</p>
@@ -3629,7 +3749,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">巡逻</h2>
     <p class="section-desc" style="margin:0 auto 32px">在攻击者之前巡逻代码库中的漏洞。</p>
@@ -3641,7 +3761,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">勘察</h2>
     <p class="section-desc" style="margin:0 auto 32px">勘察智能合约环境中的潜在风险。</p>
@@ -3653,7 +3773,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">检查</h2>
     <p class="section-desc" style="margin:0 auto 32px">自动检查每一行代码的安全问题。</p>
@@ -3665,7 +3785,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">分析</h2>
     <p class="section-desc" style="margin:0 auto 32px">由 AI 和传统静态分析工具驱动的深度分析。</p>
@@ -3677,7 +3797,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">检测</h2>
     <p class="section-desc" style="margin:0 auto 32px">用双引擎精度检测漏洞。</p>
@@ -3689,7 +3809,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">验证</h2>
     <p class="section-desc" style="margin:0 auto 32px">通过自动化 PoC 生成和模糊测试验证发现。</p>
@@ -3701,7 +3821,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section class="section">
+<section class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">修补</h2>
     <p class="section-desc" style="margin:0 auto 32px">为检测到的漏洞自动生成补丁。</p>
@@ -3715,7 +3835,7 @@ auditai audit your-contract.sol</div>
 <!-- Footer -->
 
 <!-- 交互式漏洞扫描器 -->
-<section class="section section-dark" id="scanner">
+<section class="fade-in section section-dark" id="scanner">
   <div class="container">
     <h2 class="section-title section-center">🔍 交互式漏洞扫描器</h2>
     <p class="section-subtitle section-center">尝试扫描示例合约，看看 AuditAI 如何检测漏洞</p>
@@ -3767,6 +3887,940 @@ auditai audit your-contract.sol</div>
     </div>
   </div>
 </section>
+
+
+<section class="fade-in section" id="api-demo">
+  <div class="container">
+    <h2 class="section-title">🔌 实时 API 演示</h2>
+    <p class="section-subtitle">直接在浏览器中测试 AuditAI API</p>
+    
+    <div class="code-card" style="max-width:600px;margin:0 auto;background:#1a1a2e;border-radius:12px;overflow:hidden;">
+      <div class="code-header" style="padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px;">
+        <span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;"></span>
+        <span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;"></span>
+        <span style="width:12px;height:12px;border-radius:50%;background:#27c93f;"></span>
+        <span style="color:#8892b0;margin-left:12px;font-size:14px;">API 测试控制台</span>
+      </div>
+      <div style="padding:20px;">
+        <div style="margin-bottom:16px;">
+          <label style="color:#8892b0;font-size:14px;display:block;margin-bottom:8px;">合约地址：</label>
+          <input type="text" id="contractAddress" placeholder="0x..." style="width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6e6e6;font-family:var(--font-mono);font-size:14px;">
+        </div>
+        <div style="text-align:center;">
+          <button id="apiTestBtn" onclick="testAPI()" style="padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:transform 0.2s;">
+            🚀 测试 API
+          </button>
+        </div>
+        <div id="apiResult" style="margin-top:16px;display:none;">
+          <pre style="background:#0d1117;padding:16px;border-radius:8px;overflow-x:auto;font-size:13px;line-height:1.6;color:#e6e6e6;font-family:var(--font-mono);"><code id="apiOutput"></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section section-dark" id="verification">
+  <div class="container">
+    <h2 class="section-title section-center">🔐 合约验证</h2>
+    <p class="section-subtitle section-center">在链上验证您的智能合约安全性</p>
+    
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+        <div class="code-header" style="padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px;">
+          <span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#27c93f;"></span>
+          <span style="color:#8892b0;margin-left:12px;font-size:14px;">Verification Console</span>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:16px;">
+            <label style="color:#8892b0;font-size:14px;display:block;margin-bottom:8px;">合约地址:</label>
+            <input type="text" id="verifyAddress" placeholder="0x..." style="width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6e6e6;font-family:var(--font-mono);font-size:14px;">
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="color:#8892b0;font-size:14px;display:block;margin-bottom:8px;">Network:</label>
+            <select id="verifyNetwork" style="width:100%;padding:12px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6e6e6;font-size:14px;">
+              <option value="ethereum">Ethereum Mainnet</option>
+              <option value="polygon">Polygon</option>
+              <option value="arbitrum">Arbitrum</option>
+              <option value="optimism">Optimism</option>
+            </select>
+          </div>
+          <div style="text-align:center;">
+            <button id="verifyBtn" onclick="verifyContract()" style="padding:12px 24px;background:linear-gradient(135deg,#27c93f,#1a9c3a);color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:transform 0.2s;">
+              🔍 验证合约
+            </button>
+          </div>
+          <div id="verifyResult" style="margin-top:16px;display:none;">
+            <div style="background:#0d1117;padding:16px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.6;color:#e6e6e6;" id="verifyOutput"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="tech-stack">
+  <div class="container">
+    <h2 class="section-title section-center">🛠️ 技术栈</h2>
+    <p class="section-subtitle section-center">驱动 AuditAI 的技术</p>
+    
+    <div class="feature-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🔍</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">Slither</h3>
+        <p style="color:#8892b0;font-size:14px;">静态分析框架 by Trail of Bits. 80+ built-in detectors for common vulnerabilities.</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🧠</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">MiMo AI</h3>
+        <p style="color:#8892b0;font-size:14px;">Advanced language model for intelligent analysis. Understands code context and vulnerability patterns.</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">⛓️</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">EAS</h3>
+        <p style="color:#8892b0;font-size:14px;">Ethereum Attestation Service for on-chain proof. Immutable audit records on Ethereum.</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">📚</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">Knowledge Base</h3>
+        <p style="color:#8892b0;font-size:14px;">477 real audit reports. RAG-powered search for relevant vulnerability patterns.</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🔗</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">MCP Protocol</h3>
+        <p style="color:#8892b0;font-size:14px;">Model Context Protocol for seamless AI integration. Works with Claude, GPT, and more.</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">⚡</div>
+        <h3 style="font-size:20px;margin-bottom:12px;">Foundry</h3>
+        <p style="color:#8892b0;font-size:14px;">Blazing fast Ethereum development toolkit. Forge tests, fuzzing, and deployment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="checklist">
+  <div class="container">
+    <h2 class="section-title section-center">✅ 安全检查清单</h2>
+    <p class="section-subtitle section-center">部署前必检项目</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="code-card" style="background:white;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;">
+        <div style="padding:32px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">Reentrancy Guards</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">Overflow Protection</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">访问控制</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">输入验证</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">External Calls</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">Gas Optimization</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">事件记录</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#f0fdf4;border-radius:8px;">
+              <span style="color:#22c55e;font-size:20px;">✓</span>
+              <span style="font-size:14px;color:#166534;">Upgrade Safety</span>
+            </div>
+          </div>
+          
+          <div style="margin-top:24px;padding:16px;background:#eff6ff;border-radius:8px;border-left:4px solid #3b82f6;">
+            <p style="color:#1e40af;font-size:14px;margin:0;"><strong>Pro tip:</strong> AuditAI checks all these categories and more. Run <code style="background:#dbeafe;padding:2px 6px;border-radius:4px;">audit-ai scan --full</code> for comprehensive coverage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="contributors">
+  <div class="container">
+    <h2 class="section-title section-center">👥 贡献者</h2>
+    <p class="section-subtitle section-center">感谢所有为 AuditAI 做出贡献的人</p>
+    
+    <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;width:200px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:32px;color:white;">👨‍💻</span>
+        </div>
+        <h4 style="font-size:18px;margin-bottom:4px;">核心团队</h4>
+        <p style="color:#8892b0;font-size:13px;">ETH Beijing 2026</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;width:200px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#27c93f,#1a9c3a);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:32px;color:white;">🔍</span>
+        </div>
+        <h4 style="font-size:18px;margin-bottom:4px;">Trail of Bits</h4>
+        <p style="color:#8892b0;font-size:13px;">Slither Framework</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;width:200px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:32px;color:white;">⛓️</span>
+        </div>
+        <h4 style="font-size:18px;margin-bottom:4px;">EAS Team</h4>
+        <p style="color:#8892b0;font-size:13px;">Attestation Protocol</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;width:200px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:32px;color:white;">🧠</span>
+        </div>
+        <h4 style="font-size:18px;margin-bottom:4px;">Xiaomi</h4>
+        <p style="color:#8892b0;font-size:13px;">MiMo AI Model</p>
+      </div>
+    </div>
+    
+    <div style="text-align:center;margin-top:40px;">
+      <a href="https://github.com/tiyadegure/eth-beijing-2026/graphs/contributors" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+        <span>View All Contributors</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="benchmarks">
+  <div class="container">
+    <h2 class="section-title section-center">⚡ 性能基准</h2>
+    <p class="section-subtitle section-center">AuditAI 的性能数据</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🚀</div>
+        <h3 style="font-size:36px;color:#667eea;margin-bottom:8px;">< 30s</h3>
+        <p style="color:#8892b0;font-size:14px;">典型合约的平均扫描时间</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🎯</div>
+        <h3 style="font-size:36px;color:#27c93f;margin-bottom:8px;">98.5%</h3>
+        <p style="color:#8892b0;font-size:14px;">检测准确率</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">📊</div>
+        <h3 style="font-size:36px;color:#f59e0b;margin-bottom:8px;">40%</h3>
+        <p style="color:#8892b0;font-size:14px;">比竞品更少误报</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">💾</div>
+        <h3 style="font-size:36px;color:#ef4444;margin-bottom:8px;">50MB</h3>
+        <p style="color:#8892b0;font-size:14px;">轻量级安装体积</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="contact">
+  <div class="container">
+    <h2 class="section-title section-center">📬 联系我们</h2>
+    <p class="section-subtitle section-center">有问题？我们很乐意听取您的意见</p>
+    
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="code-card" style="background:white;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;">
+        <div style="padding:32px;">
+          <form onsubmit="handleSubmit(event)" style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <label style="display:block;margin-bottom:8px;font-weight:600;color:#1f2937;">Name</label>
+              <input type="text" id="contactName" placeholder="您的姓名" required style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;transition:border-color 0.2s;">
+            </div>
+            
+            <div>
+              <label style="display:block;margin-bottom:8px;font-weight:600;color:#1f2937;">Email</label>
+              <input type="email" id="contactEmail" placeholder="your@email.com" required style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;transition:border-color 0.2s;">
+            </div>
+            
+            <div>
+              <label style="display:block;margin-bottom:8px;font-weight:600;color:#1f2937;">Message</label>
+              <textarea id="contactMessage" placeholder="您的消息..." rows="4" required style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;resize:vertical;transition:border-color 0.2s;"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:16px;">
+              发送消息
+            </button>
+          </form>
+          
+          <div id="contactSuccess" style="display:none;text-align:center;padding:32px;">
+            <div style="font-size:64px;margin-bottom:16px;">✅</div>
+            <h3 style="font-size:24px;margin-bottom:8px;">消息已发送！</h3>
+            <p style="color:#8892b0;">我们将在 24 小时内回复您。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="code-examples">
+  <div class="container">
+    <h2 class="section-title section-center">💻 代码示例</h2>
+    <p class="section-subtitle section-center">通过真实代码了解 AuditAI</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:24px;margin-top:40px;">
+      <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+        <div class="code-header" style="padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px;">
+          <span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#27c93f;"></span>
+          <span style="color:#8892b0;margin-left:12px;font-size:14px;">CLI 用法</span>
+        </div>
+        <pre style="padding:20px;margin:0;overflow-x:auto;font-size:14px;line-height:1.8;"><code style="color:#e6e6e6;"><span style="color:#8892b0;"># 扫描单个合约</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol
+
+<span style="color:#8892b0;"># 使用完整选项扫描</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol \
+    --detector all \
+    --attest \
+    --output report.md
+
+<span style="color:#8892b0;"># 使用知识库</span>
+<span style="color:#27c93f;">$</span> audit-ai scan Contract.sol \
+    --knowledge-base</code></pre>
+      </div>
+      
+      <div class="code-card" style="background:#1a1a2e;border-radius:12px;overflow:hidden;">
+        <div class="code-header" style="padding:12px 16px;background:#16213e;display:flex;align-items:center;gap:8px;">
+          <span style="width:12px;height:12px;border-radius:50%;background:#ff5f56;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#ffbd2e;"></span>
+          <span style="width:12px;height:12px;border-radius:50%;background:#27c93f;"></span>
+          <span style="color:#8892b0;margin-left:12px;font-size:14px;">Python SDK</span>
+        </div>
+        <pre style="padding:20px;margin:0;overflow-x:auto;font-size:14px;line-height:1.8;"><code style="color:#e6e6e6;"><span style="color:#c678dd;">from</span> audit_ai <span style="color:#c678dd;">import</span> Scanner
+
+<span style="color:#8892b0;"># 初始化扫描器</span>
+scanner = Scanner(
+    detectors=<span style="color:#98c379;">"all"</span>,
+    attest=<span style="color:#d19a66;">True</span>
+)
+
+<span style="color:#8892b0;"># 扫描合约</span>
+results = scanner.scan(
+    <span style="color:#98c379;">"Contract.sol"</span>
+)
+
+<span style="color:#8892b0;"># 打印发现</span>
+<span style="color:#c678dd;">for</span> finding <span style="color:#c678dd;">in</span> results.findings:
+    <span style="color:#56b6c2;">print</span>(f<span style="color:#98c379;">"[{finding.severity}] {finding.name}"</span>)</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="integration">
+  <div class="container">
+    <h2 class="section-title section-center">🔗 集成指南</h2>
+    <p class="section-subtitle section-center">将 AuditAI 集成到您的工作流中</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">🐙</span>
+          <h3 style="font-size:20px;">GitHub Actions</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;margin-bottom:16px;">将 AuditAI 添加到您的 CI/CD 流水线。每次推送自动扫描合约。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;">
+          <code style="font-size:13px;color:#1f2937;">uses: audit-ai/scan-action@v1</code>
+        </div>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">🦊</span>
+          <h3 style="font-size:20px;">VS Code 扩展</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;margin-bottom:16px;">编写 Solidity 代码时获得实时漏洞检测。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;">
+          <code style="font-size:13px;color:#1f2937;">ext install audit-ai.vscode</code>
+        </div>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">🔧</span>
+          <h3 style="font-size:20px;">MCP 协议</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;margin-bottom:16px;">通过 MCP 将 AuditAI 连接到 Claude、GPT 和其他 AI 模型。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;">
+          <code style="font-size:13px;color:#1f2937;">audit-ai mcp serve</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="report-template">
+  <div class="container">
+    <h2 class="section-title section-center">📄 报告模板</h2>
+    <p class="section-subtitle section-center">AuditAI 生成的示例审计报告</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="code-card" style="background:white;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;">
+        <div style="padding:32px;">
+          <div style="border-bottom:2px solid #e5e7eb;padding-bottom:16px;margin-bottom:24px;">
+            <h3 style="font-size:24px;margin-bottom:8px;">审计报告： VulnerableToken.sol</h3>
+            <p style="color:#8892b0;font-size:14px;">由 AuditAI 生成 v0.5.0 | 2026年6月7日</p>
+          </div>
+          
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:18px;margin-bottom:12px;color:#1f2937;">执行摘要</h4>
+            <p style="color:#4b5563;font-size:14px;line-height:1.6;">使用 8 个检测器家族对合约进行了分析，并与知识库中的 477 份审计报告进行了交叉引用。 <strong>2 critical</strong> and <strong>3 medium</strong> 严重性问题被发现.</p>
+          </div>
+          
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:18px;margin-bottom:12px;color:#1f2937;">发现</h4>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="padding:12px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span style="font-weight:600;color:#991b1b;">严重</span>
+                  <span style="color:#8892b0;font-size:13px;">SWC-107</span>
+                </div>
+                <p style="color:#4b5563;font-size:14px;margin:0;">withdraw() 中的重入漏洞</p>
+              </div>
+              
+              <div style="padding:12px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span style="font-weight:600;color:#991b1b;">严重</span>
+                  <span style="color:#8892b0;font-size:13px;">SWC-101</span>
+                </div>
+                <p style="color:#4b5563;font-size:14px;margin:0;">transfer() 中的整数溢出</p>
+              </div>
+              
+              <div style="padding:12px;background:#fffbeb;border-radius:8px;border-left:4px solid #f59e0b;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span style="font-weight:600;color:#92400e;">中等</span>
+                  <span style="color:#8892b0;font-size:13px;">SWC-106</span>
+                </div>
+                <p style="color:#4b5563;font-size:14px;margin:0;">管理员函数缺少访问控制</p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="padding:16px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;">
+            <p style="color:#166534;font-size:14px;margin:0;"><strong>EAS 存证：</strong> 0x7a8b9c...3f2e (链上证明可用)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="audit-stats">
+  <div class="container">
+    <h2 class="section-title section-center">📊 审计统计</h2>
+    <p class="section-subtitle section-center">AuditAI 使用的实时数据</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-top:40px;">
+      <div class="metric-card" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div class="stat-number" style="font-size:48px;font-weight:800;color:#667eea;font-family:var(--font-mono);" data-target="1247">0</div>
+        <div style="color:#8892b0;font-size:14px;margin-top:8px;">已分析合约</div>
+      </div>
+      
+      <div class="metric-card" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div class="stat-number" style="font-size:48px;font-weight:800;color:#27c93f;font-family:var(--font-mono);" data-target="3891">0</div>
+        <div style="color:#8892b0;font-size:14px;margin-top:8px;">发现的漏洞</div>
+      </div>
+      
+      <div class="metric-card" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div class="stat-number" style="font-size:48px;font-weight:800;color:#f59e0b;font-family:var(--font-mono);" data-target="98">0</div>
+        <div style="color:#8892b0;font-size:14px;margin-top:8px;">准确率 %</div>
+      </div>
+      
+      <div class="metric-card" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div class="stat-number" style="font-size:48px;font-weight:800;color:#ef4444;font-family:var(--font-mono);" data-target="477">0</div>
+        <div style="color:#8892b0;font-size:14px;margin-top:8px;">知识库报告</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="vulnerabilities">
+  <div class="container">
+    <h2 class="section-title section-center">🐛 常见漏洞</h2>
+    <p class="section-subtitle section-center">AuditAI 可以检测的漏洞类型</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="background:#fef2f2;color:#ef4444;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;">严重</span>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">重入攻击</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">状态更新前的外部调用允许攻击者提取资金。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="background:#fef2f2;color:#ef4444;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;">严重</span>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">整数溢出</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">没有 SafeMath 的算术运算可能溢出。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="background:#fffbeb;color:#f59e0b;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;">高</span>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">访问控制</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">敏感函数缺少或不当的访问控制。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <span style="background:#fffbeb;color:#f59e0b;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:600;">高</span>
+        </div>
+        <h3 style="font-size:18px;margin-bottom:8px;">抢跑交易</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">交易可以被矿工观察并利用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="deployment">
+  <div class="container">
+    <h2 class="section-title section-center">🚀 部署</h2>
+    <p class="section-subtitle section-center">将 AuditAI 部署到您的基础设施</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">☁️</span>
+          <h3 style="font-size:20px;">云部署</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">使用我们预构建的 Docker 镜像部署到 AWS、GCP 或 Azure。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;margin-top:16px;">
+          <code style="font-size:13px;color:#1f2937;">docker pull auditai/latest</code>
+        </div>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">🏠</span>
+          <h3 style="font-size:20px;">自托管</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">在您自己的基础设施上运行 AuditAI，获得最大控制权。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;margin-top:16px;">
+          <code style="font-size:13px;color:#1f2937;">pip install audit-ai[server]</code>
+        </div>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:32px;">🔌</span>
+          <h3 style="font-size:20px;">API 服务</h3>
+        </div>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">使用我们的托管 API 服务快速集成。</p>
+        <div class="code-card" style="background:#f8f9fa;border-radius:8px;padding:16px;margin-top:16px;">
+          <code style="font-size:13px;color:#1f2937;">api.audit-ai.tech/v1</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="compliance">
+  <div class="container">
+    <h2 class="section-title section-center">📋 合规性</h2>
+    <p class="section-subtitle section-center">满足行业标准和法规</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">🏛️</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">SWC 注册表</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">所有发现映射到智能合约弱点分类注册表。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">📊</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">CVSS 评分</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">行业标准通用漏洞评分系统。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">📄</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">审计报告</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">生成多种格式的合规审计报告。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">🔗</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">链上证明</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">通过 EAS 存证的不可变审计记录。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="certification">
+  <div class="container">
+    <h2 class="section-title section-center">🏆 认证</h2>
+    <p class="section-subtitle section-center">获得智能合约安全认证</p>
+    
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:64px;margin-bottom:24px;">🏆</div>
+        <h3 style="font-size:24px;margin-bottom:12px;">AuditAI 认证审计师</h3>
+        <p style="color:#8892b0;font-size:16px;line-height:1.6;margin-bottom:24px;">完成培训计划并通过认证考试，成为认证智能合约审计师。</p>
+        
+        <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:24px;">
+          <div style="background:#f0fdf4;padding:12px 20px;border-radius:8px;">
+            <span style="color:#166534;font-size:14px;">✓ 50+ 练习合约</span>
+          </div>
+          <div style="background:#f0fdf4;padding:12px 20px;border-radius:8px;">
+            <span style="color:#166534;font-size:14px;">✓ 真实场景</span>
+          </div>
+          <div style="background:#f0fdf4;padding:12px 20px;border-radius:8px;">
+            <span style="color:#166534;font-size:14px;">✓ 行业认可</span>
+          </div>
+        </div>
+        
+        <a href="#" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+          <span>立即报名</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="resources">
+  <div class="container">
+    <h2 class="section-title section-center">📚 资源</h2>
+    <p class="section-subtitle section-center">了解更多智能合约安全知识</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">📖</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">Documentation</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">综合指南和 API 参考。</p>
+        <a href="https://github.com/tiyadegure/eth-beijing-2026/tree/main/docs" style="color:#58a6ff;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-top:12px;">
+          阅读文档 →
+        </a>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">🎥</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">视频教程</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">适合所有技能水平的分步视频指南。</p>
+        <a href="#" style="color:#58a6ff;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-top:12px;">
+          观看视频 →
+        </a>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">💬</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">社区论坛</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">与其他用户交流问题和分享知识。</p>
+        <a href="#" style="color:#58a6ff;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-top:12px;">
+          加入论坛 →
+        </a>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="font-size:32px;margin-bottom:16px;">📝</div>
+        <h3 style="font-size:18px;margin-bottom:12px;">Blog</h3>
+        <p style="color:#8892b0;font-size:14px;line-height:1.6;">最新新闻、更新和安全洞察。</p>
+        <a href="#" style="color:#58a6ff;font-size:14px;display:inline-flex;align-items:center;gap:4px;margin-top:12px;">
+          阅读博客 →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="license">
+  <div class="container">
+    <h2 class="section-title section-center">📜 许可证</h2>
+    <p class="section-subtitle section-center">开源且免费使用</p>
+    
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:64px;margin-bottom:24px;">📜</div>
+        <h3 style="font-size:24px;margin-bottom:12px;">MIT 许可证</h3>
+        <p style="color:#8892b0;font-size:16px;line-height:1.6;margin-bottom:24px;">AuditAI is 100% open source under the MIT 许可证. You can use, modify, and distribute it freely.</p>
+        
+        <div style="background:#f8f9fa;padding:20px;border-radius:8px;text-align:left;margin-bottom:24px;">
+          <code style="font-size:13px;color:#1f2937;line-height:1.6;">
+            版权所有 (c) 2026 ETH Beijing 2026 团队<br><br>
+            特此免费授予任何获得本软件及相关文档文件副本的人不受限制地处理本软件的许可...
+          </code>
+        </div>
+        
+        <a href="https://github.com/tiyadegure/eth-beijing-2026/blob/main/LICENSE" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+          <span>查看完整许可证</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="contributing">
+  <div class="container">
+    <h2 class="section-title section-center">🤝 参与贡献</h2>
+    <p class="section-subtitle section-center">帮助我们改进 AuditAI</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:24px;margin-bottom:16px;">如何贡献</h3>
+        
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f8f9fa;border-radius:8px;">
+            <span style="background:#667eea;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;">1</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">Fork 仓库</h4>
+              <p style="color:#8892b0;font-size:14px;">在 GitHub 上点击 "Fork" 按钮创建您自己的副本。</p>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f8f9fa;border-radius:8px;">
+            <span style="background:#667eea;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;">2</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">创建分支</h4>
+              <p style="color:#8892b0;font-size:14px;">为您的功能或错误修复创建一个新分支。</p>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f8f9fa;border-radius:8px;">
+            <span style="background:#667eea;color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;">3</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">提交 Pull Request</h4>
+              <p style="color:#8892b0;font-size:14px;">推送您的更改并提交 PR 进行审查。</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="text-align:center;margin-top:24px;">
+          <a href="https://github.com/tiyadegure/eth-beijing-2026" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+            <span>在 GitHub 上查看</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="security-policy">
+  <div class="container">
+    <h2 class="section-title section-center">🔒 安全策略</h2>
+    <p class="section-subtitle section-center">我们如何处理安全漏洞</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:24px;margin-bottom:16px;">报告漏洞</h3>
+        <p style="color:#4b5563;font-size:16px;line-height:1.6;margin-bottom:24px;">如果您在 AuditAI 中发现安全漏洞，请负责任地报告。</p>
+        
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:16px;background:#fef2f2;border-radius:8px;border-left:4px solid #ef4444;">
+            <h4 style="font-size:16px;color:#991b1b;margin-bottom:8px;">请勿</h4>
+            <ul style="color:#4b5563;font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+              <li>公开 GitHub issue</li>
+              <li>公开披露漏洞</li>
+              <li>利用漏洞</li>
+            </ul>
+          </div>
+          
+          <div style="padding:16px;background:#f0fdf4;border-radius:8px;border-left:4px solid #22c55e;">
+            <h4 style="font-size:16px;color:#166534;margin-bottom:8px;">请这样做</h4>
+            <ul style="color:#4b5563;font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+              <li>发送邮件至 security@audit-ai.tech</li>
+              <li>包含详细的复现步骤</li>
+              <li>给我们时间响应</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div style="text-align:center;margin-top:24px;">
+          <a href="mailto:security@audit-ai.tech" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:8px;">
+            <span>报告漏洞</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="performance">
+  <div class="container">
+    <h2 class="section-title section-center">⚡ 性能对比</h2>
+    <p class="section-subtitle section-center">AuditAI 与其他工具的比较</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;">
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">🚀</div>
+            <h4 style="font-size:24px;color:#667eea;margin-bottom:4px;">3x</h4>
+            <p style="color:#8892b0;font-size:14px;">比 Mythril 快</p>
+          </div>
+          
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">🎯</div>
+            <h4 style="font-size:24px;color:#27c93f;margin-bottom:4px;">40%</h4>
+            <p style="color:#8892b0;font-size:14px;">更少误报</p>
+          </div>
+          
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">📊</div>
+            <h4 style="font-size:24px;color:#f59e0b;margin-bottom:4px;">98.5%</h4>
+            <p style="color:#8892b0;font-size:14px;">检测准确率</p>
+          </div>
+          
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:8px;">💾</div>
+            <h4 style="font-size:24px;color:#ef4444;margin-bottom:4px;">50MB</h4>
+            <p style="color:#8892b0;font-size:14px;">轻量级体积</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="technical">
+  <div class="container">
+    <h2 class="section-title section-center">🔧 技术细节</h2>
+    <p class="section-subtitle section-center">深入了解 AuditAI 的架构</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:20px;margin-bottom:16px;">检测引擎</h3>
+        <ul style="color:#4b5563;font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+          <li>8 个检测器家族</li>
+          <li>100+ 漏洞模式</li>
+          <li>自定义规则支持</li>
+          <li>增量分析</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:20px;margin-bottom:16px;">AI 代理</h3>
+        <ul style="color:#4b5563;font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+          <li>LLM 驱动的分析</li>
+          <li>上下文理解</li>
+          <li>自然语言报告</li>
+          <li>修复建议</li>
+        </ul>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:32px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <h3 style="font-size:20px;margin-bottom:16px;">知识库</h3>
+        <ul style="color:#4b5563;font-size:14px;line-height:1.8;margin:0;padding-left:20px;">
+          <li>477 份审计报告</li>
+          <li>RAG 驱动搜索</li>
+          <li>持续更新</li>
+          <li>社区贡献</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="audit-best-practices">
+  <div class="container">
+    <h2 class="section-title section-center">✅ 审计最佳实践</h2>
+    <p class="section-subtitle section-center">智能合约审计的有效技巧</p>
+    
+    <div style="max-width:800px;margin:0 auto;">
+      <div class="feature-card hover-lift" style="background:white;padding:40px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f0fdf4;border-radius:8px;">
+            <span style="color:#22c55e;font-size:20px;">✓</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">使用多种工具</h4>
+              <p style="color:#8892b0;font-size:14px;">将 AuditAI 与其他工具结合使用，获得全面覆盖。</p>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f0fdf4;border-radius:8px;">
+            <span style="color:#22c55e;font-size:20px;">✓</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">审查所有发现</h4>
+              <p style="color:#8892b0;font-size:14px;">不要忽略低严重性发现——它们可能导致严重问题。</p>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f0fdf4;border-radius:8px;">
+            <span style="color:#22c55e;font-size:20px;">✓</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">测试修复</h4>
+              <p style="color:#8892b0;font-size:14px;">始终使用单元测试和模糊测试验证您的修复。</p>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#f0fdf4;border-radius:8px;">
+            <span style="color:#22c55e;font-size:20px;">✓</span>
+            <div>
+              <h4 style="font-size:16px;margin-bottom:4px;">记录发现</h4>
+              <p style="color:#8892b0;font-size:14px;">保留所有发现及其处理方式的记录。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fade-in section" id="tool-integration">
+  <div class="container">
+    <h2 class="section-title section-center">🔌 工具集成</h2>
+    <p class="section-subtitle section-center">将 AuditAI 与您喜爱的工具连接</p>
+    
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;margin-top:40px;">
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🐙</div>
+        <h3 style="font-size:18px;margin-bottom:8px;">GitHub</h3>
+        <p style="color:#8892b0;font-size:14px;">自动化的 PR 评论附带审计结果。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🦊</div>
+        <h3 style="font-size:18px;margin-bottom:8px;">VS Code</h3>
+        <p style="color:#8892b0;font-size:14px;">在编辑器中实时检测漏洞。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">💬</div>
+        <h3 style="font-size:18px;margin-bottom:8px;">Slack</h3>
+        <p style="color:#8892b0;font-size:14px;">在团队频道中获取审计通知。</p>
+      </div>
+      
+      <div class="feature-card hover-lift" style="background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);text-align:center;">
+        <div style="font-size:48px;margin-bottom:16px;">🔗</div>
+        <h3 style="font-size:18px;margin-bottom:8px;">MCP</h3>
+        <p style="color:#8892b0;font-size:14px;">连接到 Claude、GPT 和其他 AI 模型。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <style>
 #scanBtn:hover {
