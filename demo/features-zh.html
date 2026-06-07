@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AuditAI 功能特性：双引擎检测、8 大检测器家族、477 份审计报告知识库、AI 驱动安全分析。">
-<meta property="og:title" content="功能特性 — AuditAI 智能合约安全">
-<meta property="og:description" content="双引擎检测、8 大检测器家族、477 份审计报告知识库、链上存证。">
-<title>功能特性 — AuditAI 智能合约安全</title>
+<meta name="description" content="AuditAI 功能特性：双引擎检测、8大检测器家族、477份审计报告等。">
+<title>AuditAI — 功能特性</title>
 <link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -37,48 +35,22 @@
   --font:'Inter','Noto Sans SC',system-ui,-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
   --font-mono:'SF Mono','Fira Code','Cascadia Code','Courier New',monospace;
 }
-
 html{scroll-behavior:smooth}
 body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-height:1.5;font-size:17px;letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
 
 /* ── Top Navigation ──────────────────────────────────────── */
-.top-nav{position:fixed;top:0;left:0;right:0;z-index:1001;height:64px;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px;transition:background .3s}
-.top-nav-inner{max-width:var(--max-w);margin:0 auto;padding:0 32px;width:100%;display:flex;align-items:center;justify-content:space-between}
-.top-nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;font-size:20px;letter-spacing:-0.3px}
-.top-nav-logo svg{width:28px;height:28px}
-.top-nav-links{display:flex;gap:32px;align-items:center}
-.top-nav-link{color:var(--ink);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s;position:relative}
-.top-nav-link:hover{color:var(--primary)}
-.top-nav-link.active{color:var(--primary)}
-.top-nav-link.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--primary);border-radius:1px}
-.top-nav-actions{display:flex;align-items:center;gap:16px}
-.lang-switch{text-decoration:none;color:var(--ink-muted);font-size:14px;padding:6px 12px;border-radius:var(--radius-sm);transition:all .2s}
-.lang-switch:hover{background:var(--canvas-parchment);color:var(--ink)}
-.github-btn{display:flex;align-items:center;gap:8px;text-decoration:none;color:#fff;background:var(--ink);padding:8px 16px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;transition:all .2s}
-.github-btn:hover{background:#333;transform:translateY(-1px)}
-.mobile-menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer;padding:8px}
-
-/* ── Side Navigation ─────────────────────────────────────── */
-.side-nav{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--canvas-parchment);border-right:1px solid var(--hairline);z-index:1000;transition:transform .3s ease;overflow-y:auto}
-.side-nav.collapsed{transform:translateX(-240px)}
-.nav-toggle{position:absolute;top:16px;right:-44px;width:36px;height:36px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1001;box-shadow:var(--shadow)}
-.nav-toggle-icon{font-size:16px;color:var(--ink)}
-.nav-menu{padding:16px 0}
-.nav-header{display:flex;align-items:center;gap:10px;padding:16px 20px 12px;border-bottom:1px solid var(--hairline)}
-.nav-logo{font-size:24px}
-.nav-title{font-size:16px;font-weight:700;color:var(--ink)}
-.nav-list{list-style:none;padding:8px 0}
-.nav-link{display:flex;align-items:center;gap:10px;padding:8px 20px;color:var(--ink-muted);text-decoration:none;font-size:13px;font-weight:500;transition:all .2s;border-radius:0 var(--radius-sm) var(--radius-sm) 0}
-.nav-link:hover{color:var(--primary);background:rgba(0,102,204,.06)}
-.nav-link.active{color:var(--primary);background:rgba(0,102,204,.1);font-weight:600}
-.nav-icon{font-size:16px;width:20px;text-align:center}
-.nav-label{flex:1}
-.nav-footer{padding:12px 20px;border-top:1px solid var(--hairline);margin-top:8px}
-.nav-github{display:flex;align-items:center;gap:8px;color:var(--ink-muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
-.nav-github:hover{color:var(--primary)}
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:1001;height:52px;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.top-nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-weight:700;font-size:16px}
+.top-nav-logo svg{width:24px;height:24px}
+.top-nav-links{display:flex;gap:28px;align-items:center}
+.top-nav-links a{color:var(--ink-muted);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+.top-nav-links a:hover,.top-nav-links a.active{color:var(--primary)}
+.top-nav-links a.active{font-weight:600}
+.top-nav-cta{background:var(--primary);color:#fff!important;padding:6px 16px;border-radius:var(--pill);font-weight:600;font-size:13px;transition:transform .15s,background .2s}
+.top-nav-cta:hover{background:var(--primary-focus);transform:scale(1.02)}
 
 /* ── Sections ────────────────────────────────────────────── */
-.section{padding:var(--section-pad) 32px}
+.section{padding:var(--section-pad) 32px;margin-bottom:0;position:relative}
 .section-inner{max-width:var(--max-w);margin:0 auto}
 .section-narrow{max-width:var(--max-w-narrow)}
 .section-dark{background:var(--surface-dark);color:var(--body-on-dark)}
@@ -92,32 +64,28 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .section-title{font-size:clamp(28px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
 .section-desc{font-size:18px;line-height:1.6;color:var(--ink-muted);max-width:640px}
 .section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-center .section-desc{margin:0 auto}
 
 /* ── Buttons ─────────────────────────────────────────────── */
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;border-radius:var(--pill);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px;text-shadow:none}
 .btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,102,204,.25)}
 .btn-primary:hover{background:var(--primary-focus);box-shadow:0 4px 16px rgba(0,102,204,.35);transform:translateY(-1px)}
 .btn-primary:active{transform:translateY(0) scale(0.98)}
-.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary);border-radius:var(--radius-sm)}
 .btn-outline:hover{background:var(--primary);color:#fff}
-.btn-ghost{background:transparent;color:var(--primary);padding:8px 0;border-radius:0}
-.btn-ghost:hover{color:var(--primary-focus)}
-.btn-ghost::after{content:'→';margin-left:4px;transition:transform .2s}
-.btn-ghost:hover::after{transform:translateX(4px)}
 .btn-white{background:#fff;color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1)}
 .btn-white:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);transform:translateY(-1px)}
 .btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
-/* ── Hero / Page Header ──────────────────────────────────── */
-.page-hero{padding:calc(120px + 64px) 32px 80px;background:linear-gradient(135deg,var(--primary) 0%,#004999 50%,#003366 100%);color:#fff;text-align:center;position:relative;overflow:hidden}
-.page-hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(255,255,255,.04) 0%,transparent 50%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
-@keyframes heroGlow{0%{transform:translate(0,0) rotate(0deg)}100%{transform:translate(-2%,3%) rotate(2deg)}}
-.page-hero .section-inner{position:relative;z-index:1}
-.page-hero .hero-title{color:#fff}
-.page-hero .hero-subtitle{color:rgba(255,255,255,.85)}
+/* ── Hero ────────────────────────────────────────────────── */
+.hero{padding-top:calc(100px + 52px);padding-bottom:60px;background:linear-gradient(180deg,#fff 0%,var(--canvas-parchment) 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(0,102,204,.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(0,102,204,.04) 0%,transparent 50%);pointer-events:none}
+.hero .section-inner{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,102,204,.08);color:var(--primary);border-radius:var(--pill);font-size:13px;font-weight:600;margin-bottom:24px}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--primary);border-radius:50%}
 
 /* ── Stats Row ───────────────────────────────────────────── */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:48px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-top:64px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:48px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-top:48px}
 .stat{text-align:center}
 .stat-value{font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--primary);margin-bottom:4px}
 .stat-label{font-size:14px;color:var(--ink-muted)}
@@ -137,27 +105,6 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .metric-value{font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px}
 .metric-label{font-size:14px;color:var(--ink-muted);font-weight:500}
 
-/* ── Code Cards ──────────────────────────────────────────── */
-.code-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
-.code-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .3s}
-.code-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);border-color:rgba(0,102,204,.15)}
-.code-header{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--hairline)}
-.code-icon{font-size:28px}
-.code-title{font-size:16px;font-weight:600}
-.code-stats{display:flex;gap:12px;margin-left:auto}
-.code-stat{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600}
-.code-stat-pass{color:#28c840}
-.code-stat-fail{color:#ff5f57}
-.code-stat-timeout{color:#febc2e}
-.code-body{padding:20px;font-family:var(--font-mono);font-size:13px;line-height:1.6;background:var(--surface-darker);color:#e0e0e0;overflow-x:auto;white-space:pre;position:relative}
-.code-body .kw{color:#c792ea}
-.code-body .fn{color:#82aaff}
-.code-body .tp{color:#ffcb6b}
-.code-body .str{color:#c3e88d}
-.code-body .num{color:#f78c6c}
-.code-body .cm{color:#6e6e73;font-style:italic}
-.code-body .op{color:#89ddff}
-
 /* ── Attestation Table ───────────────────────────────────── */
 .attestation{margin-top:48px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden}
 .att-row{display:grid;grid-template-columns:200px 1fr;padding:14px 24px;border-bottom:1px solid var(--hairline);font-size:14px;transition:background .2s}
@@ -165,6 +112,20 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .att-row:hover{background:var(--canvas-parchment)}
 .att-key{color:var(--ink-muted);font-weight:500}
 .att-value{font-family:var(--font-mono);font-size:13px}
+
+/* ── Knowledge Search ────────────────────────────────────── */
+.knowledge-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+.search-box{position:relative}
+.search-input{width:100%;padding:14px 20px 14px 44px;border:1.5px solid var(--hairline);border-radius:var(--pill);font-size:15px;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--canvas)}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,204,.1)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--ink-muted)}
+.search-results{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.search-result{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-md);padding:14px;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.search-result.visible{opacity:1;transform:translateY(0)}
+.search-result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.search-result-type{font-size:11px;font-weight:600;color:var(--primary);background:rgba(0,102,204,.08);padding:2px 8px;border-radius:var(--pill)}
+.search-result-score{font-size:11px;color:var(--ink-muted)}
+.search-result-text{font-size:13px;line-height:1.5;color:var(--ink)}
 
 /* ── Vulnerability Tabs ──────────────────────────────────── */
 .vuln-tabs{display:flex;gap:8px;margin-top:32px;justify-content:center;flex-wrap:wrap}
@@ -182,46 +143,11 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .vuln-detail-title{font-size:16px;font-weight:600}
 .vuln-detail-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
 
-/* ── Knowledge Search ────────────────────────────────────── */
-.knowledge-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
-.search-box{position:relative}
-.search-input{width:100%;padding:14px 20px 14px 44px;border:1.5px solid var(--hairline);border-radius:var(--pill);font-size:15px;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--canvas)}
-.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,204,.1)}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--ink-muted)}
-.search-results{margin-top:12px;display:flex;flex-direction:column;gap:8px}
-.search-result{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-md);padding:14px;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
-.search-result.visible{opacity:1;transform:translateY(0)}
-.search-result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.search-result-type{font-size:11px;font-weight:600;color:var(--primary);background:rgba(0,102,204,.08);padding:2px 8px;border-radius:var(--pill)}
-.search-result-score{font-size:11px;color:var(--ink-muted)}
-.search-result-text{font-size:13px;line-height:1.5;color:var(--ink)}
-
-/* ── Pipeline Steps ──────────────────────────────────────── */
-.pipeline-steps{display:flex;gap:16px;margin-top:48px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
-.pipeline-steps::-webkit-scrollbar{display:none}
-.pipeline-step{flex:1;min-width:200px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:24px;text-align:center;transition:box-shadow .3s,transform .3s;position:relative}
-.pipeline-step:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);transform:translateY(-4px);border-color:rgba(0,102,204,.15)}
-.pipeline-step-num{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin:0 auto 12px}
-.pipeline-step-title{font-size:15px;font-weight:600;margin-bottom:6px}
-.pipeline-step-desc{font-size:13px;color:var(--ink-muted);line-height:1.5}
-.pipeline-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-size:20px;flex-shrink:0;align-self:center}
-
 /* ── CTA Banner ──────────────────────────────────────────── */
 .cta-banner{background:linear-gradient(135deg,var(--primary) 0%,#004999 100%);border-radius:var(--radius-lg);padding:64px 48px;text-align:center;color:#fff;margin-top:48px}
 .cta-banner .section-title{color:#fff}
 .cta-banner .section-desc{color:rgba(255,255,255,.8);margin:0 auto 32px}
 .cta-banner .btn-white{font-size:18px;padding:16px 36px}
-
-/* ── Scroll to Top ───────────────────────────────────────── */
-.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center}
-.scroll-top.visible{opacity:1;transform:translateY(0)}
-.scroll-top:hover{background:var(--primary-focus);transform:translateY(-2px)}
-
-/* ── Scroll Reveal ───────────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
-.reveal.in-view{opacity:1;transform:translateY(0)}
-.stagger-item{opacity:0;transform:translateY(16px);transition:opacity .4s ease-out,transform .4s ease-out}
-.stagger-item.in-view{opacity:1;transform:translateY(0)}
 
 /* ── Footer ──────────────────────────────────────────────── */
 .footer{padding:64px 32px 32px;background:var(--canvas-parchment);border-top:1px solid var(--hairline)}
@@ -232,6 +158,42 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .footer-col a:hover{color:var(--primary)}
 .footer-bottom{max-width:var(--max-w);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-muted)}
 
+/* ── Scroll to Top ───────────────────────────────────────── */
+.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center}
+.scroll-top.visible{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:var(--primary-focus);transform:translateY(-2px)}
+
+/* ── Scroll Reveal ───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+/* ── Side Navigation ─────────────────────────────────────── */
+.side-nav{position:fixed;left:0;top:0;bottom:0;width:60px;background:rgba(13,17,23,0.95);backdrop-filter:blur(10px);border-right:1px solid #30363d;z-index:1000;transition:width .3s ease;overflow:hidden}
+.side-nav:hover,.side-nav.expanded{width:200px}
+.nav-toggle{padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;height:60px}
+.nav-toggle-icon{font-size:24px;color:#e6e6e6;transition:transform .3s}
+.side-nav:hover .nav-toggle-icon{transform:rotate(90deg)}
+.nav-menu{display:flex;flex-direction:column;height:calc(100% - 60px)}
+.nav-header{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #30363d;min-height:60px}
+.nav-logo{font-size:24px;flex-shrink:0}
+.nav-title{font-size:18px;font-weight:700;color:#e6e6e6;white-space:nowrap;opacity:0;transition:opacity .3s}
+.side-nav:hover .nav-title,.side-nav.expanded .nav-title{opacity:1}
+.nav-list{list-style:none;padding:8px 0;margin:0;flex:1;overflow-y:auto;overflow-x:hidden}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;color:#8b949e;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{background:#161b22;color:#58a6ff}
+.nav-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.nav-label{opacity:0;transition:opacity .3s;font-size:14px}
+.side-nav:hover .nav-label,.side-nav.expanded .nav-label{opacity:1}
+.nav-footer{padding:16px;border-top:1px solid #30363d}
+.nav-github{display:flex;align-items:center;gap:12px;color:#8b949e;text-decoration:none;padding:8px;border-radius:8px;transition:all .2s}
+.nav-github:hover{background:#161b22;color:#e6e6e6}
+.nav-github span{opacity:0;transition:opacity .3s;white-space:nowrap}
+.side-nav:hover .nav-github span,.side-nav.expanded .nav-github span{opacity:1}
+.nav-list::-webkit-scrollbar{width:4px}
+.nav-list::-webkit-scrollbar-track{background:transparent}
+.nav-list::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+section[id]{scroll-margin-top:80px}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media(max-width:1068px){
   .feature-grid,.metric-grid{grid-template-columns:repeat(2,1fr)}
@@ -240,46 +202,27 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
   .footer-inner{grid-template-columns:1fr 1fr}
 }
 @media(max-width:833px){
-  .code-grid{grid-template-columns:1fr}
   .feature-grid,.metric-grid{grid-template-columns:1fr}
-  .top-nav-links{gap:20px}
 }
 @media(max-width:768px){
-  .top-nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);flex-direction:column;padding:16px 32px;border-bottom:1px solid var(--hairline)}
-  .top-nav-links.show{display:flex}
-  .top-nav-actions{display:none}
-  .mobile-menu-btn{display:block}
-  .side-nav{display:none}
-  .page-hero{padding-top:100px}
+  .side-nav{width:0;border:none}
+  .side-nav.expanded{width:250px;box-shadow:4px 0 20px rgba(0,0,0,0.5)}
+  .nav-toggle{position:fixed;left:16px;top:64px;width:44px;height:44px;border-radius:8px;background:rgba(13,17,23,0.9);border:1px solid #30363d;z-index:1001}
+  .nav-title,.nav-label,.nav-github span{opacity:1!important}
+  .top-nav-links{gap:16px}
+  .top-nav-links a{font-size:13px}
 }
 @media(max-width:640px){
   .section{padding:56px 20px}
-  .page-hero{padding-top:100px}
+  .hero{padding-top:80px}
   .top-nav{padding:0 16px}
+  .top-nav-links{display:none}
   .stats-row{grid-template-columns:repeat(2,1fr);gap:24px}
   .footer-inner{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;gap:8px;text-align:center}
-  .pipeline-steps{flex-direction:column}
-  .pipeline-step{min-width:unset}
-}
-@media print{
-  .top-nav,.side-nav,.scroll-top{display:none!important}
-  .section{padding:40px 20px;break-inside:avoid}
-  .reveal{opacity:1!important;transform:none!important}
-  body{font-size:12px}
 }
 
-/* ── Section Spacing Fix ─────────────────────────────────── */
-.section{padding:var(--section-pad) 32px;margin-bottom:0;position:relative}
-.section-dark,.section-darker{padding-top:100px;padding-bottom:100px}
-.section-center .section-desc{margin:0 auto}
-
-/* ── Section Dividers ────────────────────────────────────── */
-.section + .section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(80%,600px);height:1px;background:linear-gradient(90deg,transparent,var(--hairline),transparent);z-index:1}
-.section-dark + .section::before,.section-darker + .section::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
-.section + .section-dark::before,.section + .section-darker::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
-
-/* ── Text Visibility on Dark Backgrounds ─────────────────── */
+/* ── Dark Section Overrides ──────────────────────────────── */
 .section-dark *{text-shadow:none}
 .section-darker *{text-shadow:none}
 .section-dark h2,.section-dark h3,.section-dark h4,.section-dark p,.section-dark span:not([style*="color"]),.section-dark .section-title,.section-dark .section-desc{color:#e6e6e6}
@@ -297,47 +240,27 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 .section-parchment h2,.section-parchment h3,.section-parchment h4,.section-parchment p,.section-parchment span:not([style*="color"]){color:var(--ink)}
 .hero-title,.hero-subtitle{color:var(--ink)}
 
-/* ── Code Block Improvements ─────────────────────────────── */
-pre{background:#1a1a2e;color:#e6e6e6;padding:20px;border-radius:var(--radius-md);overflow-x:auto;font-family:var(--font-mono);font-size:14px;line-height:1.6;position:relative}
-pre code{background:none;color:#e6e6e6;padding:0;border-radius:0;font-size:inherit}
-code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:0.9em}
-.code-body{background:#1a1a2e;color:#e6e6e6;padding:20px;border-radius:0 0 var(--radius-lg) var(--radius-lg);overflow-x:auto;position:relative}
-
-/* ── Button Style Improvements ───────────────────────────── */
-.btn{padding:12px 24px;border-radius:var(--radius-sm);text-shadow:none}
-.btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
-.btn:active{transform:translateY(0) scale(0.98)}
-.btn-outline{border-radius:var(--radius-sm)}
-
-/* ── Skip Link ──────────────────────────────────────────── */
-.skip-link{position:absolute;top:-100%;left:16px;background:var(--primary);color:#fff;padding:8px 16px;border-radius:var(--radius-sm);z-index:10000;font-size:14px;font-weight:600;text-decoration:none}
-.skip-link:focus{top:8px}
+/* ── Section Dividers ────────────────────────────────────── */
+.section + .section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(80%,600px);height:1px;background:linear-gradient(90deg,transparent,var(--hairline),transparent);z-index:1}
+.section-dark + .section::before,.section-darker + .section::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.section + .section-dark::before,.section + .section-darker::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
 </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;focus:position:static;width:auto;height:auto;">跳到主要内容</a>
 
 <!-- Top Navigation -->
 <nav class="top-nav">
-  <div class="top-nav-inner">
-    <a href="index-zh.html" class="top-nav-logo">
-      <svg viewBox="0 0 64 64" fill="none" width="28" height="28"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span>AuditAI</span>
-    </a>
-    <div class="top-nav-links" id="topNavLinks">
-      <a href="index-zh.html" class="top-nav-link">首页</a>
-      <a href="features-zh.html" class="top-nav-link active">功能特性</a>
-      <a href="docs/zh/" class="top-nav-link">文档</a>
-      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="top-nav-link">GitHub</a>
-    </div>
-    <div class="top-nav-actions">
-      <a href="features.html" class="lang-switch">English</a>
-      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="github-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-        GitHub
-      </a>
-    </div>
-    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">☰</button>
+  <a href="index.html" class="top-nav-logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AuditAI
+  </a>
+  <div class="top-nav-links">
+    <a href="index.html">首页</a>
+    <a href="features.html" class="active">功能特性</a>
+    <a href="docs/zh/">文档</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+    <a href="features-zh.html">中文</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="top-nav-cta">GitHub Star</a>
   </div>
 </nav>
 
@@ -352,14 +275,14 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
       <span class="nav-title">AuditAI</span>
     </div>
     <ul class="nav-list">
-      <li><a href="#hero" class="nav-link active" onclick="scrollToSection('hero')"><span class="nav-icon">🏠</span><span class="nav-label">功能特性</span></a></li>
-      <li><a href="#dual-engine" class="nav-link" onclick="scrollToSection('dual-engine')"><span class="nav-icon">🔍</span><span class="nav-label">双引擎检测</span></a></li>
-      <li><a href="#detectors" class="nav-link" onclick="scrollToSection('detectors')"><span class="nav-icon">🛡️</span><span class="nav-label">检测器家族</span></a></li>
-      <li><a href="#knowledge" class="nav-link" onclick="scrollToSection('knowledge')"><span class="nav-icon">📚</span><span class="nav-label">知识库</span></a></li>
+      <li><a href="index.html" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-label">首页</span></a></li>
+      <li><a href="#detection" class="nav-link" onclick="scrollToSection('detection')"><span class="nav-icon">🔍</span><span class="nav-label">检测</span></a></li>
+      <li><a href="#detectors" class="nav-link" onclick="scrollToSection('detectors')"><span class="nav-icon">🛡️</span><span class="nav-label">检测器</span></a></li>
+      <li><a href="#knowledge-base" class="nav-link" onclick="scrollToSection('knowledge-base')"><span class="nav-icon">📚</span><span class="nav-label">知识库</span></a></li>
       <li><a href="#tech-stack" class="nav-link" onclick="scrollToSection('tech-stack')"><span class="nav-icon">🛠️</span><span class="nav-label">技术栈</span></a></li>
-      <li><a href="#vulnerabilities" class="nav-link" onclick="scrollToSection('vulnerabilities')"><span class="nav-icon">🐛</span><span class="nav-label">常见漏洞</span></a></li>
-      <li><a href="#checklist" class="nav-link" onclick="scrollToSection('checklist')"><span class="nav-icon">✅</span><span class="nav-label">安全检查清单</span></a></li>
-      <li><a href="#comparison" class="nav-link" onclick="scrollToSection('comparison')"><span class="nav-icon">⚖️</span><span class="nav-label">工具对比</span></a></li>
+      <li><a href="#vulnerabilities" class="nav-link" onclick="scrollToSection('vulnerabilities')"><span class="nav-icon">🐛</span><span class="nav-label">漏洞</span></a></li>
+      <li><a href="#checklist" class="nav-link" onclick="scrollToSection('checklist')"><span class="nav-icon">✅</span><span class="nav-label">检查清单</span></a></li>
+      <li><a href="#comparison" class="nav-link" onclick="scrollToSection('comparison')"><span class="nav-icon">⚖️</span><span class="nav-label">对比</span></a></li>
     </ul>
     <div class="nav-footer">
       <a href="https://github.com/tiyadegure/eth-beijing-2026" class="nav-github" target="_blank">
@@ -372,147 +295,116 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
 
 <main id="main-content">
 
-<!-- Page Header Hero -->
-<section class="page-hero section-center" id="hero">
+<!-- Hero Section -->
+<section class="section hero section-center" id="hero">
   <div class="section-inner section-narrow reveal">
+    <div class="hero-badge">AuditAI · 智能合约安全</div>
     <h1 class="hero-title">功能特性</h1>
-    <p class="hero-subtitle">AI 驱动的全面智能合约安全分析。双引擎检测、477 份真实审计报告知识库、自动化 PoC 生成与链上存证。</p>
-    <div class="stats-row" style="border-color:rgba(255,255,255,.15)">
-      <div class="stat"><div class="stat-value" style="color:#fff">8</div><div class="stat-label" style="color:rgba(255,255,255,.7)">检测器家族</div></div>
-      <div class="stat"><div class="stat-value" style="color:#fff">477</div><div class="stat-label" style="color:rgba(255,255,255,.7)">审计报告</div></div>
-      <div class="stat"><div class="stat-value" style="color:#fff">2,450</div><div class="stat-label" style="color:rgba(255,255,255,.7)">知识片段</div></div>
-      <div class="stat"><div class="stat-value" style="color:#fff">5</div><div class="stat-label" style="color:rgba(255,255,255,.7)">检测层</div></div>
+    <p class="hero-subtitle">双引擎检测、AI 增强、链上证明 — 全面的智能合约安全保障。</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-value">8</div><div class="stat-label">检测器家族</div></div>
+      <div class="stat"><div class="stat-value">477</div><div class="stat-label">审计报告</div></div>
+      <div class="stat"><div class="stat-value">0.71</div><div class="stat-label">召回率</div></div>
+      <div class="stat"><div class="stat-value">5</div><div class="stat-label">检测层</div></div>
     </div>
   </div>
 </section>
 
-<!-- Dual-Engine Detection -->
-<section id="dual-engine" class="section section-center">
+<!-- 双引擎检测 -->
+<section id="detection" class="section section-center">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title">双引擎检测</h2>
-    <p class="section-desc" style="margin:0 auto 0">Slither + Aderyn 交叉验证，LLM 通过 RAG 知识增强。两套引擎互相验证，减少 40% 误报。</p>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <div class="feature-title">Slither 静态分析</div>
-        <div class="feature-desc">Trail of Bits 出品的行业标准静态分析器。80+ 内置检测器，覆盖常见漏洞模式。提取合约的继承关系、控制流和数据依赖图。</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🦀</div>
-        <div class="feature-title">Aderyn 分析</div>
-        <div class="feature-desc">Cyfrin 开发的 Rust 实现 Solidity 分析器。极快的分析速度，内存安全设计。与 Slither 交叉验证，消除单一引擎盲区。</div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🧠</div>
-        <div class="feature-title">LLM 智能增强</div>
-        <div class="feature-desc">MiMo V2.5 Pro 1T 参数模型，1M 上下文窗口。理解代码语义和业务逻辑，发现静态分析无法捕获的复杂漏洞。通过 RAG 知识库增强上下文。</div>
-      </div>
-    </div>
+    <p class="section-desc" style="margin:0 auto 0">Slither + Aderyn 交叉验证。LLM 通过 RAG 知识增强。8 个检测器家族，共识评分。</p>
     <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">8</div>
+        <div class="metric-label">检测器家族</div>
+      </div>
       <div class="metric-card">
         <div class="metric-value">0.71</div>
         <div class="metric-label">召回率</div>
       </div>
       <div class="metric-card">
-        <div class="metric-value">40%</div>
-        <div class="metric-label">更少误报</div>
-      </div>
-      <div class="metric-card">
         <div class="metric-value">38</div>
-        <div class="metric-label">次迭代提交</div>
+        <div class="metric-label">次提交</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 8 Detector Families -->
-<section id="detectors" class="section section-dark section-center">
-  <div class="section-inner section-narrow reveal">
+<!-- 8大检测器家族 -->
+<section id="detectors" class="section section-parchment">
+  <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">8 大检测器家族</h2>
-    <p class="section-desc" style="margin:0 auto 0">全面覆盖所有主要智能合约漏洞类型。每个检测器家族是一个独立的 Python 模块，可扩展、可配置。</p>
-    <div class="feature-grid">
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+    <p class="section-desc" style="margin:0 auto 0">全面覆盖所有主要漏洞类型。</p>
+    <div class="feature-grid" style="margin-top:48px">
+      <div class="feature-card">
         <div class="feature-icon">🔄</div>
-        <div class="feature-title" style="color:#fff">重入攻击</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">CEI 违规、跨函数重入、只读重入、ERC-777 钩子、transient storage 重入。</div>
+        <div class="feature-title">重入攻击</div>
+        <div class="feature-desc">CEI 违规、跨函数重入、只读重入、ERC-777 钩子。</div>
       </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="feature-card">
         <div class="feature-icon">🔢</div>
-        <div class="feature-title" style="color:#fff">算术漏洞</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">整数溢出/下溢、未检查返回值、除法精度损失、舍入错误。</div>
+        <div class="feature-title">算术漏洞</div>
+        <div class="feature-desc">整数溢出/下溢、未检查返回值、除法精度损失。</div>
       </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="feature-card">
         <div class="feature-icon">🔐</div>
-        <div class="feature-title" style="color:#fff">访问控制</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">缺少修饰符、未保护的初始化、tx.origin 认证、权限提升。</div>
+        <div class="feature-title">访问控制</div>
+        <div class="feature-desc">缺少修饰符、未保护的初始化、tx.origin 认证。</div>
       </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="feature-card">
         <div class="feature-icon">💰</div>
-        <div class="feature-title" style="color:#fff">闪电贷</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">预言机操控、现货价格依赖、三明治攻击向量、闪电贷套利。</div>
+        <div class="feature-title">闪电贷</div>
+        <div class="feature-desc">预言机操控、现货价格依赖、三明治攻击向量。</div>
       </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="feature-card">
         <div class="feature-icon">📞</div>
-        <div class="feature-title" style="color:#fff">外部调用</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">未检查低级调用、delegatecall 到不可信合约、Gas 欺诈。</div>
+        <div class="feature-title">外部调用</div>
+        <div class="feature-desc">未检查低级调用、delegatecall 到不可信合约、Gas 欺诈。</div>
       </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
+      <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <div class="feature-title" style="color:#fff">逻辑错误</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">时间戳依赖、区块号依赖、抢跑攻击易感性、MEV 漏洞。</div>
-      </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
-        <div class="feature-icon">⛽</div>
-        <div class="feature-title" style="color:#fff">Gas 漏洞</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">无界循环、Gas 欺诈、DoS 攻击向量、未优化存储模式。</div>
-      </div>
-      <div class="feature-card" style="background:var(--surface-darker);border-color:rgba(255,255,255,.08)">
-        <div class="feature-icon">🔄</div>
-        <div class="feature-title" style="color:#fff">升级安全</div>
-        <div class="feature-desc" style="color:rgba(255,255,255,.6)">代理存储冲突、初始化遗漏、升级安全性、UUPS/透明代理模式。</div>
+        <div class="feature-title">逻辑错误</div>
+        <div class="feature-desc">时间戳依赖、区块号依赖、抢跑攻击易感性。</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 477 Audit Reports Knowledge Base -->
-<section id="knowledge" class="section section-center">
+<!-- 477份审计报告 -->
+<section id="knowledge-base" class="section section-dark">
   <div class="section-inner section-narrow reveal">
-    <h2 class="section-title">477 份审计报告</h2>
-    <p class="section-desc" style="margin:0 auto 0">从 Solodit 知识库到向量索引。每一个漏洞模式，每一条攻击路径，都已索引并可语义搜索。</p>
+    <h2 class="section-title section-center">477 份审计报告</h2>
+    <p class="section-desc section-center" style="margin:0 auto 0">从 Solodit 知识库到向量索引。每一个漏洞模式，每一条攻击路径。</p>
     <div class="knowledge-layout">
       <div class="search-box">
         <span class="search-icon">⌕</span>
-        <input type="text" class="search-input" id="ragInput" placeholder="搜索知识库（如：重入攻击、闪电贷、预言机操控）...">
+        <input type="text" class="search-input" id="ragInput" placeholder="搜索知识库...">
         <div class="search-results" id="ragResults"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:16px">
         <div class="feature-card">
           <div class="feature-icon">📚</div>
           <div class="feature-title">知识来源</div>
-          <div class="feature-desc">477 篇 Solodit 真实审计报告 · 303 个漏洞参考 · EVMbench 检测模式</div>
+          <div class="feature-desc">477 篇 Solodit 报告 · 303 个漏洞参考 · EVMbench 模式</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🔍</div>
           <div class="feature-title">向量搜索</div>
-          <div class="feature-desc">ChromaDB 向量数据库 + all-MiniLM-L6-v2 嵌入模型 · 亚秒级语义相似度匹配</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <div class="feature-title">知识规模</div>
-          <div class="feature-desc">2,450 个向量索引片段 · 覆盖 DeFi、NFT、DAO、桥接等所有主要领域</div>
+          <div class="feature-desc">ChromaDB + all-MiniLM-L6-v2 嵌入 · 语义相似度匹配</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Technology Stack -->
-<section id="tech-stack" class="section section-parchment section-center">
-  <div class="section-inner section-narrow reveal">
+<!-- 技术栈 -->
+<section id="tech-stack" class="section">
+  <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">技术栈</h2>
     <p class="section-desc" style="margin:0 auto 0">每个组件都为可靠性、速度和开发者体验而精心选择。</p>
-    <div class="feature-grid">
+    <div class="feature-grid" style="margin-top:48px">
       <div class="feature-card">
         <div class="feature-icon">🐍</div>
         <div class="feature-title">Python 3.11+</div>
@@ -547,25 +439,24 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
   </div>
 </section>
 
-<!-- Common Vulnerabilities -->
-<section id="vulnerabilities" class="section section-dark section-center">
+<!-- 常见漏洞 -->
+<section id="vulnerabilities" class="section section-parchment">
   <div class="section-inner section-narrow reveal">
-    <h2 class="section-title">常见漏洞</h2>
-    <p class="section-desc" style="margin:0 auto 0">AuditAI 检测的典型漏洞类型。点击标签查看详细信息。</p>
+    <h2 class="section-title section-center">我们检测什么</h2>
+    <p class="section-desc section-center" style="margin:0 auto 0">AuditAI 识别并验证最关键的智能合约漏洞。</p>
     <div class="vuln-tabs">
       <button class="vuln-tab active" data-vuln="reentrancy">重入攻击</button>
       <button class="vuln-tab" data-vuln="overflow">整数溢出</button>
       <button class="vuln-tab" data-vuln="access">访问控制</button>
       <button class="vuln-tab" data-vuln="oracle">预言机操控</button>
       <button class="vuln-tab" data-vuln="flashloan">闪电贷</button>
-      <button class="vuln-tab" data-vuln="front">抢跑攻击</button>
     </div>
     <div id="vulnPanel-reentrancy" class="vuln-detail vuln-panel active">
       <div class="vuln-detail-header">
         <span class="vuln-severity vuln-severity-high">高危</span>
         <span class="vuln-detail-title">withdraw() 重入漏洞</span>
       </div>
-      <p class="vuln-detail-desc">withdraw() 函数在更新余额前发送 ETH，违反了 CEI（检查-效果-交互）模式。攻击者可通过 fallback 函数重入以耗尽合约资金。由 Slither (reentrancy-eth) 检测，并由 Foundry 模糊测试确认。修复方案：先更新状态，再进行外部调用。</p>
+      <p class="vuln-detail-desc">withdraw() 函数在更新余额前发送 ETH，违反了 CEI 模式。攻击者可通过 fallback 函数重入以耗尽资金。由 Slither (reentrancy-eth) 检测，并由 Foundry 模糊测试确认。</p>
     </div>
     <div id="vulnPanel-overflow" class="vuln-detail vuln-panel">
       <div class="vuln-detail-header">
@@ -579,7 +470,7 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
         <span class="vuln-severity vuln-severity-high">高危</span>
         <span class="vuln-detail-title">缺少访问控制</span>
       </div>
-      <p class="vuln-detail-desc">setOwner() 函数缺少任何修饰符，允许任何人获取合约所有权。与重入漏洞组合可创建关键攻击链。由 Aderyn 检测并通过 LLM 与 477 份审计报告的 RAG 知识交叉验证。</p>
+      <p class="vuln-detail-desc">setOwner() 函数缺少任何修饰符，允许任何人获取所有权。与重入漏洞组合可创建关键攻击链。由 Aderyn 检测并通过 LLM 与 477 份审计报告的 RAG 知识交叉验证。</p>
     </div>
     <div id="vulnPanel-oracle" class="vuln-detail vuln-panel">
       <div class="vuln-detail-header">
@@ -595,72 +486,53 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
       </div>
       <p class="vuln-detail-desc">deposit() 接受任意代币数量而不验证调用者实际余额。闪电贷可膨胀合约感知的 TVL。建议：使用 permit + transferFrom 并进行余额检查。通过 RAG 检索匹配 EVMbench 模式发现。</p>
     </div>
-    <div id="vulnPanel-front" class="vuln-detail vuln-panel">
-      <div class="vuln-detail-header">
-        <span class="vuln-severity vuln-severity-medium">中危</span>
-        <span class="vuln-detail-title">抢跑攻击（Front-Running）</span>
-      </div>
-      <p class="vuln-detail-desc">交易排序依赖（TOD）和 MEV 漏洞。公开的 mempool 允许矿工/验证者或搜索者通过重排交易获利。建议使用提交-揭示方案或私有交易池。</p>
-    </div>
   </div>
 </section>
 
-<!-- Security Checklist -->
-<section id="checklist" class="section section-center">
-  <div class="section-inner section-narrow reveal">
+<!-- 安全检查清单 -->
+<section id="checklist" class="section">
+  <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">安全检查清单</h2>
-    <p class="section-desc" style="margin:0 auto 0">AuditAI 在每个合约中系统性检查的完整清单。</p>
-    <div class="attestation" style="max-width:720px;margin:48px auto 0">
-      <div class="att-row" style="font-weight:600;background:var(--canvas-parchment)">
-        <span class="att-key">检查类别</span>
-        <span class="att-value">检查内容</span>
+    <p class="section-desc" style="margin:0 auto 32px">AuditAI 在每个合约中检查的内容。</p>
+    <div class="attestation" style="max-width:640px;margin:0 auto">
+      <div class="att-row">
+        <span class="att-key">重入攻击</span>
+        <span class="att-value">CEI 违规、跨函数、只读重入</span>
       </div>
       <div class="att-row">
-        <span class="att-key">🔄 重入攻击</span>
-        <span class="att-value">CEI 违规、跨函数重入、只读重入、ERC-777 钩子</span>
+        <span class="att-key">访问控制</span>
+        <span class="att-value">缺少修饰符、tx.origin、未保护初始化</span>
       </div>
       <div class="att-row">
-        <span class="att-key">🔐 访问控制</span>
-        <span class="att-value">缺少修饰符、tx.origin 认证、未保护初始化</span>
+        <span class="att-key">算术漏洞</span>
+        <span class="att-value">溢出、下溢、未检查返回值</span>
       </div>
       <div class="att-row">
-        <span class="att-key">🔢 算术漏洞</span>
-        <span class="att-value">溢出、下溢、未检查返回值、除法精度损失</span>
+        <span class="att-key">闪电贷</span>
+        <span class="att-value">预言机操控、价格依赖</span>
       </div>
       <div class="att-row">
-        <span class="att-key">💰 闪电贷</span>
-        <span class="att-value">预言机操控、价格依赖、TVL 膨胀</span>
-      </div>
-      <div class="att-row">
-        <span class="att-key">📞 外部调用</span>
+        <span class="att-key">外部调用</span>
         <span class="att-value">未检查调用、delegatecall、Gas 欺诈</span>
       </div>
       <div class="att-row">
-        <span class="att-key">📊 逻辑错误</span>
-        <span class="att-value">时间戳依赖、区块号依赖、抢跑攻击</span>
-      </div>
-      <div class="att-row">
-        <span class="att-key">⛽ Gas 优化</span>
-        <span class="att-value">无界循环、存储模式、DoS 向量</span>
-      </div>
-      <div class="att-row">
-        <span class="att-key">🔄 升级安全</span>
-        <span class="att-value">代理冲突、初始化、UUPS/透明代理</span>
+        <span class="att-key">逻辑漏洞</span>
+        <span class="att-value">时间戳依赖、抢跑攻击</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Tool Comparison -->
-<section id="comparison" class="section section-parchment section-center">
+<!-- 工具对比 -->
+<section id="comparison" class="section section-dark">
   <div class="section-inner section-narrow reveal">
-    <h2 class="section-title">工具对比</h2>
-    <p class="section-desc" style="margin:0 auto 32px">AuditAI 与传统安全工具的全面对比。</p>
-    <div class="attestation" style="max-width:720px;margin:0 auto">
-      <div class="att-row" style="font-weight:600;background:var(--canvas-parchment)">
+    <h2 class="section-title section-center">工具对比</h2>
+    <p class="section-desc section-center" style="margin:0 auto 32px">看看我们与传统安全工具的对比。</p>
+    <div class="attestation">
+      <div class="att-row" style="font-weight:600;background:rgba(255,255,255,.05)">
         <span class="att-key">功能</span>
         <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
-          <span style="color:var(--primary);font-weight:700">AuditAI</span><span>Slither</span><span>人工审计</span>
+          <span>AuditAI</span><span>Slither</span><span>人工审计</span>
         </span>
       </div>
       <div class="att-row">
@@ -676,21 +548,9 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
         </span>
       </div>
       <div class="att-row">
-        <span class="att-key">RAG 知识库</span>
-        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
-          <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#febc2e">部分</span>
-        </span>
-      </div>
-      <div class="att-row">
         <span class="att-key">PoC 生成</span>
         <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
           <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#28c840">✓</span>
-        </span>
-      </div>
-      <div class="att-row">
-        <span class="att-key">自动修补</span>
-        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
-          <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#ff5f57">✕</span>
         </span>
       </div>
       <div class="att-row">
@@ -735,7 +595,7 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <a href="index-zh.html" class="top-nav-logo" style="color:var(--ink)">
+      <a href="#" class="nav-logo" style="color:var(--ink)">
         <svg viewBox="0 0 64 64" fill="none" width="28" height="28"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         AuditAI
       </a>
@@ -771,41 +631,90 @@ code{background:#1a1a2e;color:#e6e6e6;padding:2px 6px;border-radius:4px;font-fam
 <button class="scroll-top" id="scrollTop" aria-label="回到顶部">↑</button>
 
 <script>
-// Side nav toggle
-const sideNav = document.getElementById('sideNav');
+// Toggle mobile nav
 function toggleNav() {
-  sideNav.classList.toggle('collapsed');
+  document.getElementById('sideNav').classList.toggle('expanded');
 }
 
+// Smooth scroll to section
 function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('sideNav').classList.remove('expanded');
   }
 }
 
-// Mobile menu
-function toggleMobileMenu() {
-  document.getElementById('topNavLinks').classList.toggle('show');
+// Highlight active section on scroll
+function updateActiveSection() {
+  const sections = document.querySelectorAll('section[id]');
+  const scrollPos = window.scrollY + 100;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
 }
 
-// Scroll reveal + stagger
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('in-view');
-      if (entry.target.classList.contains('stagger-parent')) {
-        entry.target.querySelectorAll('.stagger-item').forEach((item, i) => {
-          setTimeout(() => item.classList.add('in-view'), i * 100);
-        });
-      }
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+  if (scrollTimeout) clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(updateActiveSection, 50);
+});
+
+document.addEventListener('DOMContentLoaded', updateActiveSection);
+
+// Close nav on outside click (mobile)
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('sideNav');
+  if (window.innerWidth <= 768 && !nav.contains(e.target)) {
+    nav.classList.remove('expanded');
+  }
+});
+
+// RAG search
+const inp = document.getElementById('ragInput');
+const res = document.getElementById('ragResults');
+let tmr;
+const data = [
+  {t:'withdraw() 重入漏洞 — 无 CEI 模式...',s:0.94,y:'solodit'},
+  {t:'预言机价格操控 — 现货价格...',s:0.89,y:'solodit'},
+  {t:'setOwner() 缺少访问控制...',s:0.87,y:'vulnerability_reference'},
+  {t:'deposit() 闪电贷攻击向量...',s:0.82,y:'solodit'},
+  {t:'余额计算整数溢出...',s:0.79,y:'vulnerability_reference'}
+];
+inp.addEventListener('input', () => {
+  clearTimeout(tmr);
+  res.innerHTML = '';
+  if (inp.value.length < 2) return;
+  tmr = setTimeout(() => {
+    data.forEach((x, i) => {
+      const d = document.createElement('div');
+      d.className = 'search-result';
+      d.innerHTML = `<div class="search-result-header"><span class="search-result-type">${x.y}</span><span class="search-result-score">Score: ${x.s}</span></div><div class="search-result-text">${x.t}</div>`;
+      res.appendChild(d);
+      setTimeout(() => d.classList.add('visible'), i * 100 + 100);
+    });
+  }, 300);
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => {
+    if (x.isIntersecting) {
+      x.target.classList.add('in-view');
     }
   });
 }, { threshold: 0.12 });
-
-document.querySelectorAll('.reveal, .stagger-item').forEach(el => obs.observe(el));
-document.querySelectorAll('.feature-grid, .metric-grid, .code-grid, .pipeline-steps').forEach(g => g.classList.add('stagger-parent'));
-document.querySelectorAll('.feature-grid > .feature-card, .metric-grid > .metric-card, .code-grid > .code-card, .pipeline-steps > .pipeline-step').forEach(el => el.classList.add('stagger-item'));
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // Vulnerability tabs
 document.querySelectorAll('.vuln-tab').forEach(tab => {
@@ -813,9 +722,7 @@ document.querySelectorAll('.vuln-tab').forEach(tab => {
     document.querySelectorAll('.vuln-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.vuln-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
-    const panelId = 'vulnPanel-' + tab.dataset.vuln;
-    const panel = document.getElementById(panelId);
-    if (panel) panel.classList.add('active');
+    document.getElementById('vulnPanel-' + tab.dataset.vuln).classList.add('active');
   });
 });
 
@@ -825,79 +732,6 @@ window.addEventListener('scroll', () => {
   scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
 }, { passive: true });
 scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-// RAG search demo
-const ragInput = document.getElementById('ragInput');
-const ragResults = document.getElementById('ragResults');
-let searchTimer;
-const searchData = [
-  { t: 'withdraw() 中的重入漏洞 — 未遵循 CEI 模式...', s: 0.94, y: 'solodit' },
-  { t: '预言机价格操控 — 通过现货价格闪电互换...', s: 0.89, y: 'solodit' },
-  { t: 'setOwner() 缺少访问控制 — 任何人可获取所有权...', s: 0.87, y: '漏洞参考' },
-  { t: 'deposit() 闪电贷攻击向量 — TVL 膨胀...', s: 0.82, y: 'solodit' },
-  { t: '余额计算整数溢出 — 大额存款时可能发生...', s: 0.79, y: '漏洞参考' }
-];
-
-ragInput.addEventListener('input', () => {
-  clearTimeout(searchTimer);
-  ragResults.innerHTML = '';
-  if (ragInput.value.length < 2) return;
-  searchTimer = setTimeout(() => {
-    searchData.forEach((item, i) => {
-      const d = document.createElement('div');
-      d.className = 'search-result';
-      d.innerHTML = `<div class="search-result-header"><span class="search-result-type">${item.y}</span><span class="search-result-score">相似度: ${item.s}</span></div><div class="search-result-text">${item.t}</div>`;
-      ragResults.appendChild(d);
-      setTimeout(() => d.classList.add('visible'), i * 100 + 100);
-    });
-  }, 300);
-});
-
-// Counter animation for stat values
-function animateCounters() {
-  document.querySelectorAll('.stat-value').forEach(el => {
-    const target = el.textContent.replace(/,/g, '');
-    if (isNaN(target)) return;
-    const end = parseInt(target);
-    const duration = 1500;
-    const start = performance.now();
-    function step(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.floor(end * eased).toLocaleString();
-      if (progress < 1) requestAnimationFrame(step);
-      else el.textContent = end.toLocaleString();
-    }
-    requestAnimationFrame(step);
-  });
-}
-const statsObs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      animateCounters();
-      statsObs.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.3 });
-document.querySelectorAll('.stats-row').forEach(el => statsObs.observe(el));
-
-// Active side nav link tracking
-window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section[id]');
-  let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    if (window.scrollY >= sectionTop) {
-      current = section.getAttribute('id');
-    }
-  });
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) {
-      link.classList.add('active');
-    }
-  });
-}, { passive: true });
 </script>
 
 </body>

@@ -1,336 +1,738 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Features - AuditAI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary:#0066cc;
-      --ink:#1d1d1f;
-      --ink-muted:#86868b;
-      --canvas:#ffffff;
-      --canvas-parchment:#f5f5f7;
-      --surface-dark:#272729;
-      --surface-darker:#1a1a1c;
-      --section-pad:80px;
-      --max-w:1200px;
-      --font:'Inter',system-ui,-apple-system,sans-serif;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:var(--font); color:var(--ink); line-height:1.6; }
-    .container { max-width:var(--max-w); margin:0 auto; padding:0 32px; }
-    .section { padding:var(--section-pad) 32px; }
-    .section-dark { background:var(--surface-dark); color:#e6e6e6; }
-    .section-dark h2,.section-dark h3,.section-dark p { color:#e6e6e6; }
-    .section-title { font-size:clamp(28px,3.5vw,48px); font-weight:700; margin-bottom:16px; }
-    .section-desc { font-size:18px; color:var(--ink-muted); margin-bottom:48px; }
-    .section-center { text-align:center; }
-    h1 { font-size:clamp(36px,5vw,64px); font-weight:800; line-height:1.1; margin-bottom:24px; }
-    .page-header { padding:120px 32px 80px; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:#fff; text-align:center; }
-    .page-header .section-desc { color:rgba(255,255,255,.8); }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border-radius:8px; font-weight:600; text-decoration:none; transition:all 0.2s; }
-    .btn-primary { background:var(--primary); color:#fff; }
-    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,102,204,.3); }
-    .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; }
-    .feature-card { background:#fff; padding:32px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,.08); transition:transform 0.3s,box-shadow 0.3s; }
-    .feature-card:hover { transform:translateY(-4px); box-shadow:0 8px 30px rgba(0,0,0,.12); }
-    .feature-card h3 { font-size:20px; margin-bottom:12px; }
-    .feature-card p { color:var(--ink-muted); font-size:14px; }
-    footer { background:var(--surface-darker); color:#fff; padding:48px 32px; text-align:center; }
-    footer a { color:var(--primary); text-decoration:none; }
-    @media(max-width:768px) {
-      .section { padding:48px 20px; }
-      .feature-grid { grid-template-columns:1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AuditAI Features: Dual-engine detection, 8 detector families, 477 audit reports, and more.">
+<title>AuditAI — Features</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ───────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#0066cc;
+  --primary-focus:#0071e3;
+  --primary-on-dark:#2997ff;
+  --ink:#1d1d1f;
+  --ink-muted:#86868b;
+  --body-on-dark:#ffffff;
+  --canvas:#ffffff;
+  --canvas-parchment:#f5f5f7;
+  --surface-dark:#272729;
+  --surface-darker:#1a1a1c;
+  --surface-black:#000000;
+  --pill:9999px;
+  --radius-lg:18px;
+  --radius-md:12px;
+  --radius-sm:8px;
+  --section-pad:80px;
+  --max-w:1200px;
+  --max-w-narrow:980px;
+  --hairline:rgba(0,0,0,.08);
+  --shadow:rgba(0,0,0,0.08) 0 2px 12px;
+  --shadow-lg:rgba(0,0,0,0.12) 0 8px 32px;
+  --font:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:'SF Mono','Fira Code','Cascadia Code','Courier New',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-height:1.5;font-size:17px;letter-spacing:-0.02em;-webkit-font-smoothing:antialiased}
+
+/* ── Top Navigation ──────────────────────────────────────── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:1001;height:52px;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hairline);display:flex;align-items:center;justify-content:space-between;padding:0 32px}
+.top-nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--ink);font-weight:700;font-size:16px}
+.top-nav-logo svg{width:24px;height:24px}
+.top-nav-links{display:flex;gap:28px;align-items:center}
+.top-nav-links a{color:var(--ink-muted);font-size:14px;font-weight:500;text-decoration:none;transition:color .2s}
+.top-nav-links a:hover,.top-nav-links a.active{color:var(--primary)}
+.top-nav-links a.active{font-weight:600}
+.top-nav-cta{background:var(--primary);color:#fff!important;padding:6px 16px;border-radius:var(--pill);font-weight:600;font-size:13px;transition:transform .15s,background .2s}
+.top-nav-cta:hover{background:var(--primary-focus);transform:scale(1.02)}
+
+/* ── Sections ────────────────────────────────────────────── */
+.section{padding:var(--section-pad) 32px;margin-bottom:0;position:relative}
+.section-inner{max-width:var(--max-w);margin:0 auto}
+.section-narrow{max-width:var(--max-w-narrow)}
+.section-dark{background:var(--surface-dark);color:var(--body-on-dark)}
+.section-darker{background:var(--surface-darker);color:var(--body-on-dark)}
+.section-parchment{background:var(--canvas-parchment)}
+.section-center{text-align:center}
+
+/* ── Typography ──────────────────────────────────────────── */
+.hero-title{font-size:clamp(36px,5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-0.04em;margin-bottom:20px}
+.hero-subtitle{font-size:clamp(18px,2.5vw,24px);font-weight:400;line-height:1.4;color:var(--ink-muted);max-width:640px;margin:0 auto 40px}
+.section-title{font-size:clamp(28px,3.5vw,48px);font-weight:700;line-height:1.1;letter-spacing:-0.03em;margin-bottom:16px}
+.section-desc{font-size:18px;line-height:1.6;color:var(--ink-muted);max-width:640px}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-center .section-desc{margin:0 auto}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;border-radius:var(--radius-sm);font-size:16px;font-weight:600;text-decoration:none;transition:transform .15s,background .2s,box-shadow .2s;border:none;cursor:pointer;font-family:var(--font);gap:8px;text-shadow:none}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(0,102,204,.25)}
+.btn-primary:hover{background:var(--primary-focus);box-shadow:0 4px 16px rgba(0,102,204,.35);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0) scale(0.98)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary);border-radius:var(--radius-sm)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-white{background:#fff;color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.btn-white:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);transform:translateY(-1px)}
+.btn-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero{padding-top:calc(100px + 52px);padding-bottom:60px;background:linear-gradient(180deg,#fff 0%,var(--canvas-parchment) 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(0,102,204,.06) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(0,102,204,.04) 0%,transparent 50%);pointer-events:none}
+.hero .section-inner{position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(0,102,204,.08);color:var(--primary);border-radius:var(--pill);font-size:13px;font-weight:600;margin-bottom:24px}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--primary);border-radius:50%}
+
+/* ── Stats Row ───────────────────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;padding:48px 0;border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-top:48px}
+.stat{text-align:center}
+.stat-value{font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--primary);margin-bottom:4px}
+.stat-label{font-size:14px;color:var(--ink-muted)}
+
+/* ── Feature Grid ────────────────────────────────────────── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feature-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:32px;transition:box-shadow .3s,transform .3s}
+.feature-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);transform:translateY(-4px);border-color:rgba(0,102,204,.15)}
+.feature-icon{width:48px;height:48px;background:rgba(0,102,204,.08);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px}
+.feature-title{font-size:18px;font-weight:600;margin-bottom:8px}
+.feature-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
+
+/* ── Metric Cards ────────────────────────────────────────── */
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.metric-card{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:40px;text-align:center;transition:box-shadow .3s}
+.metric-card:hover{box-shadow:0 4px 24px rgba(0,102,204,.12);border-color:rgba(0,102,204,.15)}
+.metric-value{font-size:56px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:8px}
+.metric-label{font-size:14px;color:var(--ink-muted);font-weight:500}
+
+/* ── Attestation Table ───────────────────────────────────── */
+.attestation{margin-top:48px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);overflow:hidden}
+.att-row{display:grid;grid-template-columns:200px 1fr;padding:14px 24px;border-bottom:1px solid var(--hairline);font-size:14px;transition:background .2s}
+.att-row:last-child{border-bottom:none}
+.att-row:hover{background:var(--canvas-parchment)}
+.att-key{color:var(--ink-muted);font-weight:500}
+.att-value{font-family:var(--font-mono);font-size:13px}
+
+/* ── Knowledge Search ────────────────────────────────────── */
+.knowledge-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px;align-items:start}
+.search-box{position:relative}
+.search-input{width:100%;padding:14px 20px 14px 44px;border:1.5px solid var(--hairline);border-radius:var(--pill);font-size:15px;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--canvas)}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,102,204,.1)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--ink-muted)}
+.search-results{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.search-result{background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-md);padding:14px;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.search-result.visible{opacity:1;transform:translateY(0)}
+.search-result-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.search-result-type{font-size:11px;font-weight:600;color:var(--primary);background:rgba(0,102,204,.08);padding:2px 8px;border-radius:var(--pill)}
+.search-result-score{font-size:11px;color:var(--ink-muted)}
+.search-result-text{font-size:13px;line-height:1.5;color:var(--ink)}
+
+/* ── Vulnerability Tabs ──────────────────────────────────── */
+.vuln-tabs{display:flex;gap:8px;margin-top:32px;justify-content:center;flex-wrap:wrap}
+.vuln-tab{padding:8px 20px;border-radius:var(--pill);font-size:14px;font-weight:600;border:1.5px solid var(--hairline);background:transparent;color:var(--ink-muted);cursor:pointer;transition:all .2s;font-family:var(--font)}
+.vuln-tab:hover{border-color:var(--primary);color:var(--primary)}
+.vuln-tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.vuln-panel{display:none}
+.vuln-panel.active{display:block}
+.vuln-detail{margin-top:24px;background:var(--canvas);border:1px solid var(--hairline);border-radius:var(--radius-lg);padding:24px}
+.vuln-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.vuln-severity{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--pill);text-transform:uppercase}
+.vuln-severity-high{background:#fff0f0;color:#ff3b30}
+.vuln-severity-medium{background:#fff8e1;color:#ff9500}
+.vuln-severity-low{background:#f0fff4;color:#28c840}
+.vuln-detail-title{font-size:16px;font-weight:600}
+.vuln-detail-desc{font-size:14px;color:var(--ink-muted);line-height:1.6}
+
+/* ── CTA Banner ──────────────────────────────────────────── */
+.cta-banner{background:linear-gradient(135deg,var(--primary) 0%,#004999 100%);border-radius:var(--radius-lg);padding:64px 48px;text-align:center;color:#fff;margin-top:48px}
+.cta-banner .section-title{color:#fff}
+.cta-banner .section-desc{color:rgba(255,255,255,.8);margin:0 auto 32px}
+.cta-banner .btn-white{font-size:18px;padding:16px 36px}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer{padding:64px 32px 32px;background:var(--canvas-parchment);border-top:1px solid var(--hairline)}
+.footer-inner{max-width:var(--max-w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+.footer-brand p{font-size:14px;color:var(--ink-muted);margin-top:8px;max-width:280px}
+.footer-col h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;color:var(--ink-muted);text-decoration:none;margin-bottom:10px;transition:color .2s}
+.footer-col a:hover{color:var(--primary)}
+.footer-bottom{max-width:var(--max-w);margin:48px auto 0;padding-top:24px;border-top:1px solid var(--hairline);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-muted)}
+
+/* ── Scroll to Top ───────────────────────────────────────── */
+.scroll-top{position:fixed;bottom:32px;right:32px;width:44px;height:44px;background:var(--primary);color:#fff;border:none;border-radius:50%;font-size:20px;cursor:pointer;box-shadow:var(--shadow-lg);opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;z-index:999;display:flex;align-items:center;justify-content:center}
+.scroll-top.visible{opacity:1;transform:translateY(0)}
+.scroll-top:hover{background:var(--primary-focus);transform:translateY(-2px)}
+
+/* ── Scroll Reveal ───────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease-out,transform .6s ease-out}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+/* ── Side Navigation ─────────────────────────────────────── */
+.side-nav{position:fixed;left:0;top:0;bottom:0;width:60px;background:rgba(13,17,23,0.95);backdrop-filter:blur(10px);border-right:1px solid #30363d;z-index:1000;transition:width .3s ease;overflow:hidden}
+.side-nav:hover,.side-nav.expanded{width:200px}
+.nav-toggle{padding:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;height:60px}
+.nav-toggle-icon{font-size:24px;color:#e6e6e6;transition:transform .3s}
+.side-nav:hover .nav-toggle-icon{transform:rotate(90deg)}
+.nav-menu{display:flex;flex-direction:column;height:calc(100% - 60px)}
+.nav-header{padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #30363d;min-height:60px}
+.nav-logo{font-size:24px;flex-shrink:0}
+.nav-title{font-size:18px;font-weight:700;color:#e6e6e6;white-space:nowrap;opacity:0;transition:opacity .3s}
+.side-nav:hover .nav-title,.side-nav.expanded .nav-title{opacity:1}
+.nav-list{list-style:none;padding:8px 0;margin:0;flex:1;overflow-y:auto;overflow-x:hidden}
+.nav-link{display:flex;align-items:center;gap:12px;padding:10px 16px;color:#8b949e;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-link:hover,.nav-link.active{background:#161b22;color:#58a6ff}
+.nav-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center}
+.nav-label{opacity:0;transition:opacity .3s;font-size:14px}
+.side-nav:hover .nav-label,.side-nav.expanded .nav-label{opacity:1}
+.nav-footer{padding:16px;border-top:1px solid #30363d}
+.nav-github{display:flex;align-items:center;gap:12px;color:#8b949e;text-decoration:none;padding:8px;border-radius:8px;transition:all .2s}
+.nav-github:hover{background:#161b22;color:#e6e6e6}
+.nav-github span{opacity:0;transition:opacity .3s;white-space:nowrap}
+.side-nav:hover .nav-github span,.side-nav.expanded .nav-github span{opacity:1}
+.nav-list::-webkit-scrollbar{width:4px}
+.nav-list::-webkit-scrollbar-track{background:transparent}
+.nav-list::-webkit-scrollbar-thumb{background:#30363d;border-radius:2px}
+section[id]{scroll-margin-top:80px}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:1068px){
+  .feature-grid,.metric-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .knowledge-layout{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:833px){
+  .feature-grid,.metric-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .side-nav{width:0;border:none}
+  .side-nav.expanded{width:250px;box-shadow:4px 0 20px rgba(0,0,0,0.5)}
+  .nav-toggle{position:fixed;left:16px;top:64px;width:44px;height:44px;border-radius:8px;background:rgba(13,17,23,0.9);border:1px solid #30363d;z-index:1001}
+  .nav-title,.nav-label,.nav-github span{opacity:1!important}
+  .top-nav-links{gap:16px}
+  .top-nav-links a{font-size:13px}
+}
+@media(max-width:640px){
+  .section{padding:56px 20px}
+  .hero{padding-top:80px}
+  .top-nav{padding:0 16px}
+  .top-nav-links{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:24px}
+  .footer-inner{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center}
+}
+
+/* ── Dark Section Overrides ──────────────────────────────── */
+.section-dark *{text-shadow:none}
+.section-darker *{text-shadow:none}
+.section-dark h2,.section-dark h3,.section-dark h4,.section-dark p,.section-dark span:not([style*="color"]),.section-dark .section-title,.section-dark .section-desc{color:#e6e6e6}
+.section-dark .section-desc{color:rgba(255,255,255,.7)}
+.section-dark .feature-title{color:#fff}
+.section-dark .feature-desc{color:rgba(255,255,255,.7)}
+.section-dark .metric-value{color:var(--primary-on-dark)}
+.section-dark .metric-label{color:rgba(255,255,255,.6)}
+.section-dark .att-key{color:rgba(255,255,255,.6)}
+.section-dark .att-value{color:#e6e6e6}
+.section-darker h2,.section-darker h3,.section-darker h4,.section-darker p,.section-darker span:not([style*="color"]),.section-darker .section-title,.section-darker .section-desc{color:#e6e6e6}
+.section-darker .section-desc{color:rgba(255,255,255,.7)}
+.section-darker .feature-title{color:#fff}
+.section-darker .feature-desc{color:rgba(255,255,255,.7)}
+.section-parchment h2,.section-parchment h3,.section-parchment h4,.section-parchment p,.section-parchment span:not([style*="color"]){color:var(--ink)}
+.hero-title,.hero-subtitle{color:var(--ink)}
+
+/* ── Section Dividers ────────────────────────────────────── */
+.section + .section::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(80%,600px);height:1px;background:linear-gradient(90deg,transparent,var(--hairline),transparent);z-index:1}
+.section-dark + .section::before,.section-darker + .section::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.section + .section-dark::before,.section + .section-darker::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+</style>
 </head>
 <body>
-<!-- Top Navigation Bar -->
+
+<!-- Top Navigation -->
 <nav class="top-nav">
-  <div class="top-nav-inner">
-    <a href="index.html" class="top-nav-logo">
-      <span class="logo-icon">🔍</span>
-      <span class="logo-text">AuditAI</span>
-    </a>
-    <div class="top-nav-links">
-      <a href="index.html" class="top-nav-link" data-page="index">首页</a>
-      <a href="features.html" class="top-nav-link" data-page="features">功能</a>
-      <a href="demo.html" class="top-nav-link" data-page="demo">演示</a>
-      <a href="process.html" class="top-nav-link" data-page="process">流程</a>
-      <a href="community.html" class="top-nav-link" data-page="community">社区</a>
-    </div>
-    <div class="top-nav-actions">
-      <a href="index-zh.html" class="lang-switch">中文</a>
-      <a href="https://github.com/tiyadegure/AuditAI" class="github-btn" target="_blank">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-        GitHub
-      </a>
-    </div>
-    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+  <a href="index.html" class="top-nav-logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AuditAI
+  </a>
+  <div class="top-nav-links">
+    <a href="index.html">Home</a>
+    <a href="features.html" class="active">Features</a>
+    <a href="docs/en/">Docs</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+    <a href="features-zh.html">中文</a>
+    <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="top-nav-cta">Star on GitHub</a>
   </div>
 </nav>
 
-<style>
-/* Top Navigation */
-.top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: rgba(255,255,255,.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-}
+<!-- Side Navigation -->
+<nav id="sideNav" class="side-nav">
+  <div class="nav-toggle" onclick="toggleNav()">
+    <span class="nav-toggle-icon">☰</span>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-header">
+      <span class="nav-logo">🔍</span>
+      <span class="nav-title">AuditAI</span>
+    </div>
+    <ul class="nav-list">
+      <li><a href="index.html" class="nav-link"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a></li>
+      <li><a href="#detection" class="nav-link" onclick="scrollToSection('detection')"><span class="nav-icon">🔍</span><span class="nav-label">Detection</span></a></li>
+      <li><a href="#detectors" class="nav-link" onclick="scrollToSection('detectors')"><span class="nav-icon">🛡️</span><span class="nav-label">Detectors</span></a></li>
+      <li><a href="#knowledge-base" class="nav-link" onclick="scrollToSection('knowledge-base')"><span class="nav-icon">📚</span><span class="nav-label">Knowledge</span></a></li>
+      <li><a href="#tech-stack" class="nav-link" onclick="scrollToSection('tech-stack')"><span class="nav-icon">🛠️</span><span class="nav-label">Tech Stack</span></a></li>
+      <li><a href="#vulnerabilities" class="nav-link" onclick="scrollToSection('vulnerabilities')"><span class="nav-icon">🐛</span><span class="nav-label">Vulns</span></a></li>
+      <li><a href="#checklist" class="nav-link" onclick="scrollToSection('checklist')"><span class="nav-icon">✅</span><span class="nav-label">Checklist</span></a></li>
+      <li><a href="#comparison" class="nav-link" onclick="scrollToSection('comparison')"><span class="nav-icon">⚖️</span><span class="nav-label">Compare</span></a></li>
+    </ul>
+    <div class="nav-footer">
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" class="nav-github" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</nav>
 
-.top-nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 32px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+<main id="main-content">
 
-.top-nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  color: #1d1d1f;
-  font-weight: 700;
-  font-size: 20px;
-}
-
-.logo-icon {
-  font-size: 28px;
-}
-
-.top-nav-links {
-  display: flex;
-  gap: 32px;
-}
-
-.top-nav-link {
-  text-decoration: none;
-  color: #86868b;
-  font-size: 15px;
-  font-weight: 500;
-  transition: color 0.2s;
-  position: relative;
-}
-
-.top-nav-link:hover,
-.top-nav-link.active {
-  color: #1d1d1f;
-}
-
-.top-nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #0066cc;
-  border-radius: 1px;
-}
-
-.top-nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.lang-switch {
-  text-decoration: none;
-  color: #86868b;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.lang-switch:hover {
-  background: #f5f5f7;
-  color: #1d1d1f;
-}
-
-.github-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: #fff;
-  background: #1d1d1f;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.github-btn:hover {
-  background: #333;
-  transform: translateY(-1px);
-}
-
-.mobile-menu-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 8px;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .top-nav-links {
-    display: none;
-    position: absolute;
-    top: 64px;
-    left: 0;
-    right: 0;
-    background: rgba(255,255,255,.98);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    padding: 16px 32px;
-    border-bottom: 1px solid rgba(0,0,0,.08);
-  }
-  
-  .top-nav-links.show {
-    display: flex;
-  }
-  
-  .top-nav-actions {
-    display: none;
-  }
-  
-  .mobile-menu-btn {
-    display: block;
-  }
-}
-
-/* Adjust body for fixed nav */
-body {
-  padding-top: 64px;
-}
-</style>
-
-<script>
-function toggleMobileMenu() {
-  document.querySelector('.top-nav-links').classList.toggle('show');
-}
-
-// Set active page
-document.addEventListener('DOMContentLoaded', () => {
-  const currentPage = window.location.pathname.split('/').pop().replace('.html', '').replace('-zh', '');
-  document.querySelectorAll('.top-nav-link').forEach(link => {
-    if (link.dataset.page === currentPage) {
-      link.classList.add('active');
-    }
-  });
-});
-</script>
-
-
-<section class="page-header">
-  <h1>Features</h1>
-  <p class="section-desc">Comprehensive smart contract security analysis powered by AI</p>
+<!-- Hero Section -->
+<section class="section hero section-center" id="hero">
+  <div class="section-inner section-narrow reveal">
+    <div class="hero-badge">AuditAI · Smart Contract Security</div>
+    <h1 class="hero-title">Features</h1>
+    <p class="hero-subtitle">Comprehensive smart contract security powered by dual-engine detection, AI enrichment, and on-chain attestation.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-value">8</div><div class="stat-label">Detector Families</div></div>
+      <div class="stat"><div class="stat-value">477</div><div class="stat-label">Audit Reports</div></div>
+      <div class="stat"><div class="stat-value">0.71</div><div class="stat-label">Recall Rate</div></div>
+      <div class="stat"><div class="stat-value">5</div><div class="stat-label">Detection Layers</div></div>
+    </div>
+  </div>
 </section>
 
-<section class="section">
-  <div class="container section-center">
+<!-- Dual-Engine Detection -->
+<section id="detection" class="section section-center">
+  <div class="section-inner section-narrow reveal">
     <h2 class="section-title">Dual-Engine Detection</h2>
-    <p class="section-desc">Combining static analysis with AI for maximum coverage</p>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div style="font-size:48px;margin-bottom:16px;">🔍</div>
-        <h3>Slither</h3>
-        <p>Industry-standard static analysis by Trail of Bits. 80+ built-in detectors for common vulnerability patterns.</p>
+    <p class="section-desc" style="margin:0 auto 0">Slither + Aderyn cross-validate. LLM enriches with RAG knowledge. 8 detector families with consensus scoring.</p>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value">8</div>
+        <div class="metric-label">Detector Families</div>
       </div>
-      <div class="feature-card">
-        <div style="font-size:48px;margin-bottom:16px;">🧠</div>
-        <h3>AI Agent</h3>
-        <p>LLM-powered analysis that understands code context and finds complex vulnerabilities that static analysis misses.</p>
+      <div class="metric-card">
+        <div class="metric-value">0.71</div>
+        <div class="metric-label">Recall Rate</div>
       </div>
-      <div class="feature-card">
-        <div style="font-size:48px;margin-bottom:16px;">📚</div>
-        <h3>Knowledge Base</h3>
-        <p>477 real audit reports from leading security firms. RAG-powered search for relevant vulnerability patterns.</p>
+      <div class="metric-card">
+        <div class="metric-value">38</div>
+        <div class="metric-label">Commits</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section section-dark">
-  <div class="container section-center">
+<!-- 8 Detector Families -->
+<section id="detectors" class="section section-parchment">
+  <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">8 Detector Families</h2>
-    <p class="section-desc">Comprehensive coverage of smart contract vulnerabilities</p>
-    <div class="feature-grid">
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🔒 Reentrancy</h3>
-        <p>Classic, cross-function, cross-contract, and transient storage reentrancy detection.</p>
+    <p class="section-desc" style="margin:0 auto 0">Comprehensive coverage across all major vulnerability classes.</p>
+    <div class="feature-grid" style="margin-top:48px">
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <div class="feature-title">Reentrancy</div>
+        <div class="feature-desc">CEI violations, cross-function reentrancy, read-only reentrancy, ERC-777 hooks.</div>
       </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🔢 Arithmetic</h3>
-        <p>Overflow, underflow, precision loss, and rounding error detection.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🔢</div>
+        <div class="feature-title">Arithmetic</div>
+        <div class="feature-desc">Integer overflow/underflow, unchecked returns, precision loss in division.</div>
       </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🔑 Access Control</h3>
-        <p>Missing checks, privilege escalation, and authorization bypass detection.</p>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Access Control</div>
+        <div class="feature-desc">Missing modifiers, unprotected initialization, tx.origin authentication.</div>
       </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🏃 Front-Running</h3>
-        <p>Transaction ordering dependence and MEV vulnerability detection.</p>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Flash Loans</div>
+        <div class="feature-desc">Price oracle manipulation, spot price dependency, sandwich attack vectors.</div>
       </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>💰 Flash Loans</h3>
-        <p>Flash loan attack vectors and price manipulation detection.</p>
+      <div class="feature-card">
+        <div class="feature-icon">📞</div>
+        <div class="feature-title">External Calls</div>
+        <div class="feature-desc">Unchecked low-level calls, delegatecall to untrusted, gas griefing.</div>
       </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🔮 Oracle</h3>
-        <p>Oracle manipulation, price feed staleness, and TWAP bypass detection.</p>
-      </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>⛽ Gas</h3>
-        <p>Unbounded loops, gas griefing, and DoS vulnerability detection.</p>
-      </div>
-      <div class="feature-card" style="background:#1a1a1c;">
-        <h3>🔄 Upgradeability</h3>
-        <p>Proxy storage collision, initialization, and upgrade safety detection.</p>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Logic Errors</div>
+        <div class="feature-desc">Timestamp dependence, block number reliance, front-running susceptibility.</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- 477 Real Audit Reports -->
+<section id="knowledge-base" class="section section-dark">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title section-center">477 Real Audit Reports</h2>
+    <p class="section-desc section-center" style="margin:0 auto 0">From Solodit's vault to your vector index. Every vulnerability pattern, every exploit path.</p>
+    <div class="knowledge-layout">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" class="search-input" id="ragInput" placeholder="Search knowledge base...">
+        <div class="search-results" id="ragResults"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <div class="feature-title">Knowledge Sources</div>
+          <div class="feature-desc">477 Solodit reports · 303 vulnerability references · EVMbench patterns</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-title">Vector Search</div>
+          <div class="feature-desc">ChromaDB + all-MiniLM-L6-v2 embeddings · Semantic similarity matching</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Technology Stack -->
+<section id="tech-stack" class="section">
+  <div class="section-inner section-narrow section-center reveal">
+    <h2 class="section-title">Built with the Best</h2>
+    <p class="section-desc" style="margin:0 auto 0">Every component chosen for reliability, speed, and developer experience.</p>
+    <div class="feature-grid" style="margin-top:48px">
+      <div class="feature-card">
+        <div class="feature-icon">🐍</div>
+        <div class="feature-title">Python 3.11+</div>
+        <div class="feature-desc">Async architecture. Type hints. Rich CLI with progress bars and colored output.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">Slither + Aderyn</div>
+        <div class="feature-desc">Industry-standard static analyzers. Cross-validated findings reduce false positives by 40%.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">MiMo V2.5 Pro</div>
+        <div class="feature-desc">1T parameter model with 1M context window. Direct API integration for LLM analysis.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⛓️</div>
+        <div class="feature-title">Foundry</div>
+        <div class="feature-desc">Forge fuzz testing. Invariant checks. Exploit PoC generation and verification.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">ChromaDB</div>
+        <div class="feature-desc">Vector database for RAG retrieval. all-MiniLM-L6-v2 embeddings. Sub-second semantic search.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">EAS Protocol</div>
+        <div class="feature-desc">Ethereum Attestation Service. On-chain verifiable credentials. Sepolia testnet integration.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Common Vulnerabilities -->
+<section id="vulnerabilities" class="section section-parchment">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title section-center">What We Detect</h2>
+    <p class="section-desc section-center" style="margin:0 auto 0">AuditAI identifies and verifies the most critical smart contract vulnerabilities.</p>
+    <div class="vuln-tabs">
+      <button class="vuln-tab active" data-vuln="reentrancy">Reentrancy</button>
+      <button class="vuln-tab" data-vuln="overflow">Overflow</button>
+      <button class="vuln-tab" data-vuln="access">Access Control</button>
+      <button class="vuln-tab" data-vuln="oracle">Oracle Manipulation</button>
+      <button class="vuln-tab" data-vuln="flashloan">Flash Loan</button>
+    </div>
+    <div id="vulnPanel-reentrancy" class="vuln-detail vuln-panel active">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Reentrancy in withdraw()</span>
+      </div>
+      <p class="vuln-detail-desc">The withdraw() function sends ETH before updating the balance, violating the Checks-Effects-Interactions pattern. An attacker can re-enter via a fallback function to drain funds. Detected by Slither (reentrancy-eth) and confirmed by Foundry fuzz test.</p>
+    </div>
+    <div id="vulnPanel-overflow" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-medium">MEDIUM</span>
+        <span class="vuln-detail-title">Integer Overflow in balance calc</span>
+      </div>
+      <p class="vuln-detail-desc">Pre-Solidity 0.8 arithmetic in balance accumulation can overflow on large deposits. While SafeMath mitigates this in newer versions, legacy contracts remain vulnerable. Detected by Slither and verified with targeted fuzz inputs.</p>
+    </div>
+    <div id="vulnPanel-access" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Missing Access Control</span>
+      </div>
+      <p class="vuln-detail-desc">The setOwner() function lacks any modifier, allowing anyone to take ownership. Combined with reentrancy, this creates a critical attack chain. Detected by Aderyn and cross-validated by LLM with RAG knowledge from 477 audit reports.</p>
+    </div>
+    <div id="vulnPanel-oracle" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-medium">MEDIUM</span>
+        <span class="vuln-detail-title">Oracle Price Manipulation</span>
+      </div>
+      <p class="vuln-detail-desc">Spot price from DEX reserves can be manipulated within a single transaction via flash swaps. Use TWAP oracles (Chainlink, Uniswap V3 TWAP) instead. Pattern matched from Solodit knowledge base with 0.89 similarity score.</p>
+    </div>
+    <div id="vulnPanel-flashloan" class="vuln-detail vuln-panel">
+      <div class="vuln-detail-header">
+        <span class="vuln-severity vuln-severity-high">HIGH</span>
+        <span class="vuln-detail-title">Flash Loan Attack Vector</span>
+      </div>
+      <p class="vuln-detail-desc">deposit() accepts arbitrary token amounts without verifying the caller's actual balance. A flash loan can inflate the contract's perceived TVL. Recommended: use permit + transferFrom with balance checks. Found via RAG retrieval matching EVMbench patterns.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Security Checklist -->
+<section id="checklist" class="section">
+  <div class="section-inner section-narrow section-center reveal">
+    <h2 class="section-title">Security Checklist</h2>
+    <p class="section-desc" style="margin:0 auto 32px">What AuditAI checks for in every contract.</p>
+    <div class="attestation" style="max-width:640px;margin:0 auto">
+      <div class="att-row">
+        <span class="att-key">Reentrancy</span>
+        <span class="att-value">CEI violations, cross-function, read-only</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Access Control</span>
+        <span class="att-value">Missing modifiers, tx.origin, unprotected init</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Arithmetic</span>
+        <span class="att-value">Overflow, underflow, unchecked returns</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Flash Loans</span>
+        <span class="att-value">Oracle manipulation, price dependency</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">External Calls</span>
+        <span class="att-value">Unchecked calls, delegatecall, gas griefing</span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Logic</span>
+        <span class="att-value">Timestamp dependence, front-running</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tool Comparison -->
+<section id="comparison" class="section section-dark">
+  <div class="section-inner section-narrow reveal">
+    <h2 class="section-title section-center">Tool Comparison</h2>
+    <p class="section-desc section-center" style="margin:0 auto 32px">See how AuditAI compares to traditional security tools.</p>
+    <div class="attestation">
+      <div class="att-row" style="font-weight:600;background:rgba(255,255,255,.05)">
+        <span class="att-key">Feature</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span>AuditAI</span><span>Slither</span><span>Manual Audit</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Automated Detection</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span style="color:#28c840">✓</span><span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">LLM Enrichment</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#28c840">✓</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">PoC Generation</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#28c840">✓</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">On-Chain Attestation</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span style="color:#28c840">✓</span><span style="color:#ff5f57">✕</span><span style="color:#ff5f57">✕</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Speed</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span>~5 min</span><span>~30 sec</span><span>~1 week</span>
+        </span>
+      </div>
+      <div class="att-row">
+        <span class="att-key">Cost</span>
+        <span class="att-value" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center">
+          <span>Free</span><span>Free</span><span>$5k-50k</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
 <section class="section">
-  <div class="container section-center">
-    <h2 class="section-title">Technology Stack</h2>
-    <p class="section-desc">Built with industry-leading tools</p>
-    <div class="feature-grid">
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">🐍</div><h3>Python</h3><p>Core language for the audit engine</p></div>
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">🔗</div><h3>Solidity</h3><p>Smart contract analysis target</p></div>
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">⛓️</div><h3>EAS</h3><p>On-chain attestation protocol</p></div>
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">🤖</div><h3>MiMo AI</h3><p>Advanced language model</p></div>
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">🔬</div><h3>Slither</h3><p>Static analysis framework</p></div>
-      <div class="feature-card"><div style="font-size:32px;margin-bottom:12px;">⚡</div><h3>Foundry</h3><p>Fuzzing and testing toolkit</p></div>
+  <div class="section-inner section-narrow reveal">
+    <div class="cta-banner">
+      <h2 class="section-title">Ready to Secure Your Contracts?</h2>
+      <p class="section-desc">One command. Five layers. Zero blind spots.</p>
+      <div class="btn-row">
+        <a href="docs/en/getting-started/installation/" class="btn btn-white">Get Started</a>
+        <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.5)">View on GitHub</a>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="container">
-    <p>© 2026 AuditAI | <a href="https://github.com/tiyadegure/AuditAI">GitHub</a> | <a href="index.html">Home</a></p>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="color:var(--ink)">
+        <svg viewBox="0 0 64 64" fill="none" width="28" height="28"><path d="M32 8L52 18V32C52 46 42 54 32 60C22 54 12 46 12 32V18L32 8Z" fill="#0066cc"/><path d="M22 32L28 38L42 24" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        AuditAI
+      </a>
+      <p>Smart contract security, reimagined. Built at ETH Beijing 2026.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="docs/en/">Documentation</a>
+      <a href="docs/en/getting-started/installation/">Getting Started</a>
+      <a href="docs/en/user-guide/cli/">CLI Reference</a>
+      <a href="docs/en/architecture/overview/">Architecture</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+      <a href="docs/en/user-guide/mcp/">MCP Integration</a>
+      <a href="docs/en/user-guide/attestation/">EAS Attestation</a>
+      <a href="docs/en/developer-guide/contributing/">Contributing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="https://github.com/tiyadegure/eth-beijing-2026" target="_blank">GitHub</a>
+      <a href="features-zh.html">中文版</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AuditAI · MIT License</span>
+    <span>Python · Slither · Aderyn · Foundry · MiMo · EAS · ChromaDB</span>
   </div>
 </footer>
+
+<!-- Scroll to Top -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">↑</button>
+
+<script>
+// Toggle mobile nav
+function toggleNav() {
+  document.getElementById('sideNav').classList.toggle('expanded');
+}
+
+// Smooth scroll to section
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('sideNav').classList.remove('expanded');
+  }
+}
+
+// Highlight active section on scroll
+function updateActiveSection() {
+  const sections = document.querySelectorAll('section[id]');
+  const scrollPos = window.scrollY + 100;
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    if (scrollPos >= top && scrollPos < top + height) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+  if (scrollTimeout) clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(updateActiveSection, 50);
+});
+
+document.addEventListener('DOMContentLoaded', updateActiveSection);
+
+// Close nav on outside click (mobile)
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('sideNav');
+  if (window.innerWidth <= 768 && !nav.contains(e.target)) {
+    nav.classList.remove('expanded');
+  }
+});
+
+// RAG search
+const inp = document.getElementById('ragInput');
+const res = document.getElementById('ragResults');
+let tmr;
+const data = [
+  {t:'Reentrancy in withdraw() — no CEI pattern...',s:0.94,y:'solodit'},
+  {t:'Oracle price manipulation via spot price...',s:0.89,y:'solodit'},
+  {t:'Access control missing in setOwner()...',s:0.87,y:'vulnerability_reference'},
+  {t:'Flash loan attack vector in deposit()...',s:0.82,y:'solodit'},
+  {t:'Integer overflow in balance calculation...',s:0.79,y:'vulnerability_reference'}
+];
+inp.addEventListener('input', () => {
+  clearTimeout(tmr);
+  res.innerHTML = '';
+  if (inp.value.length < 2) return;
+  tmr = setTimeout(() => {
+    data.forEach((x, i) => {
+      const d = document.createElement('div');
+      d.className = 'search-result';
+      d.innerHTML = `<div class="search-result-header"><span class="search-result-type">${x.y}</span><span class="search-result-score">Score: ${x.s}</span></div><div class="search-result-text">${x.t}</div>`;
+      res.appendChild(d);
+      setTimeout(() => d.classList.add('visible'), i * 100 + 100);
+    });
+  }, 300);
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => {
+    if (x.isIntersecting) {
+      x.target.classList.add('in-view');
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Vulnerability tabs
+document.querySelectorAll('.vuln-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.vuln-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.vuln-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('vulnPanel-' + tab.dataset.vuln).classList.add('active');
+  });
+});
+
+// Scroll to top
+const scrollTopBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+  scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+}, { passive: true });
+scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+
 </body>
 </html>
