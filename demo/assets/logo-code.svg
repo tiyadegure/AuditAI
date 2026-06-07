@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- AuditAI Logo - Code/Contract Style -->
+  <!-- Solidity code fragment inspired design -->
+  
+  <defs>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#272729;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d1d1f;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2997ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Code editor window -->
+  <rect x="64" y="96" width="384" height="320" rx="18" fill="url(#grad2)"/>
+  
+  <!-- Window dots -->
+  <circle cx="112" cy="128" r="8" fill="#ff5f57"/>
+  <circle cx="144" cy="128" r="8" fill="#febc2e"/>
+  <circle cx="176" cy="128" r="8" fill="#28c840"/>
+  
+  <!-- Code lines -->
+  <!-- Line 1: contract AuditAI { -->
+  <text x="96" y="184" font-family="monospace" font-size="20" fill="#86868b">contract</text>
+  <text x="200" y="184" font-family="monospace" font-size="20" fill="#2997ff">AuditAI</text>
+  <text x="312" y="184" font-family="monospace" font-size="20" fill="#86868b">{</text>
+  
+  <!-- Line 2: function audit() -->
+  <text x="128" y="224" font-family="monospace" font-size="20" fill="#86868b">function</text>
+  <text x="248" y="224" font-family="monospace" font-size="20" fill="#28c840">audit</text>
+  <text x="312" y="224" font-family="monospace" font-size="20" fill="#86868b">()</text>
+  
+  <!-- Line 3: returns (bool) -->
+  <text x="160" y="264" font-family="monospace" font-size="20" fill="#86868b">returns</text>
+  <text x="264" y="264" font-family="monospace" font-size="20" fill="#2997ff">(bool)</text>
+  
+  <!-- Line 4: // verified ✓ -->
+  <text x="96" y="320" font-family="monospace" font-size="20" fill="#86868b">//</text>
+  <text x="128" y="320" font-family="monospace" font-size="20" fill="#28c840">verified</text>
+  <text x="240" y="320" font-family="monospace" font-size="20" fill="#28c840">✓</text>
+  
+  <!-- Shield overlay -->
+  <path d="M256 240L304 264V312C304 344 280 368 256 384C232 368 208 344 208 312V264L256 240Z" 
+        fill="none" stroke="#0066cc" stroke-width="8" opacity="0.4"/>
+  
+  <!-- Lock icon in shield -->
+  <rect x="240" y="288" width="32" height="24" rx="4" fill="#0066cc" opacity="0.6"/>
+  <path d="M248 288V280C248 272 252 264 256 264C260 264 264 272 264 280V288" 
+        stroke="#0066cc" stroke-width="4" fill="none" opacity="0.6"/>
+  
+  <!-- Text below -->
+  <text x="256" y="464" font-family="sans-serif" font-size="36" font-weight="600" fill="#1d1d1f" text-anchor="middle">AuditAI</text>
+  <text x="256" y="496" font-family="sans-serif" font-size="16" fill="#86868b" text-anchor="middle">Smart Contract Security</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- AuditAI Logo - Minimalist Geometric Style -->
+  <!-- Inspired by Apple/Stripe clean design -->
+  
+  <!-- Background circle (optional, remove for transparent) -->
+  <!-- <circle cx="256" cy="256" r="256" fill="#0066cc"/> -->
+  
+  <!-- Main shape: Abstract "A" formed by geometric elements -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2997ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Left bar of "A" -->
+  <path d="M128 384L256 96L384 384" stroke="url(#grad1)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Crossbar of "A" -->
+  <line x1="176" y1="272" x2="336" y2="272" stroke="url(#grad1)" stroke-width="48" stroke-linecap="round"/>
+  
+  <!-- Shield overlay (security symbol) -->
+  <path d="M256 160L320 192V256C320 304 288 344 256 368C224 344 192 304 192 256V192L256 160Z" 
+        fill="none" stroke="#0066cc" stroke-width="16" opacity="0.3"/>
+  
+  <!-- Checkmark (verification) -->
+  <path d="M224 256L248 280L288 240" stroke="#0066cc" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+</svg>

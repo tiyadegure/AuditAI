@@ -1,0 +1,75 @@
+# AuditAI — 智能合约安全，重新定义
+
+> 5 层 AI 代理，检测、验证、修补、链上证明 — 全自动完成。
+> ETH Beijing 2026 | AI Agent 主赛道 + BGA 赛道（AI for Transparency）
+
+## 功能概述
+
+AuditAI 是一个端到端的智能合约安全审计代理，采用 5 层 AI 流水线架构：
+
+- **双引擎静态分析**：Slither + Aderyn 并行运行，LLM 共识评分降低误报
+- **RAG 知识库**：2,450 块向量检索（477 份 Solodit 报告 + 303 份漏洞文档），基于 ChromaDB + all-MiniLM-L6-v2
+- **多专家分析**：3 个并行 LLM "专家"（系统审计师、新视角审计师、分诊师），来自 forefy/.context 框架
+- **Foundry 漏洞验证**：自动生成 PoC 测试合约，通过不变式测试验证漏洞真实性
+- **EAS 链上证明**：审计结果发布到 Sepolia 测试网的 Ethereum Attestation Service，生成可公开验证的凭证
+- **MCP 服务器**：通过 Model Context Protocol 将审计工具暴露给 Cursor、Claude 等 MCP 客户端
+
+## 快速开始
+
+```bash
+# 安装依赖
+pip install -r requirements.txt
+
+# 配置环境
+cp .env.example .env
+
+# 运行检测
+python3 -m src.main detect data/contracts/VulnerableBank.sol
+
+# 完整审计（检测 + 修补 + 验证）
+python3 -m src.main audit data/contracts/VulnerableBank.sol --mode all
+```
+
+## 架构
+
+```
+┌─────────────────────────────────────────┐
+│          CLI / MCP Server               │
+└──────────────────┬──────────────────────┘
+                   │
+          ┌────────▼────────┐
+          │   Orchestrator   │
+          └───┬──┬──┬──┬──┬┘
+              │  │  │  │  │
+   ┌──────────┘  │  │  └──────────┐
+   ▼             ▼  │             ▼
+Auditor     Architect│        Validator
+   │             │   │             │
+   ▼             ▼   ▼             ▼
+Slither     CodeGen  Refiner    Foundry
+Aderyn        patch  improve      verify
+RAG KB
+MiMo LLM              ▼
+                   EAS Sepolia
+                   On-Chain
+```
+
+## 关键文件
+
+| 文件路径 | 说明 |
+|----------|------|
+| `src/main.py` | CLI 入口点 |
+| `src/agents/orchestrator.py` | 中央编排器，协调所有代理 |
+| `src/agents/auditor.py` | 检测层 — Slither/Aderyn/LLM/RAG |
+| `src/agents/architect.py` | 策略层 — 修补方案设计 |
+| `src/agents/code_generator.py` | 生成层 — 补丁代码生成 |
+| `src/agents/refiner.py` | 生成层 — 补丁迭代优化 |
+| `src/agents/validator.py` | 验证层 — Foundry 测试验证 |
+| `src/tools/slither_tool.py` | Slither 封装 |
+| `src/tools/aderyn_tool.py` | Aderyn 封装 |
+| `src/tools/exploit_gen.py` | 漏洞 PoC 生成器 |
+| `src/tools/concrete_execution.py` | Foundry 执行器 |
+| `src/knowledge/knowledge_base.py` | RAG 知识库 |
+| `src/chain/eas_attest.py` | EAS 链上证明 |
+| `src/mcp/mcp_server.py` | MCP 服务器 |
+| `config/settings.yaml` | 全局配置 |

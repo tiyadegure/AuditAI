@@ -1,0 +1,29 @@
+# AuditAI Documentation Index
+
+> Smart Contract Security Audit Agent — 5-layer AI pipeline with on-chain attestation.
+
+## Documentation
+
+- [index.md](index.md) — Project overview, features, quick start
+- [getting-started/installation.md](getting-started/installation.md) — Installation guide, prerequisites, environment setup
+- [getting-started/quickstart.md](getting-started/quickstart.md) — First audit, understanding output, next steps
+- [user-guide/cli.md](user-guide/cli.md) — CLI command reference (audit, detect, patch, exploit, attest, serve, evaluate)
+- [user-guide/mcp.md](user-guide/mcp.md) — MCP server integration for IDEs and agents
+- [user-guide/attestation.md](user-guide/attestation.md) — EAS on-chain attestation guide
+- [architecture/overview.md](architecture/overview.md) — 5-layer architecture, data flow, checkpoint/resume
+- [architecture/detection.md](architecture/detection.md) — Detection layer: Slither, Aderyn, LLM, RAG, consensus scoring
+- [architecture/knowledge.md](architecture/knowledge.md) — RAG knowledge base: ChromaDB, embeddings, Solodit reports
+- [architecture/fuzzing.md](architecture/fuzzing.md) — Foundry invariant fuzzing and exploit PoC generation
+- [architecture/chain.md](architecture/chain.md) — EAS attestation internals, degradation gates, transaction building
+- [developer-guide/extending.md](developer-guide/extending.md) — Add new detectors, tools, MCP tools, knowledge sources
+- [developer-guide/contributing.md](developer-guide/contributing.md) — Development setup, code style, testing, PR workflow
+- [reference/config.md](reference/config.md) — .env variables and settings.yaml reference
+- [reference/cli-flags.md](reference/cli-flags.md) — Every CLI flag with types, defaults, and examples
+
+## Key Concepts
+
+- **Dual-engine detection** — Slither + Aderyn static analysis with LLM consensus scoring
+- **RAG knowledge base** — 2,450 chunks (477 Solodit reports + 303 reference docs) via ChromaDB
+- **5-agent pipeline** — Auditor → Architect → Code Generator → Refiner → Validator
+- **EAS attestation** — Verifiable audit credentials on Sepolia testnet
+- **MCP server** — Expose audit tools to Cursor, Claude, and other MCP clients

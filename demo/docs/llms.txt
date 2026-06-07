@@ -1,0 +1,84 @@
+# AuditAI — Smart Contract Security, Reimagined
+
+> 5-layer AI agent that detects, verifies, patches, and attests — all on-chain.
+> ETH Beijing 2026 | AI Agent 主赛道 + BGA Track (AI for Transparency)
+
+## What It Does
+
+AuditAI takes a `.sol` file as input and produces:
+1. **Vulnerability detection** — Slither + Aderyn dual-engine + LLM analysis with consensus scoring
+2. **Knowledge-augmented analysis** — 2,450-chunk RAG (477 real Solodit audit reports + vulnerability references)
+3. **Automated patching** — LLM-generated patches with iterative refinement (up to 5 rounds)
+4. **Verification** — Foundry invariant fuzzing + exploit PoC generation + concrete execution
+5. **On-chain attestation** — EAS Sepolia verifiable credentials (audit score, vuln count, timestamp)
+
+## Quick Start
+
+```bash
+pip install -r requirements.txt
+cp .env.example .env  # Fill MIMO_API_KEY
+python3 -m src.main audit data/contracts/VulnerableBank.sol --mode all
+```
+
+## Architecture (5-Agent Pipeline)
+
+```
+CLI → Orchestrator → [Auditor → Architect → CodeGenerator → Refiner → Validator] → EAS Attestation
+           ↓
+    Slither + Aderyn + LLM + RAG Knowledge Base (ChromaDB)
+```
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `src/main.py` | CLI entry point (Click): audit, detect, patch, exploit, attest, serve, evaluate |
+| `src/agents/orchestrator.py` | Pipeline coordination, checkpoint/resume |
+| `src/agents/auditor.py` | Detection: Slither + Aderyn + LLM + BA/TA + RAG + Verificator |
+| `src/agents/architect.py` | Repair strategy design |
+| `src/agents/code_generator.py` | Patch generation with RAG context |
+| `src/agents/refiner.py` | Iterative improvement (5 iterations max) |
+| `src/agents/validator.py` | Verification + exploit execution + exploit PoC |
+| `src/knowledge/knowledge_base.py` | ChromaDB + sentence-transformers vector search |
+| `src/chain/eas_attest.py` | EAS Sepolia attestation with 5 degradation gates |
+| `src/mcp/mcp_server.py` | MCP server for IDE/agent integration |
+| `src/tools/slither_tool.py` | Slither static analysis wrapper |
+| `src/tools/aderyn_tool.py` | Aderyn static analysis wrapper |
+| `src/tools/exploit_gen.py` | Foundry PoC generation |
+| `src/tools/concrete_execution.py` | Foundry test runner |
+
+## CLI Commands
+
+```bash
+audit <contract> [--mode all|detect|patch|exploit] [--attest] [--resume] [--strategy ba|ta|all]
+detect <contract> [--strategy ba|ta|all] [--multi-expert]
+patch <contract> <vuln_id>
+exploit <address> <exploit_path>
+attest <address> [--contract-path <path>]
+serve  # MCP server
+evaluate [--suite all|specific] [--mode quick|full|stress]
+```
+
+## Tech Stack
+
+- **AI**: MiMo V2.5 Pro (Token Plan direct API)
+- **Static Analysis**: Slither + Aderyn (dual-engine consensus)
+- **Knowledge**: ChromaDB + sentence-transformers (all-MiniLM-L6-v2)
+- **On-Chain**: EAS (Ethereum Attestation Service) Sepolia
+- **Fuzzing**: Foundry (invariant tests + exploit PoC)
+- **MCP**: Python SDK
+
+## Config (.env)
+
+```
+MIMO_API_KEY=tp-xxx          # Required
+SEPOLIA_RPC_URL=...          # Optional (for on-chain attestation)
+WALLET_PRIVATE_KEY=0x...     # Optional (for on-chain attestation)
+SCHEMA_UID=0x...             # Optional (for on-chain attestation)
+```
+
+## Full Documentation
+
+- English: `docs/en/`
+- 中文: `docs/zh/`
+- LLM index: `docs/en/llms.txt` | `docs/zh/llms.txt`

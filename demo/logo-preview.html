@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuditAI Logo 设计方案</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #f5f5f7; color: #1d1d1f; padding: 48px 24px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 40px; font-weight: 600; margin-bottom: 8px; }
+  .subtitle { font-size: 21px; color: #86868b; margin-bottom: 48px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .card { background: white; border-radius: 18px; padding: 48px; text-align: center; border: 1px solid rgba(0,0,0,0.08); }
+  .card h2 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .card .desc { font-size: 17px; color: #86868b; margin-bottom: 32px; }
+  .logo-preview { margin: 32px 0; padding: 48px; background: #f5f5f7; border-radius: 12px; }
+  .logo-preview.dark { background: #272729; }
+  .logo-preview img { max-width: 100%; height: auto; }
+  .icon-row { display: flex; justify-content: center; gap: 32px; margin-top: 32px; }
+  .icon-preview { width: 64px; height: 64px; }
+  .icon-preview.large { width: 128px; height: 128px; }
+  .btn { display: inline-block; background: #0066cc; color: white; padding: 11px 22px; border-radius: 9999px; font-size: 17px; text-decoration: none; margin-top: 24px; transition: transform 0.15s; }
+  .btn:hover { transform: scale(1.05); }
+  .btn:active { transform: scale(0.95); }
+  .specs { margin-top: 32px; text-align: left; }
+  .specs h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+  .specs ul { list-style: none; padding: 0; }
+  .specs li { font-size: 14px; color: #86868b; margin-bottom: 8px; padding-left: 24px; position: relative; }
+  .specs li::before { content: '✓'; position: absolute; left: 0; color: #28c840; }
+  @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>AuditAI Logo 设计方案</h1>
+  <p class="subtitle">两个方案供选择：简约几何风格 vs 代码合约风格</p>
+  
+  <div class="grid">
+    <!-- 方案 1: 几何风格 -->
+    <div class="card">
+      <h2>方案 1: 简约几何风格</h2>
+      <p class="desc">抽象的 "A" 字母 + 盾牌元素，Apple/Stripe 风格</p>
+      
+      <div class="logo-preview">
+        <img src="assets/logo-geometric.svg" alt="Geometric Logo" style="max-height: 200px;">
+      </div>
+      
+      <div class="logo-preview dark">
+        <img src="assets/logo-geometric.svg" alt="Geometric Logo Dark" style="max-height: 200px; filter: invert(1);">
+      </div>
+      
+      <div class="specs">
+        <h3>设计特点</h3>
+        <ul>
+          <li>抽象的 "A" 字母形状</li>
+          <li>渐变蓝色（#0066cc → #2997ff）</li>
+          <li>盾牌轮廓叠加（安全象征）</li>
+          <li>对勾标记（验证象征）</li>
+          <li>简洁、现代、易识别</li>
+        </ul>
+      </div>
+      
+      <a href="assets/logo-geometric.svg" download class="btn">下载 SVG</a>
+    </div>
+    
+    <!-- 方案 2: 代码风格 -->
+    <div class="card">
+      <h2>方案 2: 代码合约风格</h2>
+      <p class="desc">Solidity 代码片段 + 安全元素，开发者友好</p>
+      
+      <div class="logo-preview">
+        <img src="assets/logo-code.svg" alt="Code Logo" style="max-height: 300px;">
+      </div>
+      
+      <div class="specs">
+        <h3>设计特点</h3>
+        <ul>
+          <li>代码编辑器窗口</li>
+          <li>Solidity 合约代码片段</li>
+          <li>盾牌 + 锁图标（安全）</li>
+          <li>"verified ✓" 标记</li>
+          <li>深色背景（#272729）</li>
+          <li>技术感强，适合开发者社区</li>
+        </ul>
+      </div>
+      
+      <a href="assets/logo-code.svg" download class="btn">下载 SVG</a>
+    </div>
+  </div>
+  
+  <!-- 图标版本 -->
+  <div class="card" style="margin-top: 32px;">
+    <h2>图标版本（Favicon/App Icon）</h2>
+    <p class="desc">简化版本，用于小尺寸显示</p>
+    
+    <div class="icon-row">
+      <div>
+        <img src="assets/logo-icon.svg" alt="Icon" class="icon-preview">
+        <p style="font-size: 14px; color: #86868b; margin-top: 8px;">64x64</p>
+      </div>
+      <div>
+        <img src="assets/logo-icon.svg" alt="Icon Large" class="icon-preview large">
+        <p style="font-size: 14px; color: #86868b; margin-top: 8px;">128x128</p>
+      </div>
+      <div style="background: #272729; padding: 16px; border-radius: 18px;">
+        <img src="assets/logo-icon.svg" alt="Icon Dark" class="icon-preview">
+        <p style="font-size: 14px; color: #86868b; margin-top: 8px;">暗色背景</p>
+      </div>
+    </div>
+    
+    <div class="specs">
+      <h3>设计特点</h3>
+      <ul>
+        <li>盾牌形状</li>
+        <li>对勾标记（验证）</li>
+        <li>蓝色渐变填充</li>
+        <li>白色对勾</li>
+        <li>简洁、易识别、适合小尺寸</li>
+      </ul>
+    </div>
+    
+    <a href="assets/logo-icon.svg" download class="btn">下载图标 SVG</a>
+  </div>
+  
+  <!-- 使用建议 -->
+  <div class="card" style="margin-top: 32px;">
+    <h2>使用建议</h2>
+    <div class="specs">
+      <h3>方案 1（几何风格）适合：</h3>
+      <ul>
+        <li>品牌标识、名片、文档</li>
+        <li>现代、专业的品牌形象</li>
+        <li>需要简洁识别的场景</li>
+      </ul>
+      
+      <h3 style="margin-top: 24px;">方案 2（代码风格）适合：</h3>
+      <ul>
+        <li>开发者社区、GitHub README</li>
+        <li>技术博客、文档</li>
+        <li>需要展示技术能力的场景</li>
+      </ul>
+      
+      <h3 style="margin-top: 24px;">图标版本适合：</h3>
+      <ul>
+        <li>Favicon、App Icon</li>
+        <li>社交媒体头像</li>
+        <li>小尺寸显示</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>
