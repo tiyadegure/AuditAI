@@ -322,6 +322,303 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 </head>
 <body>
 
+<!-- 侧边导航 -->
+<nav id="sideNav" class="side-nav">
+  <div class="nav-toggle" onclick="toggleNav()">
+    <span class="nav-toggle-icon">☰</span>
+  </div>
+  <div class="nav-menu">
+    <div class="nav-header">
+      <span class="nav-logo">🔍</span>
+      <span class="nav-title">AuditAI</span>
+    </div>
+    <ul class="nav-list">
+      <li><a href="#hero" class="nav-link" onclick="scrollToSection('hero')"><span class="nav-icon">🏠</span><span class="nav-label">首页</span></a></li>
+      <li><a href="#scanner" class="nav-link" onclick="scrollToSection('scanner')"><span class="nav-icon">🔍</span><span class="nav-label">扫描器</span></a></li>
+      <li><a href="#api-demo" class="nav-link" onclick="scrollToSection('api-demo')"><span class="nav-icon">🔌</span><span class="nav-label">API 演示</span></a></li>
+      <li><a href="#tech-stack" class="nav-link" onclick="scrollToSection('tech-stack')"><span class="nav-icon">🛠️</span><span class="nav-label">技术栈</span></a></li>
+      <li><a href="#code-examples" class="nav-link" onclick="scrollToSection('code-examples')"><span class="nav-icon">💻</span><span class="nav-label">代码示例</span></a></li>
+      <li><a href="#vulnerabilities" class="nav-link" onclick="scrollToSection('vulnerabilities')"><span class="nav-icon">🐛</span><span class="nav-label">漏洞类型</span></a></li>
+      <li><a href="#checklist" class="nav-link" onclick="scrollToSection('checklist')"><span class="nav-icon">✅</span><span class="nav-label">检查清单</span></a></li>
+      <li><a href="#process" class="nav-link" onclick="scrollToSection('process')"><span class="nav-icon">🔄</span><span class="nav-label">审计流程</span></a></li>
+      <li><a href="#report-template" class="nav-link" onclick="scrollToSection('report-template')"><span class="nav-icon">📄</span><span class="nav-label">报告模板</span></a></li>
+      <li><a href="#benchmarks" class="nav-link" onclick="scrollToSection('benchmarks')"><span class="nav-icon">⚡</span><span class="nav-label">性能基准</span></a></li>
+      <li><a href="#comparison" class="nav-link" onclick="scrollToSection('comparison')"><span class="nav-icon">⚖️</span><span class="nav-label">工具对比</span></a></li>
+      <li><a href="#audit-stats" class="nav-link" onclick="scrollToSection('audit-stats')"><span class="nav-icon">📊</span><span class="nav-label">统计数据</span></a></li>
+      <li><a href="#integration" class="nav-link" onclick="scrollToSection('integration')"><span class="nav-icon">🔗</span><span class="nav-label">集成指南</span></a></li>
+      <li><a href="#deployment" class="nav-link" onclick="scrollToSection('deployment')"><span class="nav-icon">🚀</span><span class="nav-label">部署方案</span></a></li>
+      <li><a href="#faq" class="nav-link" onclick="scrollToSection('faq')"><span class="nav-icon">❓</span><span class="nav-label">常见问题</span></a></li>
+      <li><a href="#resources" class="nav-link" onclick="scrollToSection('resources')"><span class="nav-icon">📚</span><span class="nav-label">资源</span></a></li>
+      <li><a href="#contact" class="nav-link" onclick="scrollToSection('contact')"><span class="nav-icon">📬</span><span class="nav-label">联系我们</span></a></li>
+    </ul>
+    <div class="nav-footer">
+      <a href="https://github.com/tiyadegure/AuditAI" class="nav-github" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* 侧边导航 */
+.side-nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: rgba(13, 17, 23, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid #30363d;
+  z-index: 1000;
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+.side-nav:hover,
+.side-nav.expanded {
+  width: 200px;
+}
+
+.nav-toggle {
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #30363d;
+  height: 60px;
+}
+
+.nav-toggle-icon {
+  font-size: 24px;
+  color: #e6e6e6;
+  transition: transform 0.3s;
+}
+
+.side-nav:hover .nav-toggle-icon {
+  transform: rotate(90deg);
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 60px);
+}
+
+.nav-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #30363d;
+  min-height: 60px;
+}
+
+.nav-logo {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.nav-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e6e6e6;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.side-nav:hover .nav-title,
+.side-nav.expanded .nav-title {
+  opacity: 1;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  color: #8b949e;
+  text-decoration: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: #161b22;
+  color: #58a6ff;
+}
+
+.nav-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+
+.nav-label {
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 14px;
+}
+
+.side-nav:hover .nav-label,
+.side-nav.expanded .nav-label {
+  opacity: 1;
+}
+
+.nav-footer {
+  padding: 16px;
+  border-top: 1px solid #30363d;
+}
+
+.nav-github {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #8b949e;
+  text-decoration: none;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.nav-github:hover {
+  background: #161b22;
+  color: #e6e6e6;
+}
+
+.nav-github span {
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
+.side-nav:hover .nav-github span,
+.side-nav.expanded .nav-github span {
+  opacity: 1;
+}
+
+/* Scrollbar */
+.nav-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.nav-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-list::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 2px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .side-nav {
+    width: 0;
+    border: none;
+  }
+  
+  .side-nav.expanded {
+    width: 250px;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+  }
+  
+  .nav-toggle {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: rgba(13, 17, 23, 0.9);
+    border: 1px solid #30363d;
+    z-index: 1001;
+  }
+  
+  .nav-title,
+  .nav-label,
+  .nav-github span {
+    opacity: 1 !important;
+  }
+}
+
+/* Section anchors - offset for fixed header */
+section[id] {
+  scroll-margin-top: 80px;
+}
+</style>
+
+<script>
+// 切换移动端导航
+function toggleNav() {
+  document.getElementById('sideNav').classList.toggle('expanded');
+}
+
+// 平滑滚动到指定部分
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+    // 关闭移动端导航
+    document.getElementById('sideNav').classList.remove('expanded');
+  }
+}
+
+// 高亮当前活动部分
+function updateActiveSection() {
+  const sections = document.querySelectorAll('section[id]');
+  const scrollPos = window.scrollY + 100;
+  
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const height = section.offsetHeight;
+    const id = section.getAttribute('id');
+    
+    if (scrollPos >= top && scrollPos < top + height) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}
+
+// 节流滚动事件
+let scrollTimeout;
+window.addEventListener('scroll', () => {
+  if (scrollTimeout) clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(updateActiveSection, 50);
+});
+
+// 初始更新
+document.addEventListener('DOMContentLoaded', updateActiveSection);
+
+// 点击外部关闭导航（移动端）
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('sideNav');
+  if (window.innerWidth <= 768 && !nav.contains(e.target)) {
+    nav.classList.remove('expanded');
+  }
+});
+</script>
+
+
 <!-- Skip to Content -->
 <a href="#demo" class="skip-link">跳到内容</a>
 
@@ -349,7 +646,7 @@ body{font-family:var(--font);color:var(--ink);background:var(--canvas);line-heig
 </div>
 
 <!-- Hero -->
-<section class="section hero section-center">
+<section class="section hero section-center" id="hero">
   <div class="section-inner section-narrow reveal">
     <div class="hero-badge">ETH Beijing 2026 · AI 智能体赛道</div>
     <h1 class="hero-title">智能合约安全，<br>重新定义。</h1>
