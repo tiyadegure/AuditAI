@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -441,6 +441,7 @@ code{
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;focus:position:static;width:auto;height:auto;">Skip to main content</a>
 
 
 <!-- Navigation -->
@@ -457,7 +458,7 @@ code{
       <li><a href="#hero" class="nav-link" onclick="scrollToSection('hero')"><span class="nav-icon">🏠</span><span class="nav-label">首页</span></a></li>
       <li><a href="#demo" class="nav-link" onclick="scrollToSection('demo')"><span class="nav-icon">🎮</span><span class="nav-label">演示</span></a></li>
       <li><a href="#detection" class="nav-link" onclick="scrollToSection('detection')"><span class="nav-icon">🔍</span><span class="nav-label">检测</span></a></li>
-      <li><a href="#how-it-works" class="nav-link" onclick="scrollToSection('how-it-works')"><span class="nav-icon">⚙️</span><span class="nav-label">工作原理</span></a></li>
+      <li><a href="#process" class="nav-link" onclick="scrollToSection('how-it-works')"><span class="nav-icon">⚙️</span><span class="nav-label">工作原理</span></a></li>
       <li><a href="#why-auditai" class="nav-link" onclick="scrollToSection('why-auditai')"><span class="nav-icon">💡</span><span class="nav-label">为什么选择</span></a></li>
       <li><a href="#detectors" class="nav-link" onclick="scrollToSection('detectors')"><span class="nav-icon">🛡️</span><span class="nav-label">检测器</span></a></li>
       <li><a href="#tech-stack" class="nav-link" onclick="scrollToSection('tech-stack')"><span class="nav-icon">🛠️</span><span class="nav-label">技术栈</span></a></li>
@@ -490,6 +491,7 @@ code{
 </div>
 
 <!-- Hero -->
+<main id="main-content">
 <section class="fade-in section hero section-center" id="hero">
   <div class="section-inner section-narrow reveal">
     <div class="hero-badge">ETH Beijing 2026 · AI 智能体赛道</div>
@@ -703,7 +705,7 @@ function attack() external {
 </section>
 
 <!-- How It Works -->
-<section id="process" id="how-it-works" class="fade-in section section-parchment">
+<section id="process" class="fade-in section section-parchment">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">工作流程</h2>
     <p class="section-desc" style="margin:0 auto 0">五层架构。一条命令。完整安全分析。</p>
@@ -877,7 +879,7 @@ function attack() external {
 </section>
 
 <!-- FAQ Section -->
-<section id="faq" id="faq" class="fade-in section section-parchment">
+<section id="faq" class="fade-in section section-parchment">
   <div class="section-inner section-narrow reveal">
     <h2 class="section-title section-center">常见问题</h2>
     <div style="max-width:720px;margin:48px auto 0;display:flex;flex-direction:column;gap:16px">
@@ -2777,7 +2779,7 @@ auditai audit your-contract.sol</div>
 </section>
 
 <!-- Gallery Section -->
-<section id="comparison" id="" class="fade-in section">
+<section id="comparison" class="fade-in section">
   <div class="section-inner section-narrow section-center reveal">
     <h2 class="section-title">与传统工具对比</h2>
     <p class="section-desc" style="margin:0 auto 32px">看看 AuditAI 与竞争对手的对比。</p>
@@ -4617,6 +4619,7 @@ function startScan() {
 }
 </script>
 
+</main>
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
